@@ -1,3 +1,4 @@
 build*/
 tour/
 *.png.tmp
+*.log
