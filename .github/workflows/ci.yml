@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Links and citations resolve
+        run: python tools/check_docs.py
+
+      - name: Checker catches a broken citation and a broken link
+        run: |
+          printf 'See [P999] and [missing](NOPE.md) and [bad anchor](README.md#no-such-heading).\n' > broken.md
+          if python tools/check_docs.py > out.txt; then
+            cat out.txt; echo "checker passed a broken doc"; exit 1
+          fi
+          cat out.txt
+          grep -q '\[P999\] is not defined' out.txt
+          grep -q 'NOPE.md points at a missing file' out.txt
+          grep -q 'no-such-heading has no matching heading' out.txt
+          rm broken.md out.txt
