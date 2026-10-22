@@ -1,7 +1,10 @@
 # Architecture
 
-Atman is planned as a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). None
-of this code exists yet. The layout follows
+Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
+(milestone M1): the valley's ground, river and village layout with walking and collision, the game
+clock and the body's needs (`src/sim/`), the terrain grid and village meshes (`src/bridge/geometry.*`),
+their upload to Strata (`src/bridge/scene.*`), the sun, camera and HUD (`src/play/view.*`) and the
+desktop app with its headless tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
 
@@ -37,8 +40,8 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | Path | Contents |
 |---|---|
 | `src/sim/` | Engine-free, deterministic rules: the valley, chores, the fear meter, snakes and ropes, pots and clay, chapter state, the clock, the autopilot |
-| `src/bridge/` | Tagged meshes for the valley and props, and their mapping to Strata calls. Triangle tags map a pick back to a game object. |
-| `src/play/` | A `Session` that drives the game for any front end: input, HUD, codex screen, autosave |
+| `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`). From M2, triangle tags map a pick back to a game object. |
+| `src/play/` | The sun, camera and HUD (`view.*`). Later a `Session` that drives the game for any front end: input, codex screen, autosave |
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept |
 | `app/main.cpp` | Desktop entry point |
 | `content/` | Codex entries and dialogue as data files |

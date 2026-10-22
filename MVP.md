@@ -59,7 +59,7 @@ Each milestone is one pull request, merged when CI is green.
 | Milestone | Scope |
 |---|---|
 | M0 | Docs (this set) and CI that checks the docs' links and citation IDs |
-| M1 Valley | Terrain, village meshes, walking, sun from the solar position, the HUD |
+| M1 Valley (done) | Terrain, village meshes, walking, sun from the solar position, the HUD |
 | M2 Rope | Dusk, the lamp, picking, snakes and ropes, the fear meter |
 | M3 Clay | Wheel, naming, clay lens, pot-space |
 | M4 Codex | Verse plates, the codex screen, the other-schools page |
