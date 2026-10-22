@@ -36,6 +36,11 @@ playable slice, and how it will be built.
 
 Corrections from people who know this tradition are welcome as issues.
 
+## Checking the docs
+
+`python3 tools/check_docs.py` checks that every relative link and heading anchor resolves, and that
+every citation ID (such as [P1]) is defined in RESEARCH.md. CI runs it on every pull request.
+
 ## License
 
 [MIT](LICENSE).
