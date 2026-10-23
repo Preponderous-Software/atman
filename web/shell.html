@@ -39,6 +39,9 @@
   body.compact #cross { display: block; }
   #msg { left: 50%; transform: translateX(-50%); top: 26%; width: 92%; text-align: center; color: var(--lamp);
     font-size: 14px; display: none; white-space: pre-line; }
+  /* Below the prompt, clear of the HUD panel, on a dark ground so it reads over the valley. */
+  body.compact #msg:not(:empty) { top: calc(50% + 52px); width: 86%; box-sizing: border-box; padding: 6px 10px;
+    background: rgba(20, 16, 12, 0.72); border-radius: 6px; z-index: 3; pointer-events: none; }
   body.compact #msg { display: block; }
   #prompt { left: 50%; transform: translateX(-50%); top: calc(50% + 18px); width: 92%; text-align: center;
     display: none; font-size: 15px; font-weight: 600; }
