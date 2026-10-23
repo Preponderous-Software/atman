@@ -58,7 +58,7 @@ struct HudLine {
 std::vector<HudLine> hudLines(const World& w, bool watching = false);
 
 // The line under the crosshair: what the player can do here (throw, name,
-// break, a chore, eat, drink, sleep), or empty. `typing` is the name typed so
+// break, a chore, eat, drink, sleep, light the lamp after dark), or empty. `typing` is the name typed so
 // far while naming a pot.
 std::string prompt(const World& w, const std::string& typing);
 

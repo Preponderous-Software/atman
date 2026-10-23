@@ -305,6 +305,7 @@ std::string prompt(const World& w, const std::string& typing) {
         if (w.potsMade >= valley::kBoardSlots) return "The drying board is full";
         return "At the wheel:  1 water jar   2 bowl   3 cup   4 lamp";
     }
+    if (isDusk(w) && !w.lampLit) return "F  light your lamp";
     return "";
 }
 
