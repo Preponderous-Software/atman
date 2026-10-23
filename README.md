@@ -10,7 +10,9 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M5 of the [MVP](MVP.md).** You can walk the valley in first person: the
+**Status: milestone M6 of the [MVP](MVP.md).** Play it in a browser at
+**[atman.play.danielstephenson.dev](https://atman.play.danielstephenson.dev)**, on a computer or a
+phone ([docs/WEB.md](docs/WEB.md)). You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
 equinox. The HUD shows the time, the body's needs, your standing and the quest log.

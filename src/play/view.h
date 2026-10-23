@@ -18,7 +18,8 @@ constexpr double kLatitude = 25.3;
 constexpr double kLongitude = 83.0;
 constexpr double kFirstMidnightUtc = 1774031400.0;  // 2026-03-21 00:00 at UTC+5:30
 
-void setLighting(strata::Engine& engine);
+// `lightweight`: fewer, smaller shadow cascades, for phones and the browser.
+void setLighting(strata::Engine& engine, bool lightweight = false);
 
 // Places the sun for the game's time; returns its elevation in degrees.
 float setSky(strata::Engine& engine, const World& w);
@@ -64,8 +65,9 @@ std::string prompt(const World& w, const std::string& typing);
 std::string bar(float value, int width);
 
 // Draws one frame (not presented). `help` adds the controls line. With
-// `watching`, the view is from that camera and the HUD says so.
+// `watching`, the view is from that camera and the HUD says so. `noText`
+// leaves the words off the canvas (a narrow browser page shows them itself).
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "",
-            const FreeCamera* watching = nullptr);
+            const FreeCamera* watching = nullptr, bool noText = false);
 
 }  // namespace atman::play

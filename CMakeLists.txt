@@ -11,6 +11,22 @@ endif()
 option(ATMAN_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
 option(ATMAN_BUILD_TESTS "Build the test suite" ON)
 option(ATMAN_WITH_STRATA "Build the playable game on the Strata engine" ON)
+option(ATMAN_WEB "Build the browser game (Emscripten + Strata's WebGL 2 backend)" OFF)
+
+# Emscripten: the rules and tests build as they are and the tests run under
+# Node; ATMAN_WEB adds the browser game. Strata compiles C++ exceptions as wasm
+# exceptions, and everything in one .wasm must match.
+if(EMSCRIPTEN)
+  cmake_minimum_required(VERSION 3.24)
+  add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-fwasm-exceptions>")
+  add_link_options(-fwasm-exceptions -sALLOW_MEMORY_GROWTH=1)
+  if(ATMAN_WITH_STRATA)
+    message(FATAL_ERROR "ATMAN_WITH_STRATA builds the desktop game: use -DATMAN_WITH_STRATA=OFF -DATMAN_WEB=ON")
+  endif()
+endif()
+if(ATMAN_WEB AND NOT EMSCRIPTEN)
+  message(FATAL_ERROR "ATMAN_WEB needs Emscripten (emcmake cmake ...)")
+endif()
 
 function(atman_warnings target)
   if(MSVC)
@@ -82,8 +98,10 @@ endif()
 
 # ---------------------------------------------------------------- the game on Strata
 # Strata is fetched at ATMAN_STRATA_REF (v0.4.0), or taken from a local
-# checkout with -DFETCHCONTENT_SOURCE_DIR_STRATA=<path>.
-if(ATMAN_WITH_STRATA)
+# checkout with -DFETCHCONTENT_SOURCE_DIR_STRATA=<path>. The desktop game
+# (ATMAN_WITH_STRATA) and the browser game (ATMAN_WEB) share everything but
+# their main().
+if(ATMAN_WITH_STRATA OR ATMAN_WEB)
   cmake_minimum_required(VERSION 3.24)
   include(FetchContent)
   set(ATMAN_STRATA_REF "2e03be8e78ef23a8449bdeaa25f279dcf9700a7f" CACHE STRING "Strata git ref (a full commit SHA)")
@@ -96,12 +114,30 @@ if(ATMAN_WITH_STRATA)
     GIT_TAG ${ATMAN_STRATA_REF})
   FetchContent_MakeAvailable(strata)
 
-  add_library(atman_play STATIC src/bridge/scene.cpp src/play/codex_screen.cpp src/play/view.cpp)
+  add_library(atman_play STATIC src/bridge/scene.cpp src/play/codex_screen.cpp src/play/session.cpp src/play/view.cpp)
   target_include_directories(atman_play PUBLIC src)
   target_link_libraries(atman_play PUBLIC atman_geometry atman_codex strata::static)
   atman_warnings(atman_play)
 
+endif()
+
+if(ATMAN_WITH_STRATA)
   add_executable(atman app/main.cpp)
   target_link_libraries(atman PRIVATE atman_play)
   atman_warnings(atman)
+endif()
+
+# emcmake cmake -S . -B build-web -DATMAN_WITH_STRATA=OFF -DATMAN_WEB=ON: the
+# page is atman.html + .js + .wasm (docs/WEB.md).
+if(ATMAN_WEB)
+  add_executable(atman-web app/web_main.cpp)
+  target_link_libraries(atman-web PRIVATE atman_play)
+  atman_warnings(atman-web)
+  set_target_properties(atman-web PROPERTIES OUTPUT_NAME atman SUFFIX ".html")
+  target_link_options(atman-web PRIVATE
+    -sSTACK_SIZE=1MB
+    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_resize,_atman_status"
+    -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,UTF8ToString
+    "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
+  set_property(TARGET atman-web APPEND PROPERTY LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
 endif()
