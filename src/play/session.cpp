@@ -17,6 +17,11 @@ constexpr float kStride = 0.7f;  // metres a step
 constexpr float kLookPerPixel = 0.0025f;
 constexpr double kAutosaveSeconds = 120;
 constexpr double kAfterSeconds = 14;  // the after-mode's first words stay a while
+constexpr double kGreetingSeconds = 10;
+// A new game's first words: where you are, and where to look for what to do.
+constexpr const char* kGreeting =
+    "Your house is beside you; its door, the indigo one, faces the well.\n"
+    "The NEXT line, top left, says what comes next.";
 
 int pagesOpen(const World& w) {
     int n = 0;
@@ -37,6 +42,8 @@ Session::Session(strata::Engine& engine, const SessionOptions& options)
         const LoadResult r = loadSave(options_.slot, loaded);
         if (r.ok) start = loaded;
         say(r.ok ? r.message : r.message + " A new game was started.");
+    } else if (!options_.autopilot) {
+        say(kGreeting, kGreetingSeconds);
     }
     adopt(start);
     if (!options_.browser) capture(true);
@@ -97,7 +104,7 @@ void Session::load() {
 void Session::restart() {
     adopt(newWorld(options_.seed));
     watching_ = following_ = false;
-    say("A new day in the village.");
+    say(kGreeting, kGreetingSeconds);
 }
 
 void Session::setMuted(bool muted, bool announce) {
