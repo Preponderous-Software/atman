@@ -87,7 +87,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Clay lens | The terrain, village and pots rebuilt with clay in one colour and the rest grey, and uploaded again | 1.3 / 1.4 |
 | Space in the pots | Soft points (`STRATA_POINT_SOFT`) with alpha blending at fixed positions from the sim, untouched when a pot mesh is swapped for its shards | 1.5 |
 | Codex pages | Each plate uploaded once with `strata_create_texture_rgba8` and drawn on an unlit quad (`STRATA_MESH_UNLIT`) in front of a camera of its own, far from the valley, cleared to the plate's dark colour; the menu is overlay text | 1.7 |
-| HUD and its retirement | Overlay text and lines with alpha, faded out by the play layer | 1.5 |
+| HUD and its retirement | Overlay text, the bars included; a retired element's line is no longer drawn (`hudLines` in `src/play/view.cpp`) | 1.5 |
 | Mouse look | `strata_set_relative_mouse_mode` | 1.8 |
 | Watching the avatar (after-mode) | A free camera in the play layer, and the avatar mesh moved by `strata_set_mesh_transform` | 1.7 |
 | Waking | A screen-sized black point in front of the eye, fading out | 1.5 |
@@ -152,6 +152,7 @@ browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md))
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
 | Playthrough | The autopilot plays the MVP from a new game (chores, pots, lens, a broken pot, the snakes, sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |
+| Geometry | The valley's meshes and terrain are valid for Strata and face outward; each form's pot matches the size the rules give it; the clay lens keeps the village's shape and only the clay's colour; each coil, as snake or rope, lies where the rules put it; and the terrain is the ground the rules walk on (`tests/test_geometry.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
 | Saves | Round trips at several points of a playthrough (one with a pot waiting for its name); every single-byte flip and a truncation are refused; an impossible World is refused even with a good checksum; the previous save is kept and loads when the current one is damaged; a playthrough saved and loaded in the after-mode still ends on the pinned fingerprint (`tests/test_saves.cpp`); and in the browser a save survives a reload (the smoke test) |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |
