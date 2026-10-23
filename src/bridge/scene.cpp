@@ -25,7 +25,16 @@ void Scene::buildValley(bool lens) {
     lens_ = lens;
 }
 
-void Scene::update(const World& w) {
+void Scene::update(const World& w, bool avatar) {
+    if (!avatar) remove(avatar_);
+    else {
+        if (!avatar_) avatar_ = upload(buildAvatar());
+        // Turned to face the way the player faces: yaw 0 is -z, positive turns right.
+        const float c = detCos(w.player.yaw), s = detSin(w.player.yaw);
+        const float y = valley::walkHeight(w.player.x, w.player.z);
+        const float model[16] = {c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, w.player.x, y, w.player.z, 1};
+        engine_.setMeshTransform(avatar_, model);
+    }
     const bool lensChanged = w.clayLens != lens_;
     if (lensChanged) buildValley(w.clayLens);
 
@@ -77,6 +86,7 @@ Scene::~Scene() {
         for (uint32_t& id : coilMesh_) remove(id);
         for (uint32_t& id : potMesh_) remove(id);
         remove(wheelPot_);
+        remove(avatar_);
         remove(village_);
         remove(water_);
         engine_.setTerrain(nullptr);

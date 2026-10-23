@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstdio>
 
+#include "sim/chores.h"
 #include "sim/clay.h"
 #include "sim/valley.h"
 
@@ -19,6 +20,37 @@ constexpr float kLine = 20.0f;
 constexpr float kMargin = 16.0f;
 constexpr float kLampRange = 10.0f;
 constexpr float kLampIntensity = 1.4f;
+constexpr float kFlySpeed = 4.0f, kFlyFast = 12.0f;  // metres per second
+constexpr float kDarkSeconds = 0.6f, kFadeSeconds = 2.4f;  // waking: dark, then the morning fades in
+
+StrataCamera lookFrom(Vec3 eye, float yaw, float pitch, float aspect) {
+    const Vec3 d = lookDirection(yaw, pitch);
+    const float e[3] = {eye.x, eye.y, eye.z};
+    const float target[3] = {eye.x + d.x, eye.y + d.y, eye.z + d.z};
+    const float up[3] = {0, 1, 0};
+    return strata::cameraLookAt(e, target, up, kFovY, aspect, 0.05f, 400.0f);
+}
+
+// How dark the screen still is after waking: 1 is black.
+float wakeDarkness(const World& w) {
+    if (w.wokeTick < 0) return 0;
+    const float s = static_cast<float>(w.tick - w.wokeTick) / kTickRate;
+    if (s < kDarkSeconds) return 1;
+    return clampf(1.0f - (s - kDarkSeconds) / kFadeSeconds, 0.0f, 1.0f);
+}
+
+// One black point big enough to cover the screen, just in front of the eye.
+void drawDarkness(strata::Engine& engine, Vec3 eye, float yaw, float pitch, float alpha, int32_t width,
+                  int32_t height) {
+    const Vec3 d = lookDirection(yaw, pitch);
+    StrataPoint p{};
+    p.position[0] = eye.x + d.x * 0.2f;
+    p.position[1] = eye.y + d.y * 0.2f;
+    p.position[2] = eye.z + d.z * 0.2f;
+    p.size_pixels = 3.0f * static_cast<float>(width > height ? width : height);
+    p.color[3] = alpha;
+    engine.submitPoints(&p, 1);
+}
 
 void text(std::vector<StrataText>& out, std::vector<std::string>& keep, float x, float y, const std::string& s,
           const float color[4]) {
@@ -102,12 +134,30 @@ void setLamp(strata::Engine& engine, const World& w) {
 
 StrataCamera playerCamera(const World& w, float aspect) {
     const Player& p = w.player;
-    const Vec3 d = lookDirection(p.yaw, p.pitch);
-    const float y = V::walkHeight(p.x, p.z) + V::kEyeHeight;
-    const float eye[3] = {p.x, y, p.z};
-    const float target[3] = {p.x + d.x, y + d.y, p.z + d.z};
-    const float up[3] = {0, 1, 0};
-    return strata::cameraLookAt(eye, target, up, kFovY, aspect, 0.05f, 400.0f);
+    return lookFrom({p.x, V::walkHeight(p.x, p.z) + V::kEyeHeight, p.z}, p.yaw, p.pitch, aspect);
+}
+
+FreeCamera cameraAtEyes(const World& w) {
+    const Player& p = w.player;
+    return {{p.x, V::walkHeight(p.x, p.z) + V::kEyeHeight, p.z}, p.yaw, p.pitch};
+}
+
+FreeCamera cameraBehind(const World& w) {
+    const Player& p = w.player;
+    const float sy = detSin(p.yaw), cy = detCos(p.yaw);
+    return {{p.x - 4.0f * sy, V::walkHeight(p.x, p.z) + 3.0f, p.z + 4.0f * cy}, p.yaw, -0.32f};
+}
+
+void fly(FreeCamera& cam, float forward, float strafe, bool fast, float seconds) {
+    const Vec3 d = lookDirection(cam.yaw, cam.pitch);
+    const Vec3 right{detCos(cam.yaw), 0, detSin(cam.yaw)};
+    const float step = (fast ? kFlyFast : kFlySpeed) * seconds;
+    cam.eye = cam.eye + d * (forward * step) + right * (strafe * step);
+    // Stay over the valley, and above its ground.
+    cam.eye.x = clampf(cam.eye.x, V::kMin, V::kMax);
+    cam.eye.z = clampf(cam.eye.z, V::kMin, V::kMax);
+    const float floor = V::walkHeight(cam.eye.x, cam.eye.z) + 0.3f;
+    cam.eye.y = clampf(cam.eye.y, floor, 60.0f);
 }
 
 std::string bar(float value, int width) {
@@ -117,15 +167,16 @@ std::string bar(float value, int width) {
     return s + "]";
 }
 
-std::vector<HudLine> hudLines(const World& w) {
+std::vector<HudLine> hudLines(const World& w, bool watching) {
     std::vector<HudLine> lines;
-    lines.push_back({"21 March  " + clockText(w), true});
+    lines.push_back({std::to_string(21 + w.day) + " March  " + clockText(w), true});
     lines.push_back({"Thirst    " + bar(w.needs.thirst, 10)});
     lines.push_back({"Hunger    " + bar(w.needs.hunger, 10)});
     lines.push_back({"Tiredness " + bar(w.needs.tiredness, 10)});
     if (fearShown(w)) lines.push_back({"Fear      " + bar(w.fear, 10)});
     lines.push_back({std::string("Lamp      ") + (w.lampLit ? "lit" : "out")});
-    lines.push_back({std::string("Standing  ") + standingText(w.standing)});
+    if (w.carry != Carry::Nothing) lines.push_back({std::string("Carrying  ") + (w.carry == Carry::Water ? "water" : "clay")});
+    if (!w.after) lines.push_back({std::string("Standing  ") + standingText(w.standing)});
     lines.push_back({""});
     lines.push_back({"QUESTS", true});
     for (int i = 0; i < kQuestCount; ++i)
@@ -136,6 +187,10 @@ std::vector<HudLine> hudLines(const World& w) {
         lines.push_back({w.clayLens ? "MADE  (through the clay lens)" : "MADE", true});
         for (const std::string& name : made) lines.push_back({w.clayLens ? name + ": clay" : name});
     }
+    if (w.after) {
+        lines.push_back({""});
+        lines.push_back({watching ? "Watching   V steps back in" : "Living   V steps back to watch"});
+    }
     return lines;
 }
 
@@ -145,6 +200,8 @@ std::string prompt(const World& w, const std::string& typing) {
     if (w.throwing.active)
         return "Throwing a " + lower(formShape(w.throwing.form).name) + " " +
                bar(w.throwing.seconds / kThrowSeconds, 10) + "  stay at the wheel";
+    const Use use = usable(w);
+    if (use != Use::None) return std::string("E  ") + useText(use);
     const int pot = lookedAtPot(w);
     if (pot >= 0) return std::string("B  break the ") + w.pots[pot].name.data();
     if (atWheel(w)) {
@@ -154,18 +211,22 @@ std::string prompt(const World& w, const std::string& typing) {
     return "";
 }
 
-void render(strata::Engine& engine, const World& w, bool help, const std::string& typing) {
+void render(strata::Engine& engine, const World& w, bool help, const std::string& typing,
+            const FreeCamera* watching) {
     setSky(engine, w);
     setLamp(engine, w);
     int32_t width = 0, height = 0;
     engine.drawableSize(width, height);
     const float aspect = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
-    engine.setCamera(playerCamera(w, aspect));
+    const FreeCamera view = watching ? *watching : cameraAtEyes(w);
+    engine.setCamera(lookFrom(view.eye, view.yaw, view.pitch, aspect));
 
     StrataFrameDesc fd{};
     fd.clear_flags = STRATA_CLEAR_COLOR | STRATA_CLEAR_DEPTH | STRATA_CLEAR_SKY;
     engine.beginFrame(fd);
     drawMotes(engine, w);
+    const float dark = wakeDarkness(w);
+    if (dark > 0) drawDarkness(engine, view.eye, view.yaw, view.pitch, dark, width, height);
 
     std::vector<StrataText> texts;
     std::vector<std::string> keep;
@@ -173,20 +234,24 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     const float ink[4] = {0.95f, 0.92f, 0.85f, 1.0f};
     const float lamp[4] = {1.0f, 0.62f, 0.22f, 1.0f};
     float y = kMargin;
-    for (const HudLine& l : hudLines(w)) {
+    for (const HudLine& l : hudLines(w, watching != nullptr)) {
         if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
         y += kLine;
     }
-    // The crosshair, and what can be done here just below it.
-    text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2, "+", ink);
-    const std::string here = prompt(w, typing);
+    // The crosshair, and what can be done here just below it (not while watching).
+    if (!watching)
+        text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
+             "+", ink);
+    const std::string here = watching ? std::string() : prompt(w, typing);
     if (!here.empty())
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
              static_cast<float>(height) / 2 + 2 * kLine, here, ink);
     if (help)
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize,
-             std::string("W A S D walk   Shift hurry   Mouse look   F lamp   ") +
-                 (lensAvailable(w) ? "C clay lens   " : "") + "Tab codex   Esc free the mouse   F1 hide help",
+             watching ? std::string("W A S D fly   Shift faster   Mouse look   V step back in   Tab codex   F1 hide help")
+                      : std::string("W A S D walk   Shift hurry   Mouse look   E use   F lamp   ") +
+                            (lensAvailable(w) ? "C clay lens   " : "") + (w.after ? "V watch   " : "") +
+                            "Tab codex   Esc free the mouse   F1 hide help",
              ink);
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     engine.submitText(texts.data(), texts.size());

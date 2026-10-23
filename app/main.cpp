@@ -1,15 +1,24 @@
 // atman: the game on the Strata engine.
 //
 //   atman [--seed N] [--width W --height H]
+//   atman --autopilot [--speed N] [--width W --height H]
 //   atman --headless --tour --frames DIR [--width W --height H]
+//   atman --headless --autopilot [--frames DIR] [--width W --height H]
 //
-// Controls: mouse to look, W A S D to walk, Shift to hurry, F for the lamp,
-// 1-4 at the wheel to throw a pot (then type its name and press Enter), B to
-// break the pot in view, C for the clay lens, Tab for the codex (Up and Down
-// to choose a page), F1 for help, Esc to free the mouse (Esc again quits).
+// Controls: mouse to look, W A S D to walk, Shift to hurry, E to use what is
+// here (fill, give, dig, drink, eat, sleep), F for the lamp, 1-4 at the wheel
+// to throw a pot (then type its name and press Enter), B to break the pot in
+// view, C for the clay lens, Tab for the codex (Up and Down to choose a
+// page), V in the after-mode to step out and watch (and back in), F1 for
+// help, Esc to free the mouse (Esc again quits).
+//
 // --tour walks a fixed route through the valley into the night, back up the
-// path past the snakes with the lamp, opens the codex, and, headless, writes a
-// screenshot at each stop to DIR.
+// path past the snakes with the lamp, opens the codex, sleeps, and watches the
+// avatar the next morning; headless, it writes a screenshot at each stop to
+// DIR. --autopilot lets the autopilot play the whole MVP (at N times speed in
+// a window); headless, it runs to the end of the playthrough, writes a
+// screenshot each time the autopilot turns to something new if DIR is given,
+// and fails unless it ends on the pinned fingerprint.
 #include <chrono>
 #include <cmath>
 #include <cinttypes>
@@ -21,6 +30,8 @@
 #include "codex/codex.h"
 #include "play/codex_screen.h"
 #include "play/view.h"
+#include "sim/autopilot.h"
+#include "sim/chores.h"
 #include "sim/clay.h"
 #include "sim/valley.h"
 #include "sim/world.h"
@@ -34,6 +45,8 @@ struct Args {
     uint64_t seed = 1;
     bool headless = false;
     bool tour = false;
+    bool autopilot = false;
+    int speed = 1;
     std::string framesDir;
     int width = 1280, height = 720;
 };
@@ -51,6 +64,8 @@ bool parseArgs(int argc, char** argv, Args& a) {
         if (s == "--seed") a.seed = std::strtoull(next("--seed"), nullptr, 10);
         else if (s == "--headless") a.headless = true;
         else if (s == "--tour") a.tour = true;
+        else if (s == "--autopilot") a.autopilot = true;
+        else if (s == "--speed") a.speed = std::atoi(next("--speed"));
         else if (s == "--frames") a.framesDir = next("--frames");
         else if (s == "--width") a.width = std::atoi(next("--width"));
         else if (s == "--height") a.height = std::atoi(next("--height"));
@@ -60,8 +75,12 @@ bool parseArgs(int argc, char** argv, Args& a) {
             return false;
         }
     }
-    if (a.headless && !a.tour) {
-        std::fprintf(stderr, "atman: --headless needs --tour (there is no one to play)\n");
+    if (a.headless && !a.tour && !a.autopilot) {
+        std::fprintf(stderr, "atman: --headless needs --tour or --autopilot (there is no one to play)\n");
+        return false;
+    }
+    if (a.speed < 1 || a.speed > 120) {
+        std::fprintf(stderr, "atman: --speed is 1 to 120\n");
         return false;
     }
     return true;
@@ -69,7 +88,9 @@ bool parseArgs(int argc, char** argv, Args& a) {
 
 void usage() {
     std::puts("usage: atman [--seed N] [--width W --height H]\n"
-              "       atman --headless --tour --frames DIR [--width W --height H]");
+              "       atman --autopilot [--speed N] [--width W --height H]\n"
+              "       atman --headless --tour --frames DIR [--width W --height H]\n"
+              "       atman --headless --autopilot [--frames DIR] [--width W --height H]");
 }
 
 // ---- the tour: a fixed walk for screenshots and CI smoke runs
@@ -77,7 +98,8 @@ void usage() {
 // One stop, in order: light the lamp; walk to (x, z); turn to the view, or to
 // a coil or a pot; start throwing a form; wait (time passes, the sun moves);
 // name the pot; toggle the clay lens; break the pot in view; open the codex
-// on an entry; take a shot.
+// on an entry; use what is here (E); let the autopilot live for a while and
+// watch it from behind; take a shot.
 // Built with the setters below, so each stop says only what it does.
 struct TourStop {
     bool walk = false;
@@ -91,6 +113,8 @@ struct TourStop {
     bool lens = false;
     bool breakPot = false;
     const char* codexPage = nullptr;  // a codex entry's id
+    bool use = false;
+    int pilotSeconds = 0;             // the autopilot lives this long, watched from outside
     const char* shot = nullptr;       // screenshot file name
 
     constexpr TourStop to(float px, float pz) const { TourStop s = *this; s.walk = true; s.x = px; s.z = pz; return s; }
@@ -104,6 +128,8 @@ struct TourStop {
     constexpr TourStop toggleLens() const { TourStop s = *this; s.lens = true; return s; }
     constexpr TourStop breaking() const { TourStop s = *this; s.breakPot = true; return s; }
     constexpr TourStop codex(const char* id) const { TourStop s = *this; s.codexPage = id; return s; }
+    constexpr TourStop useHere() const { TourStop s = *this; s.use = true; return s; }
+    constexpr TourStop watch(int seconds) const { TourStop s = *this; s.pilotSeconds = seconds; return s; }
     constexpr TourStop shoot(const char* name) const { TourStop s = *this; s.shot = name; return s; }
 };
 
@@ -113,7 +139,9 @@ constexpr TourStop kStop{};
 // pots at the wheel, look through the clay lens, break the water jar. Down the
 // path to the ghat, then sit on the steps while the sun goes down. At night,
 // walk back up the path: see the first snake in the dark, then light the lamp
-// and look at each one closely until it is a rope. Then read the codex.
+// and look at each one closely until it is a rope. Then read the codex, go
+// home and sleep, and in the after-mode's morning step out and watch the
+// avatar set off on its chores.
 const TourStop kTour[] = {
     kStop.look(0.9f, -0.03f).shoot("01-your-door"),
     kStop.to(-1.0f, 4.5f).look(0.75f, -0.22f).shoot("02-well"),
@@ -145,6 +173,9 @@ const TourStop kTour[] = {
     kStop.codex("rope-and-snake").shoot("17-codex-rope"),
     kStop.codex("pot-space").shoot("18-codex-pot-space"),
     kStop.codex("other-schools").shoot("19-other-schools"),
+    kStop.to(-8.0f, 7.0f).look(kPi, 0.0f).useHere(),
+    kStop.look(-0.35f, 0.02f).wait(4).shoot("20-morning"),
+    kStop.watch(26).shoot("21-watching"),
 };
 
 // Waits are given as seconds, or as -1 "until 6:00 pm" and -2 "until 7:20 pm".
@@ -231,16 +262,25 @@ int runTour(strata::Engine& engine, const Args& args) {
             }
             tick(w, in);
         }
-        if (stop.breakPot) {
+        if (stop.breakPot || stop.use) {
             Input in;
             in.yaw = w.player.yaw;
             in.pitch = w.player.pitch;
-            in.breakPot = true;
+            in.breakPot = stop.breakPot;
+            in.use = stop.use;
             tick(w, in);
         }
+        // Step out of the body and let the autopilot live; watch from behind
+        // and above it.
+        play::FreeCamera cam;
+        if (stop.pilotSeconds > 0) {
+            Autopilot pilot;
+            for (int t = 0; t < stop.pilotSeconds * kTickRate; ++t) tick(w, pilot.next(w));
+            cam = play::cameraBehind(w);
+        }
         if (!stop.shot) continue;
-        scene.update(w);
-        play::render(engine, w, false);
+        scene.update(w, stop.pilotSeconds > 0);
+        play::render(engine, w, false, "", stop.pilotSeconds > 0 ? &cam : nullptr);
         engine.present();
         const float elevation = play::setSky(engine, w);
         std::printf("%-22s player (%6.2f, %6.2f) at %s, sun %5.1f deg, fear %.2f\n", stop.shot, w.player.x,
@@ -261,6 +301,10 @@ int runTour(strata::Engine& engine, const Args& args) {
         std::fprintf(stderr, "atman: the tour ended with codex pages still closed\n");
         return 1;
     }
+    if (!w.after || w.day != 1) {
+        std::fprintf(stderr, "atman: the tour did not sleep into the after-mode\n");
+        return 1;
+    }
     if (w.potsMade != 3 || !w.pots[0].broken || w.pots[1].broken || w.pots[2].broken || w.naming >= 0) {
         std::fprintf(stderr, "atman: the tour did not throw, name and break its pots\n");
         return 1;
@@ -268,9 +312,44 @@ int runTour(strata::Engine& engine, const Args& args) {
     return 0;
 }
 
+// ---- the autopilot's playthrough, headless
+
+int runPlaythrough(strata::Engine& engine, const Args& args) {
+    World w = newWorld(args.seed);
+    bridge::Scene scene(engine);
+    Autopilot pilot;
+    std::string last;
+    int shots = 0;
+    const int64_t limit = 3LL * 24 * 60 * 60 * kTickRate;
+    for (int64_t t = 0; t < limit && !playthroughDone(w); ++t) {
+        tick(w, pilot.next(w));
+        if (pilot.doing() == last) continue;
+        last = pilot.doing();
+        std::printf("%-9s day %d  (%6.2f, %6.2f)  %s\n", clockText(w).c_str(), w.day, w.player.x, w.player.z,
+                    last.c_str());
+        if (args.framesDir.empty()) continue;
+        scene.update(w);
+        play::render(engine, w, false);
+        engine.present();
+        char name[96];
+        std::snprintf(name, sizeof name, "/%02d-%s.png", ++shots, last.c_str());
+        for (char* c = name + 1; *c; ++c)
+            if (*c == ' ') *c = '-';
+        engine.saveScreenshotPng(args.framesDir + name);
+    }
+    const uint64_t fp = fingerprint(w);
+    std::printf("playthrough ends at %s on day %d, fingerprint %016" PRIx64 " (pinned %016" PRIx64 ")\n",
+                clockText(w).c_str(), w.day, fp, kPlaythroughFingerprint);
+    if (!playthroughDone(w) || fp != kPlaythroughFingerprint) {
+        std::fprintf(stderr, "atman: the playthrough did not end on the pinned fingerprint\n");
+        return 1;
+    }
+    return 0;
+}
+
 // ---- playing in a window
 
-constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kF = 9, kB = 5, kC = 6, kOne = 30, kFour = 33, kEnter = 40,
+constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33, kEnter = 40,
               kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225, kRShift = 229,
               kEscape = 41, kF1 = 58;
 
@@ -278,6 +357,12 @@ int runGame(strata::Engine& engine, const Args& args) {
     World w = newWorld(args.seed);
     bridge::Scene scene(engine);
     play::CodexScreen pages(engine);
+    // Watching: the player has stepped out of the body (after-mode, or
+    // --autopilot from the start) and the autopilot lives the day.
+    Autopilot pilot;
+    bool watching = args.autopilot;
+    bool following = args.autopilot;  // --autopilot: the camera follows the avatar until the player flies it
+    play::FreeCamera cam = play::cameraAtEyes(w);
     bool keys[512] = {};
     bool running = true, captured = false, help = true;
     float yaw = w.player.yaw, pitch = w.player.pitch;
@@ -320,6 +405,16 @@ int runGame(strata::Engine& engine, const Args& args) {
                         }
                     } else if (e.repeat) break;
                     else if (e.scancode == kTab) pages.open(w);
+                    else if (e.scancode == kV && (w.after || args.autopilot)) {
+                        watching = !watching;
+                        following = false;
+                        if (watching) cam = play::cameraAtEyes(w);
+                        else {
+                            yaw = w.player.yaw;  // step back in, looking where the body looks
+                            pitch = w.player.pitch;
+                        }
+                    } else if (watching) break;  // the body's keys belong to the autopilot
+                    else if (e.scancode == kE) once.use = true;
                     else if (e.scancode == kF) once.toggleLamp = true;
                     else if (e.scancode == kB) once.breakPot = true;
                     else if (e.scancode == kC) once.toggleLens = true;
@@ -337,7 +432,11 @@ int runGame(strata::Engine& engine, const Args& args) {
                     if (!captured) capture(true);
                     break;
                 case STRATA_EVENT_MOUSE_MOTION:
-                    if (captured) {
+                    if (captured && watching) {
+                        following = false;
+                        cam.yaw += e.dx * 0.0025f;
+                        cam.pitch = clampf(cam.pitch - e.dy * 0.0025f, -1.45f, 1.45f);
+                    } else if (captured) {
                         yaw += e.dx * 0.0025f;
                         pitch = clampf(pitch - e.dy * 0.0025f, -1.45f, 1.45f);
                     }
@@ -347,17 +446,29 @@ int runGame(strata::Engine& engine, const Args& args) {
             }
         }
         const auto now = Clock::now();
-        pending += std::chrono::duration<double>(now - last).count();
+        const double frame = std::chrono::duration<double>(now - last).count();
+        pending += frame * args.speed;
         last = now;
-        if (pending > 0.25) pending = 0.25;  // after a stall, do not try to catch up
+        if (pending > 0.25 * args.speed) pending = 0.25 * args.speed;  // after a stall, do not try to catch up
         if (pages.isOpen()) {
             pending = 0;  // no time passes while the codex is open
             pages.render(w);
             engine.present();
             continue;
         }
+        if (watching) {
+            const float f = (keys[kW] ? 1.0f : 0.0f) - (keys[kS] ? 1.0f : 0.0f);
+            const float s = (keys[kD] ? 1.0f : 0.0f) - (keys[kA] ? 1.0f : 0.0f);
+            if (f != 0 || s != 0) following = false;
+            play::fly(cam, f, s, keys[kLShift] || keys[kRShift], static_cast<float>(frame < 0.1 ? frame : 0.1));
+        }
         while (pending >= 1.0 / kTickRate) {
             pending -= 1.0 / kTickRate;
+            if (watching) {
+                once = Input{};
+                tick(w, pilot.next(w));
+                continue;
+            }
             Input in = once;
             once = Input{};
             if (w.naming < 0) {  // no walking while typing a name
@@ -369,8 +480,9 @@ int runGame(strata::Engine& engine, const Args& args) {
             in.pitch = pitch;
             tick(w, in);
         }
-        scene.update(w);
-        play::render(engine, w, help, typing);
+        if (watching && following) cam = play::cameraBehind(w);
+        scene.update(w, watching);
+        play::render(engine, w, help, typing, watching ? &cam : nullptr);
         engine.present();
     }
     return 0;
@@ -394,6 +506,7 @@ int main(int argc, char** argv) {
         auto engine = strata::Engine::create(desc);
         play::setLighting(*engine);
         if (args.tour) return runTour(*engine, args);
+        if (args.headless) return runPlaythrough(*engine, args);
         return runGame(*engine, args);
     } catch (const strata::Error& e) {
         std::fprintf(stderr, "atman: %s\n", e.what());

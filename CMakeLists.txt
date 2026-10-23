@@ -31,6 +31,8 @@ endfunction()
 # fuse multiply-adds: the rules must give bit-identical results on every
 # compiler.
 add_library(atman_sim STATIC
+  src/sim/autopilot.cpp
+  src/sim/chores.cpp
   src/sim/clay.cpp
   src/sim/valley.cpp
   src/sim/world.cpp)
@@ -69,7 +71,7 @@ atman_warnings(atman_codex)
 
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope clay determinism geometry codex)
+  foreach(t movement clock rope clay chores autopilot determinism geometry codex)
     add_executable(test_${t} tests/test_${t}.cpp)
     target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex)
     target_include_directories(test_${t} PRIVATE tests)

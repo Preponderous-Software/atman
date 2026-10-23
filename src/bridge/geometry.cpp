@@ -42,6 +42,11 @@ constexpr Rgb kSnake{0.05f, 0.05f, 0.025f};
 constexpr Rgb kSnakeBand{0.13f, 0.11f, 0.05f};
 constexpr Rgb kRope{0.44f, 0.35f, 0.17f};
 constexpr Rgb kRopeTwist{0.36f, 0.28f, 0.13f};
+constexpr Rgb kWetClay{0.30f, 0.15f, 0.07f};
+constexpr Rgb kCotton{0.78f, 0.74f, 0.64f};
+constexpr Rgb kCottonShade{0.55f, 0.42f, 0.24f};
+constexpr Rgb kSkin{0.36f, 0.22f, 0.14f};
+constexpr Rgb kHair{0.04f, 0.03f, 0.03f};
 
 // How the valley is painted: as it looks, or through the clay lens, where
 // everything made of clay (pots, bricks, tiles, the riverbank) is one colour
@@ -336,6 +341,15 @@ TerrainData buildTerrain(bool lens) {
     return t;
 }
 
+// The clay bank: a heap of wet clay where the bank runs down to the water,
+// and the hollow it was dug from.
+void clayBank(MeshData& m, const Look& L) {
+    const Vec2 c = V::kClayBank;
+    const float g = V::groundHeight(c.x + 0.8f, c.z);
+    m.blob({c.x + 0.8f, g, c.z + 0.3f}, 0.45f, 0.45f, L.clay(kWetClay));
+    m.blob({c.x + 0.9f, g, c.z - 0.5f}, 0.3f, 0.4f, L.clay(kClay));
+}
+
 MeshData buildVillage(bool lens) {
     const Look L{lens};
     MeshData m;
@@ -345,6 +359,16 @@ MeshData buildVillage(bool lens) {
     birdTree(m, L);
     for (int i = 0; i < V::kTreeCount; ++i) shadeTree(m, V::kTrees[i], i, L);
     ghat(m, L);
+    clayBank(m, L);
+    return m;
+}
+
+MeshData buildAvatar() {
+    MeshData m;
+    m.cylinder({0, 0, 0}, 0.16f, 0.2f, 0.8f, 12, kCottonShade);     // dhoti
+    m.cylinder({0, 0.8f, 0}, 0.2f, 0.17f, 0.62f, 12, kCotton);      // kurta
+    m.blob({0, 1.55f, 0}, 0.13f, 1.15f, kSkin);                     // head
+    m.blob({0, 1.62f, 0.03f}, 0.125f, 0.8f, kHair);
     return m;
 }
 

@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "sim/chores.h"
 #include "sim/clay.h"
 #include "sim/valley.h"
 
@@ -155,6 +156,7 @@ void tick(World& w, const Input& in) {
     ++w.tick;
     rope(w);
     clayTick(w, in);
+    choresTick(w, in);
 }
 
 bool isDusk(const World& w) {
@@ -199,7 +201,7 @@ std::string clockText(const World& w) {
 const char* questText(QuestId q) {
     switch (q) {
         case QuestId::CarryWater: return "Carry water from the ghat to the potter";
-        case QuestId::FetchClay: return "Fetch clay from the riverbank";
+        case QuestId::FetchClay: return "Dig clay on the riverbank for the wheel";
         case QuestId::Count: break;
     }
     return "";
@@ -244,6 +246,10 @@ uint64_t fingerprint(const World& w) {
     f.add(w.throwing.seconds);
     f.add(w.naming);
     f.add(w.clayLens);
+    f.add(w.carry);
+    f.add(w.day);
+    f.add(w.wokeTick);
+    f.add(w.after);
     return f.h;
 }
 
