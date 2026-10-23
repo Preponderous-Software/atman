@@ -37,6 +37,9 @@
   #cross { left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 22px/1 system-ui, sans-serif;
     display: none; }
   body.compact #cross { display: block; }
+  #msg { left: 50%; transform: translateX(-50%); top: 26%; width: 92%; text-align: center; color: var(--lamp);
+    font-size: 14px; display: none; }
+  body.compact #msg { display: block; }
   #prompt { left: 50%; transform: translateX(-50%); top: calc(50% + 18px); width: 92%; text-align: center;
     display: none; font-size: 15px; font-weight: 600; }
   body.compact #prompt { display: block; }
@@ -94,7 +97,9 @@
 <div id="top" class="bar">
   <span class="brand"><a href="https://danielstephenson.dev/play" title="More games">Atman</a></span>
   <span class="stat" id="clock"></span>
-  <span class="note" title="Saves come in a later version">No saves yet: each visit starts at 4:30 pm</span>
+  <span class="note" id="saveNote" title="Saves stay in this browser on this device">Saves in this browser</span>
+  <button id="saveBtn" title="Save now (F5)">Save</button>
+  <button id="newBtn" title="Start again at 4:30 on the first afternoon">New</button>
   <button id="watchBtn" hidden title="Step out and watch the avatar, or step back in (V)">Watch</button>
   <button id="codexBtn" title="The codex: the verses so far (Tab)">Codex</button>
   <button id="helpBtn" title="How to play" aria-label="How to play">?</button>
@@ -105,6 +110,7 @@
   <div id="panel" class="overlay" title="Tap to fold or unfold"></div>
   <div id="cross" class="overlay">+</div>
   <div id="prompt" class="overlay"></div>
+  <div id="msg" class="overlay"></div>
   <div id="touch" aria-hidden="true">
     <div id="stickBase"></div><div id="stickKnob"></div>
     <div id="stickHint">drag left: walk &middot; drag right: look</div>
@@ -153,10 +159,16 @@
       form to throw it, then name it.</li>
     <li><b>Codex</b> along the top shows the verses so far.</li>
   </ul>
-  <p style="color:var(--dim);font-size:13px">There are no saves yet: each visit starts again at 4:30 in the afternoon.
-  Built on the <a href="https://github.com/Preponderous-Software/strata">Strata</a> engine;
+  <p style="color:var(--dim);font-size:13px">The game saves every two minutes, when you press Save (or <kbd>F5</kbd>),
+  and when you leave the page; <kbd>F9</kbd> loads the last save. Saves stay in this browser on this device. Built on the <a href="https://github.com/Preponderous-Software/strata">Strata</a> engine;
   <a href="https://github.com/Preponderous-Software/atman">source and sources</a>.</p>
   <div class="row"><button id="helpClose">Play</button></div>
+</div>
+
+<div id="confirmNew" class="dialog" role="dialog" aria-labelledby="newTitle">
+  <h2 id="newTitle">Start again?</h2>
+  <p>This goes back to 4:30 on the first afternoon. Your day here is replaced the next time the game saves.</p>
+  <div class="row"><button id="newYes">Start again</button><button id="newNo">Keep playing</button></div>
 </div>
 
 <script>
@@ -167,7 +179,7 @@
   var touchMode = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 
   function api(name, ret, args) { return Module.cwrap(name, ret, args || []); }
-  function dialogOpen() { return $('help').style.display === 'block'; }
+  function dialogOpen() { return $('help').style.display === 'block' || $('confirmNew').style.display === 'block'; }
 
   function setTouch(on) {
     touchMode = on;
@@ -186,6 +198,19 @@
     var compact = st.clientWidth < 760;
     call.resize(Math.round(st.clientWidth * k), Math.round(st.clientHeight * k), compact ? 1 : 0);
     document.body.classList.toggle('compact', compact);
+  }
+
+  // ---- saves: /atman-save lives in IndexedDB; each save is flushed at once
+  var syncing = false, again = false;
+  function flushSaves() {
+    if (syncing) { again = true; return; }
+    syncing = true;
+    FS.syncfs(false, function (err) {
+      syncing = false;
+      $('saveNote').textContent = err ? 'Could not store the save in this browser' : 'Saved in this browser';
+      if (err) console.warn('atman: could not store the save: ' + err);
+      if (again) { again = false; flushSaves(); }
+    });
   }
 
   // ---- the page's view of the game
@@ -214,6 +239,7 @@
       });
     }
     $('prompt').textContent = s.prompt;
+    $('msg').textContent = s.message;
     if (!s.naming && last.naming) $('nameInput').value = '';
     if (s.naming && !last.naming && touchMode) setTimeout(function () { $('nameInput').focus(); }, 50);
     last.naming = s.naming;
@@ -312,6 +338,19 @@
       setTimeout(refresh, 60);
     });
     $('panel').addEventListener('click', function () { $('panel').classList.toggle('folded'); });
+    $('saveBtn').addEventListener('click', function () { call.save(); refresh(); });
+    $('newBtn').addEventListener('click', function () {
+      if (document.pointerLockElement) document.exitPointerLock();
+      $('confirmNew').style.display = 'block';
+    });
+    $('newNo').addEventListener('click', function () { $('confirmNew').style.display = 'none'; refresh(); });
+    $('newYes').addEventListener('click', function () {
+      $('confirmNew').style.display = 'none'; call.restart(); refresh();
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') call.save();
+    });
+    window.addEventListener('pagehide', function () { call.save(); });
     $('helpBtn').addEventListener('click', function () {
       if (document.pointerLockElement) document.exitPointerLock();
       $('help').style.display = 'block';
@@ -332,6 +371,18 @@
     canvas: canvas,
     print: function (t) { console.log(t); },
     printErr: function (t) { console.warn(t); },
+    preRun: [function () {
+      // Saves live in IndexedDB; they are loaded before the game starts.
+      FS.mkdir('/atman-save');
+      FS.mount(IDBFS, {}, '/atman-save');
+      addRunDependency('atman-saves');
+      FS.syncfs(true, function (err) {
+        if (err) console.warn('atman: could not read saves from this browser: ' + err);
+        removeRunDependency('atman-saves');
+      });
+      if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
+    }],
+    flushSaves: flushSaves,
     onGameReady: function () {
       call = {
         look: api('atman_look', null, ['number', 'number']),
@@ -339,6 +390,8 @@
         press: api('atman_press', null, ['number']),
         name: api('atman_name', null, ['string']),
         captured: api('atman_captured', null, ['number']),
+        save: api('atman_save', 'number'),
+        restart: api('atman_restart'),
         help: api('atman_help', null, ['number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')

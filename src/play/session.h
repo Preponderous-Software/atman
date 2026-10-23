@@ -1,9 +1,11 @@
-// A game being played: the world, the scene, the codex screen, the input, and
-// watching the avatar in the after-mode, one frame at a time. The desktop game
+// A game being played: the world and its save slot, the scene, the codex
+// screen, the input, watching the avatar in the after-mode, and the autosave,
+// one frame at a time. The desktop game
 // (app/main.cpp) drives it from its own loop; the browser game
 // (app/web_main.cpp) from the browser's.
 #pragma once
 
+#include <functional>
 #include <string>
 
 #include "bridge/scene.h"
@@ -17,11 +19,15 @@ namespace atman::play {
 
 struct SessionOptions {
     uint64_t seed = 1;
+    std::string slot;        // the save slot directory; empty = no saves
+    bool fresh = false;      // start a new game even if there is a save
     bool autopilot = false;  // the autopilot plays from the start, watched from behind
     int speed = 1;           // game seconds per second of real time
     // In a browser the page owns the pointer lock and the canvas size; Esc
     // never quits.
     bool browser = false;
+    // Called after every save written (the browser flushes it to IndexedDB).
+    std::function<void()> afterSave;
 };
 
 class Session {
@@ -33,6 +39,14 @@ public:
     // Advances by `dt` seconds of real time and draws a frame (not presented).
     void frame(double dt);
     bool running() const { return running_; }
+
+    // Writes the save now; `note` is shown on success.
+    bool save(const char* note);
+    // Loads the last save, if it can.
+    void load();
+    // Starts over: a new world (the next save replaces the current one, which
+    // is then kept as the previous save).
+    void restart();
 
     // The page's input (the browser): look by a pixel delta; walk (or fly,
     // while watching) with a stick, -1..1 each, beyond 0.95 hurries; press a
@@ -53,11 +67,15 @@ public:
     bool watching() const { return watching_; }
     bool codexOpen() const { return pages_.isOpen(); }
     const std::string& typing() const { return typing_; }
+    // The newest message (saved, loaded, refused), while it shows.
+    const std::string& message() const { return message_; }
 
 private:
     void capture(bool on);
     void onKeyDown(int scancode, bool repeat);
     void step();
+    void say(const std::string& text);
+    void adopt(const World& w);  // takes a loaded or new world as the one being played
 
     strata::Engine& engine_;
     SessionOptions options_;
@@ -76,6 +94,9 @@ private:
     Input once_;                // one-shot actions from key presses, for the next tick
     std::string typing_, named_;  // the name being typed, and the one just entered
     double pending_ = 0;
+    double clock_ = 0, lastSave_ = 0;  // seconds of play, for the autosave
+    std::string message_;
+    double messageUntil_ = 0;
 };
 
 }  // namespace atman::play

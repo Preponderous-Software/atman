@@ -10,7 +10,7 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M6 of the [MVP](MVP.md).** Play it in a browser at
+**Status: the [MVP](MVP.md) is complete (milestones M0 to M7).** Play it in a browser at
 **[atman.play.danielstephenson.dev](https://atman.play.danielstephenson.dev)**, on a computer or a
 phone ([docs/WEB.md](docs/WEB.md)). You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
@@ -98,6 +98,11 @@ Studio C++ build tools with winget if they are missing, clones or updates `main`
 example `play-atman.bat --tour`, or `play-atman.bat --autopilot --speed 10` to watch the autopilot
 play the whole slice at ten times speed.
 
+The game continues from its save: `%APPDATA%\Atman\default` on Windows, `~/.local/share/atman/default`
+elsewhere, or `--slot DIR`. It saves every two minutes, on F5 and on quit, and keeps the save before
+last. A save that fails its checksum is refused with a message and the previous one loads.
+`--new` starts over (the old save is kept as the previous one). `--autopilot` never saves.
+
 On Linux, SDL3 needs the X11 development packages (`libx11-dev libxext-dev libxcursor-dev libxi-dev
 libxfixes-dev libxrandr-dev libxss-dev`). `cmake -DATMAN_WITH_STRATA=OFF` builds only the
 simulation and its tests, with no engine.
@@ -115,6 +120,7 @@ simulation and its tests, with no engine.
 | Tab | The codex (Up and Down choose a page; Tab or Esc goes back) |
 | V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
 | F1 | Show or hide the controls |
+| F5 / F9 | Save now / load the last save |
 | Esc | Free the mouse (Esc again quits) |
 
 ## Documents

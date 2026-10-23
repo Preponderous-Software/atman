@@ -7,8 +7,9 @@
 // player (W on a desktop, the stick on the phone profile) and looking turns
 // them; the lamp lights; the codex opens on its page and closes again. On a
 // desktop the player also walks to the potter's wheel, throws a bowl and
-// types its name, which lands in the list of things made. Writes PNGs to
-// <out-dir>.
+// types its name, which lands in the list of things made. Then a save survives
+// a reload (IndexedDB): the same place, the same time of day, the same pots.
+// Writes PNGs to <out-dir>.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -90,12 +91,15 @@ function colourCount(png) {
   };
 
   // The main loop keeps the load event from ever firing: wait for commit only.
-  await page.goto(url, { waitUntil: 'commit' });
-  try {
-    await page.waitForFunction(() => window.atman && window.atmanStatus, null, { timeout: 90000 });
-  } catch (e) {
-    await fail('the game never became ready: ' + errors.join(' | '));
-  }
+  const open = async () => {
+    await page.goto(url, { waitUntil: 'commit' });
+    try {
+      await page.waitForFunction(() => window.atman && window.atmanStatus, null, { timeout: 90000 });
+    } catch (e) {
+      await fail('the game never became ready: ' + errors.join(' | '));
+    }
+  };
+  await open();
   const status = async () => JSON.parse(await page.evaluate(() => window.atman.status()));
   // Input is handled on the next frame, and SwiftShader frames are slow: poll.
   const until = async (pred, ms = 20000) => {
@@ -228,6 +232,22 @@ function colourCount(png) {
     if (!(await page.locator('#clickToPlay').isVisible())) await fail('"Click to play" is not shown without the lock');
   }
   await page.screenshot({ path: path.join(outDir, 'atman-moved.png'), timeout: 180000 });
+
+  // Save, reload, and the player is where and when they were, with their pots.
+  await page.locator('#saveBtn').click();
+  await page.waitForFunction(() => /Saved in this browser/.test(document.getElementById('saveNote').textContent), null,
+    { timeout: 20000 }).catch(() => {});
+  const note = await page.locator('#saveNote').innerText();
+  if (!/Saved in this browser/.test(note)) await fail('the save note did not confirm: ' + note);
+  const saved = await status();
+  await open();
+  const back = await status();
+  console.log(`after a reload: at (${back.x}, ${back.z}) at ${back.clock}, made ${JSON.stringify(back.made)}; "${back.message}"`);
+  if (Math.hypot(back.x - saved.x, back.z - saved.z) > 0.25) await fail('the save did not survive a reload');
+  if (Math.abs(back.tick - saved.tick) > 30 * 5) await fail('the time of day did not survive a reload');
+  if (JSON.stringify(back.made) !== JSON.stringify(saved.made)) await fail('the pots did not survive a reload');
+  if (!/Loaded your save/.test(back.message)) await fail('no "Loaded your save" message after a reload: ' + back.message);
+  if (await page.locator('#help').isVisible()) await fail('How to play came back after it was closed once');
 
   if (errors.length) await fail('page errors: ' + errors.join(' | '));
   console.log(`OK (${phone ? 'phone' : 'desktop'})`);
