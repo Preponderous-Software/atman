@@ -200,8 +200,8 @@ std::string clockText(const World& w) {
 
 const char* questText(QuestId q) {
     switch (q) {
-        case QuestId::CarryWater: return "Carry water from the ghat to the potter";
-        case QuestId::FetchClay: return "Dig clay on the riverbank for the wheel";
+        case QuestId::CarryWater: return "Water from the ghat to the potter";
+        case QuestId::FetchClay: return "Clay from the bank to the wheel";
         case QuestId::Count: break;
     }
     return "";
