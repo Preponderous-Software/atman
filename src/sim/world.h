@@ -43,9 +43,31 @@ struct Coil {
     float gaze = 0;  // seconds of lamplit looking so far
 };
 
+// What the player can throw at the wheel (chapter 2, Clay and Pots). Each is
+// clay in a different shape, and the player gives it a name.
+enum class Form : int32_t { WaterJar = 0, Bowl = 1, Cup = 2, Lamp = 3, Count = 4 };
+constexpr int kFormCount = static_cast<int>(Form::Count);
+constexpr int kNameLength = 20;  // printable ASCII, so the HUD can draw it
+
+// A pot on the drying board, by slot. Breaking one leaves its shards and its
+// slot; the space it held was never its own (see clay.h).
+struct Pot {
+    bool made = false;
+    bool broken = false;
+    Form form = Form::WaterJar;
+    std::array<char, kNameLength + 1> name{};
+};
+
+// The pot on the wheel, while the player is throwing it.
+struct Throwing {
+    bool active = false;
+    Form form = Form::WaterJar;
+    float seconds = 0;
+};
+
 // Codex entries the player has met. M2 only records them; the codex screen
 // comes in M4.
-enum class CodexId : int32_t { RopeAndSnake = 0, Count = 1 };
+enum class CodexId : int32_t { RopeAndSnake = 0, ClayAndPots = 1, PotSpace = 2, Count = 3 };
 constexpr int kCodexCount = static_cast<int>(CodexId::Count);
 
 struct World {
@@ -60,6 +82,11 @@ struct World {
     bool fearRetired = false;  // the fear meter has left the HUD for good
     std::array<Coil, valley::kCoilCount> coils{};
     std::array<bool, kCodexCount> codex{};
+    std::array<Pot, valley::kBoardSlots> pots{};
+    int32_t potsMade = 0;  // including any broken since
+    Throwing throwing;
+    int32_t naming = -1;   // the slot whose pot is waiting for a name, or -1
+    bool clayLens = false;
 };
 
 // One tick's worth of player intent, already resolved from keys and mouse.
@@ -69,6 +96,10 @@ struct Input {
     bool hurry = false;
     float yaw = 0, pitch = 0;  // absolute view angles for this tick
     bool toggleLamp = false;   // light the lamp, or put it out
+    int32_t throwForm = -1;    // at the wheel: start throwing this Form
+    const char* name = nullptr;  // the name typed for the pot being named
+    bool breakPot = false;     // break the pot the player is looking at
+    bool toggleLens = false;   // the clay lens, once the player has it
 };
 
 World newWorld(uint64_t seed);

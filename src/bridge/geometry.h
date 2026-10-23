@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "sim/clay.h"
 #include "sim/math.h"
 
 namespace atman::bridge {
@@ -49,18 +50,30 @@ struct TerrainData {
     std::vector<float> colors;   // samples * samples linear RGB triples
 };
 
-TerrainData buildTerrain();
+// `lens` paints it as the clay lens shows it (chapter 2): clay in one colour,
+// everything else grey. The same goes for the builders below.
+TerrainData buildTerrain(bool lens = false);
 
 // The village's static buildings and props: houses, the well, the potter's
-// yard, the shrine, the bird tree and the ghat steps.
-MeshData buildVillage();
+// yard and its drying board, the shrine, the bird tree and the ghat steps.
+MeshData buildVillage(bool lens = false);
 
 // The river's surface.
-MeshData buildWater();
+MeshData buildWater(bool lens = false);
 
 // Coil i on the path (valley::kCoils), as it is seen: a snake with its head
 // raised, or the rope it always was. Both follow the same spiral.
 MeshData buildSnake(int i);
 MeshData buildRope(int i);
+
+// A pot of `form` standing on `base`, turned from its profile, with a dark
+// mouth. buildPot puts it in a board slot; buildShards is what is left there
+// once it is broken.
+MeshData buildForm(Form form, Vec3 base, bool lens = false);
+MeshData buildPot(int slot, Form form, bool lens = false);
+MeshData buildShards(int slot, Form form, bool lens = false);
+
+// The largest radius and the height of a form's profile, for tests.
+void formExtent(Form form, float& radius, float& height);
 
 }  // namespace atman::bridge

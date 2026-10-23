@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include "bridge/geometry.h"
+#include "sim/clay.h"
 #include "check.h"
 #include "sim/valley.h"
 
@@ -69,6 +70,57 @@ int main() {
         tilted.orientedBox({0, 0, 0}, {0.6f, 0, -0.8f}, {0, 1, 0}, {1.6f, 0, 1.2f}, {});
         CHECK(valid(tilted));
         CHECK(outward(tilted, {1.1f, 0.5f, 0.2f}) == 1.0f);
+    }
+
+    // Each form's profile matches the size the rules give it, and a pot faces
+    // outward; shards lie on the board.
+    for (int f = 0; f < kFormCount; ++f) {
+        const Form form = static_cast<Form>(f);
+        float r = 0, h = 0;
+        formExtent(form, r, h);
+        CHECK(std::fabs(r - formShape(form).radius) < 1e-6f);
+        CHECK(std::fabs(h - formShape(form).height) < 1e-6f);
+        const MeshData pot = buildPot(0, form);
+        CHECK(valid(pot));
+        const Vec3 b = potBase(0);
+        // Turned on a wheel, every side faces away from the axis, and every
+        // cap (the mouth included) faces up.
+        int facing = 0;
+        for (size_t t = 0; t < pot.indices.size(); t += 3) {
+            Vec3 mid{0, 0, 0};
+            for (int k = 0; k < 3; ++k) {
+                const uint32_t i = pot.indices[t + k];
+                mid = mid + Vec3{pot.positions[i * 3], pot.positions[i * 3 + 1], pot.positions[i * 3 + 2]} * (1.0f / 3);
+            }
+            const uint32_t i0 = pot.indices[t];
+            const Vec3 n{pot.normals[i0 * 3], pot.normals[i0 * 3 + 1], pot.normals[i0 * 3 + 2]};
+            if (n.y > 0.999f || n.x * (mid.x - b.x) + n.z * (mid.z - b.z) > 0) ++facing;
+        }
+        CHECK(facing == static_cast<int>(pot.indices.size() / 3));
+        const MeshData shards = buildShards(0, form);
+        CHECK(valid(shards));
+        for (size_t v = 0; v < shards.vertexCount(); ++v) {
+            CHECK(shards.positions[v * 3 + 1] >= b.y - 1e-4f);
+            CHECK(shards.positions[v * 3 + 1] < b.y + 0.06f);
+        }
+    }
+
+    // Through the clay lens, the village keeps its shape and loses its colours
+    // except one: clay.
+    {
+        const MeshData plain = buildVillage(), lens = buildVillage(true);
+        CHECK(lens.positions == plain.positions);
+        CHECK(lens.indices == plain.indices);
+        int clay = 0, grey = 0;
+        for (size_t v = 0; v < lens.vertexCount(); ++v) {
+            const float r = lens.colors[v * 3], g = lens.colors[v * 3 + 1], b = lens.colors[v * 3 + 2];
+            if (r == g && g == b) ++grey;
+            else if (r > 0.5f && g < 0.3f) ++clay;
+        }
+        CHECK(clay > 0 && grey > 0);
+        CHECK(clay + grey == static_cast<int>(lens.vertexCount()));
+        const TerrainData t = buildTerrain(true);
+        CHECK(t.heights == buildTerrain().heights);
     }
 
     // Each coil, as snake or rope, lies on the ground where the rules put it.

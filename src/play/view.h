@@ -35,13 +35,18 @@ struct HudLine {
 };
 
 // The HUD's left column: the time, the body's needs (and fear, while there is
-// a snake), the lamp, standing, the quest log.
+// a snake), the lamp, standing, the quest log, and the names of the pots the
+// player has made.
 std::vector<HudLine> hudLines(const World& w);
+
+// The line under the crosshair: what the player can do here (throw, name,
+// break), or empty. `typing` is the name typed so far while naming a pot.
+std::string prompt(const World& w, const std::string& typing);
 
 // "[#####.....]" for a value in 0..1.
 std::string bar(float value, int width);
 
 // Draws one frame (not presented). `help` adds the controls line.
-void render(strata::Engine& engine, const World& w, bool help);
+void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "");
 
 }  // namespace atman::play

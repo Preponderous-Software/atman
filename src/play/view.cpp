@@ -1,7 +1,10 @@
 #include "play/view.h"
 
+#include <cctype>
+#include <cmath>
 #include <cstdio>
 
+#include "sim/clay.h"
 #include "sim/valley.h"
 
 namespace atman::play {
@@ -27,6 +30,35 @@ void text(std::vector<StrataText>& out, std::vector<std::string>& keep, float x,
     t.flags = STRATA_TEXT_SHADOW;
     for (int i = 0; i < 4; ++i) t.color[i] = color[i];
     out.push_back(t);
+}
+
+std::string lower(const char* s) {
+    std::string out = s;
+    for (char& c : out) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    return out;
+}
+
+// The motes over the drying board: soft, warm, twinkling in place. Only their
+// brightness changes with time; where they are never does.
+void drawMotes(strata::Engine& engine, const World& w) {
+    const auto& m = motes();
+    std::vector<StrataPoint> points(m.size());
+    const float t = static_cast<float>(w.tick) / kTickRate;
+    for (size_t i = 0; i < m.size(); ++i) {
+        StrataPoint& p = points[i];
+        p.position[0] = m[i].x;
+        p.position[1] = m[i].y;
+        p.position[2] = m[i].z;
+        p.size_pixels = 2.5f;
+        p.world_diameter = 0.035f;
+        const float twinkle = 0.5f + 0.5f * std::sin(t * 1.7f + static_cast<float>(i) * 2.39f);
+        p.color[0] = 1.0f;
+        p.color[1] = 0.9f;
+        p.color[2] = 0.7f;
+        p.color[3] = 0.2f + 0.45f * twinkle;
+        p.flags = STRATA_POINT_SOFT;
+    }
+    engine.submitPoints(points.data(), points.size());
 }
 
 }  // namespace
@@ -98,10 +130,31 @@ std::vector<HudLine> hudLines(const World& w) {
     lines.push_back({"QUESTS", true});
     for (int i = 0; i < kQuestCount; ++i)
         lines.push_back({std::string(w.questDone[i] ? "[x] " : "[ ] ") + questText(static_cast<QuestId>(i))});
+    const std::vector<std::string> made = inventory(w);
+    if (!made.empty()) {
+        lines.push_back({""});
+        lines.push_back({w.clayLens ? "MADE  (through the clay lens)" : "MADE", true});
+        for (const std::string& name : made) lines.push_back({w.clayLens ? name + ": clay" : name});
+    }
     return lines;
 }
 
-void render(strata::Engine& engine, const World& w, bool help) {
+std::string prompt(const World& w, const std::string& typing) {
+    if (w.naming >= 0)
+        return "Name your " + lower(formShape(w.pots[w.naming].form).name) + ": " + typing + "_   (Enter)";
+    if (w.throwing.active)
+        return "Throwing a " + lower(formShape(w.throwing.form).name) + " " +
+               bar(w.throwing.seconds / kThrowSeconds, 10) + "  stay at the wheel";
+    const int pot = lookedAtPot(w);
+    if (pot >= 0) return std::string("B  break the ") + w.pots[pot].name.data();
+    if (atWheel(w)) {
+        if (w.potsMade >= valley::kBoardSlots) return "The drying board is full";
+        return "At the wheel:  1 water jar   2 bowl   3 cup   4 lamp";
+    }
+    return "";
+}
+
+void render(strata::Engine& engine, const World& w, bool help, const std::string& typing) {
     setSky(engine, w);
     setLamp(engine, w);
     int32_t width = 0, height = 0;
@@ -112,6 +165,7 @@ void render(strata::Engine& engine, const World& w, bool help) {
     StrataFrameDesc fd{};
     fd.clear_flags = STRATA_CLEAR_COLOR | STRATA_CLEAR_DEPTH | STRATA_CLEAR_SKY;
     engine.beginFrame(fd);
+    drawMotes(engine, w);
 
     std::vector<StrataText> texts;
     std::vector<std::string> keep;
@@ -123,11 +177,17 @@ void render(strata::Engine& engine, const World& w, bool help) {
         if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
         y += kLine;
     }
-    // The crosshair.
+    // The crosshair, and what can be done here just below it.
     text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2, "+", ink);
+    const std::string here = prompt(w, typing);
+    if (!here.empty())
+        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
+             static_cast<float>(height) / 2 + 2 * kLine, here, ink);
     if (help)
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize,
-             "W A S D walk   Shift hurry   Mouse look   F lamp   Esc free the mouse   F1 hide help", ink);
+             std::string("W A S D walk   Shift hurry   Mouse look   F lamp   ") +
+                 (lensAvailable(w) ? "C clay lens   " : "") + "Esc free the mouse   F1 hide help",
+             ink);
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     engine.submitText(texts.data(), texts.size());
     engine.endFrame();

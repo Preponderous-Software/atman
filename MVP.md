@@ -61,7 +61,7 @@ Each milestone is one pull request, merged when CI is green.
 | M0 | Docs (this set) and CI that checks the docs' links and citation IDs |
 | M1 Valley (done) | Terrain, village meshes, walking, sun from the solar position, the HUD |
 | M2 Rope (done) | Dusk, the lamp, looking closer, snakes and ropes, the fear meter |
-| M3 Clay | Wheel, naming, clay lens, pot-space |
+| M3 Clay (done) | Wheel, naming, clay lens, pot-space |
 | M4 Codex | Verse plates, the codex screen, the other-schools page |
 | M5 After | Autopilot, the after-mode, the pinned playthrough |
 | M6 Saves and Windows | Checksummed saves, Windows CI and a play script |

@@ -60,6 +60,16 @@ float walkHeight(float x, float z) {
     return g;
 }
 
+float boardTop() {
+    float g = groundHeight(kBoard.x0, kBoard.z0);
+    for (float x = kBoard.x0; x <= kBoard.x1; x += 0.5f)
+        for (float z : {kBoard.z0, kBoard.z1}) {
+            const float h = groundHeight(x, z);
+            if (h > g) g = h;
+        }
+    return g + kBoardHeight;
+}
+
 bool blocked(float x, float z) {
     const float r = kPlayerRadius;
     if (x < -kWalkLimit || x > kWalkLimit || z < -kWalkLimit || z > kWalkLimit) return true;
@@ -70,6 +80,7 @@ bool blocked(float x, float z) {
     if (circleHitsCircle(x, z, r, kWell, kWellRadius)) return true;
     if (circleHitsCircle(x, z, r, kWheel, kWheelRadius)) return true;
     if (circleHitsBox(x, z, r, kKiln)) return true;
+    if (circleHitsBox(x, z, r, kBoard)) return true;
     if (circleHitsCircle(x, z, r, kBirdTree, kTrunkRadius)) return true;
     for (Vec2 t : kTrees)
         if (circleHitsCircle(x, z, r, t, kTreeTrunkRadius)) return true;
