@@ -4,6 +4,7 @@
 //   atman --autopilot [--speed N] [--width W --height H]
 //   atman --headless --tour --frames DIR [--width W --height H]
 //   atman --headless --autopilot [--frames DIR] [--width W --height H]
+//   atman --version
 //
 // Controls: mouse to look, W A S D to walk, Shift to hurry, E to use what is
 // here (fill, give, dig, drink, eat, sleep), F for the lamp, 1-4 at the wheel
@@ -81,7 +82,10 @@ bool parseArgs(int argc, char** argv, Args& a) {
         else if (s == "--frames") a.framesDir = next("--frames");
         else if (s == "--width") a.width = std::atoi(next("--width"));
         else if (s == "--height") a.height = std::atoi(next("--height"));
-        else if (s == "--help" || s == "-h") return false;
+        else if (s == "--version") {
+            std::printf("atman %s\n", ATMAN_VERSION);
+            std::exit(0);
+        } else if (s == "--help" || s == "-h") return false;
         else {
             std::fprintf(stderr, "atman: unknown argument '%s'\n", s.c_str());
             return false;
@@ -102,7 +106,8 @@ void usage() {
     std::puts("usage: atman [--slot DIR] [--new] [--seed N] [--width W --height H]\n"
               "       atman --autopilot [--speed N] [--width W --height H]\n"
               "       atman --headless --tour --frames DIR [--width W --height H]\n"
-              "       atman --headless --autopilot [--frames DIR] [--width W --height H]");
+              "       atman --headless --autopilot [--frames DIR] [--width W --height H]\n"
+              "       atman --version");
 }
 
 // ---- the tour: a fixed walk for screenshots and CI smoke runs
