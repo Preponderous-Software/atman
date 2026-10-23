@@ -24,7 +24,7 @@ that it was also the one hiding [M2]. The tradition has its own word for that, *
 | Audience | Curious adults; no prior knowledge assumed |
 | Length | About three hours, then open-ended |
 | Engine | [Strata](https://github.com/Preponderous-Software/strata) |
-| Targets | Windows and Linux desktop; browser (WebGL 2) after the MVP |
+| Targets | Windows and Linux desktop, and the browser (WebGL 2) on the arcade |
 
 ## The design problem
 

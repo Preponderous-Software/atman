@@ -85,7 +85,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Mouse look | `strata_set_relative_mouse_mode` | 1.8 |
 | Witness camera (after the MVP) | Free camera with picking, as in steading's fly-cam | 1.8 |
 | Dream drift (after the MVP) | `strata_set_mesh_transform` per frame | 1.7 |
-| Browser (after the MVP) | WebGL 2 / wasm32 release asset | v0.4.0 |
+| Browser (MVP milestone M6) | WebGL 2 / wasm32 release asset | v0.4.0 |
 
 Strata is fetched with CMake `FetchContent` at a pinned full commit SHA (`ATMAN_STRATA_REF`), and a
 local checkout can be used with `-DFETCHCONTENT_SOURCE_DIR_STRATA=<path>`.
