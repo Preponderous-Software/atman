@@ -21,6 +21,9 @@ constexpr float kMargin = 16.0f;
 constexpr float kLampRange = 10.0f;
 constexpr float kLampIntensity = 1.4f;
 constexpr float kFlySpeed = 4.0f, kFlyFast = 12.0f;  // metres per second
+constexpr float kLabelRange = 16.0f;       // places are named within this many metres
+constexpr float kHouseLabelRange = 30.0f;
+constexpr float kLabelNear = 3.0f;  // houses, by their roofs, from further
 constexpr float kDarkSeconds = 0.6f, kFadeSeconds = 2.4f;  // waking: dark, then the morning fades in
 
 StrataCamera lookFrom(Vec3 eye, float yaw, float pitch, float aspect) {
@@ -91,6 +94,55 @@ void drawMotes(strata::Engine& engine, const World& w) {
         p.flags = STRATA_POINT_SOFT;
     }
     engine.submitPoints(points.data(), points.size());
+}
+
+// A place the HUD names when the player is near it and can see it.
+struct Place {
+    const char* name;
+    Vec3 at;                    // where the name hangs
+    float range;                // named within this many metres
+    const Box2* own = nullptr;  // a house's own walls do not hide its name
+};
+
+std::vector<Place> places() {
+    std::vector<Place> out;
+    for (const V::House& h : V::kHouses) {
+        const Box2& f = h.footprint;
+        const float x = (f.x0 + f.x1) / 2, z = (f.z0 + f.z1) / 2;
+        out.push_back({h.name, {x, V::groundHeight(x, z) + h.wallHeight + h.roofRise + 1.0f, z}, kHouseLabelRange, &f});
+    }
+    out.push_back({"The well", {V::kWell.x, V::groundHeight(V::kWell.x, V::kWell.z) + 2.4f, V::kWell.z}, kLabelRange});
+    out.push_back({"The potter's wheel", {V::kWheel.x, V::groundHeight(V::kWheel.x, V::kWheel.z) + 1.6f, V::kWheel.z}, kLabelRange});
+    out.push_back({"Clay bank", {V::kClayBank.x, V::groundHeight(V::kClayBank.x, V::kClayBank.z) + 1.4f, V::kClayBank.z}, kLabelRange});
+    out.push_back({"The ghat", {V::kGhat.x0 + 1.0f, V::kGhat.top + 1.8f, 0.0f}, kLabelRange});
+    return out;
+}
+
+// True if nothing solid stands between the eye and a place (the place's own
+// edge, a well's rim or a house's walls, does not count).
+bool inSight(Vec3 eye, const Place& place) {
+    const float dx = place.at.x - eye.x, dz = place.at.z - eye.z;
+    const float d = std::sqrt(dx * dx + dz * dz);
+    for (float s = 0.5f; s < d - 1.6f; s += 0.25f) {
+        const float x = eye.x + dx * s / d, z = eye.z + dz * s / d;
+        const Box2* f = place.own;
+        if (f && x > f->x0 - 1 && x < f->x1 + 1 && z > f->z0 - 1 && z < f->z1 + 1) break;  // reached the house
+        if (V::blocked(x, z)) return false;
+    }
+    return true;
+}
+
+// Where a world point lands on the screen, in pixels; false if behind the eye.
+bool toScreen(const StrataCamera& cam, Vec3 p, int32_t width, int32_t height, float& x, float& y) {
+    float v[4], c[4];
+    const float in[4] = {p.x, p.y, p.z, 1};
+    for (int r = 0; r < 4; ++r) v[r] = cam.view[r] * in[0] + cam.view[4 + r] * in[1] + cam.view[8 + r] * in[2] + cam.view[12 + r] * in[3];
+    for (int r = 0; r < 4; ++r)
+        c[r] = cam.projection[r] * v[0] + cam.projection[4 + r] * v[1] + cam.projection[8 + r] * v[2] + cam.projection[12 + r] * v[3];
+    if (c[3] <= 0.1f) return false;
+    x = (c[0] / c[3] * 0.5f + 0.5f) * static_cast<float>(width);
+    y = (0.5f - c[1] / c[3] * 0.5f) * static_cast<float>(height);
+    return x > 0 && x < static_cast<float>(width) && y > 0 && y < static_cast<float>(height);
 }
 
 }  // namespace
@@ -219,7 +271,8 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     engine.drawableSize(width, height);
     const float aspect = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
     const FreeCamera view = watching ? *watching : cameraAtEyes(w);
-    engine.setCamera(lookFrom(view.eye, view.yaw, view.pitch, aspect));
+    const StrataCamera camera = lookFrom(view.eye, view.yaw, view.pitch, aspect);
+    engine.setCamera(camera);
 
     StrataFrameDesc fd{};
     fd.clear_flags = STRATA_CLEAR_COLOR | STRATA_CLEAR_DEPTH | STRATA_CLEAR_SKY;
@@ -234,10 +287,34 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     const float ink[4] = {0.95f, 0.92f, 0.85f, 1.0f};
     const float lamp[4] = {1.0f, 0.62f, 0.22f, 1.0f};
     float y = kMargin;
+    std::vector<float> hudRight;  // where each HUD line ends, top to bottom
     for (const HudLine& l : hudLines(w, watching != nullptr)) {
+        hudRight.push_back(noText ? 0 : kMargin + kTextSize * static_cast<float>(l.text.size()));
         if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
         y += kLine;
     }
+    const size_t hudTexts = texts.size();
+    // The names of places nearby, fading out with distance.
+    for (const Place& place : places()) {
+        const float dx = place.at.x - view.eye.x, dz = place.at.z - view.eye.z;
+        const float d = std::sqrt(dx * dx + dz * dz);
+        float sx = 0, sy = 0;
+        // Not when standing at it (the prompt speaks for it there), nor out of range or sight.
+        if (d < kLabelNear || d > place.range || !inSight(view.eye, place) || !toScreen(camera, place.at, width, height, sx, sy)) continue;
+        const float fade[4] = {ink[0], ink[1], ink[2], clampf((place.range - d) / 4.0f, 0.0f, 0.85f)};
+        const std::string name = place.name;
+        const float wide = kTextSize * static_cast<float>(name.size());
+        const float left = clampf(sx - wide / 2, kMargin, static_cast<float>(width) - kMargin - wide);  // all on screen
+        // Not over the HUD's words: the lines the label's row would cross.
+        bool covered = false;
+        for (size_t i = 0; i < hudRight.size(); ++i) {
+            const float top = kMargin + kLine * static_cast<float>(i);
+            if (sy + kTextSize > top && sy < top + kTextSize && left < hudRight[i]) covered = true;
+        }
+        if (covered) continue;
+        text(texts, keep, left, sy, name, fade);
+    }
+    const size_t labelsEnd = texts.size();
     // The crosshair, and what can be done here just below it (not while watching).
     if (!watching)
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
@@ -261,7 +338,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize, second, ink);
     }
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
+    // A narrow page shows the HUD itself, but the names of places stay on the canvas.
     if (!noText) engine.submitText(texts.data(), texts.size());
+    else if (labelsEnd > hudTexts) engine.submitText(texts.data() + hudTexts, labelsEnd - hudTexts);
     engine.endFrame();
 }
 
