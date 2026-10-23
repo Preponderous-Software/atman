@@ -35,6 +35,10 @@ constexpr Rgb kLeavesLight{0.09f, 0.21f, 0.05f};
 constexpr Rgb kShrineWash{0.70f, 0.66f, 0.58f};
 constexpr Rgb kWater{0.11f, 0.19f, 0.21f};
 constexpr Rgb kWellWater{0.04f, 0.07f, 0.08f};
+constexpr Rgb kSnake{0.05f, 0.05f, 0.025f};
+constexpr Rgb kSnakeBand{0.13f, 0.11f, 0.05f};
+constexpr Rgb kRope{0.44f, 0.35f, 0.17f};
+constexpr Rgb kRopeTwist{0.36f, 0.28f, 0.13f};
 
 void house(MeshData& m, const V::House& h, Rgb wash) {
     const Box2& f = h.footprint;
@@ -142,6 +146,37 @@ void ghat(MeshData& m) {
     for (float z : {gh.z0 - 0.5f, gh.z1}) m.box({gh.x0, V::kRiverbedY - 0.2f, z}, {gh.x1, gh.top + 0.5f, z + 0.5f}, kStone);
 }
 
+// The coil's centre line: a flat spiral a little over two turns, from the
+// centre outward. `head` lifts the last few points, as a snake raises its head.
+std::vector<Vec3> spiral(int i, float head) {
+    const Vec2 c = V::kCoils[i];
+    const float g = V::groundHeight(c.x, c.z);
+    const int n = 40, lift = 7;
+    std::vector<Vec3> pts;
+    for (int k = 0; k <= n; ++k) {
+        const float t = static_cast<float>(k) / static_cast<float>(n);
+        const float a = 0.35f * static_cast<float>(k) + 0.9f * static_cast<float>(i);
+        const float r = 0.08f + (V::kCoilRadius - 0.1f) * t;
+        float y = g + 0.04f;
+        if (k > n - lift) y += head * static_cast<float>(k - (n - lift)) / static_cast<float>(lift);
+        pts.push_back({c.x + r * std::cos(a), y, c.z + r * std::sin(a)});
+    }
+    return pts;
+}
+
+// A square tube along `pts`, one oriented box per segment, alternating colours.
+void tube(MeshData& m, const std::vector<Vec3>& pts, float half, Rgb a, Rgb b) {
+    for (size_t k = 0; k + 1 < pts.size(); ++k) {
+        const Vec3 d = pts[k + 1] - pts[k];
+        const float len = length(d);
+        if (len <= 0) continue;
+        const Vec3 f = d * (1.0f / len);
+        const Vec3 s = normalize(cross({0, 1, 0}, f)), u = cross(f, s);
+        const Vec3 o = pts[k] - s * half - u * half;
+        m.orientedBox(o, s * (2 * half), u * (2 * half), f * (len + half), (k / 2) % 2 ? b : a);
+    }
+}
+
 }  // namespace
 
 void MeshData::triangle(Vec3 a, Vec3 b, Vec3 c, Rgb color) {
@@ -167,13 +202,19 @@ void MeshData::quad(Vec3 a, Vec3 b, Vec3 c, Vec3 d, Rgb color) {
 }
 
 void MeshData::box(Vec3 lo, Vec3 hi, Rgb color) {
-    const float x0 = lo.x, y0 = lo.y, z0 = lo.z, x1 = hi.x, y1 = hi.y, z1 = hi.z;
-    quad({x0, y0, z1}, {x1, y0, z1}, {x1, y1, z1}, {x0, y1, z1}, color);  // south (+z)
-    quad({x1, y0, z0}, {x0, y0, z0}, {x0, y1, z0}, {x1, y1, z0}, color);  // north (-z)
-    quad({x1, y0, z1}, {x1, y0, z0}, {x1, y1, z0}, {x1, y1, z1}, color);  // east (+x)
-    quad({x0, y0, z0}, {x0, y0, z1}, {x0, y1, z1}, {x0, y1, z0}, color);  // west (-x)
-    quad({x0, y1, z1}, {x1, y1, z1}, {x1, y1, z0}, {x0, y1, z0}, color);  // top
-    quad({x0, y0, z0}, {x1, y0, z0}, {x1, y0, z1}, {x0, y0, z1}, color);  // bottom
+    orientedBox(lo, {hi.x - lo.x, 0, 0}, {0, hi.y - lo.y, 0}, {0, 0, hi.z - lo.z}, color);
+}
+
+void MeshData::orientedBox(Vec3 o, Vec3 ex, Vec3 ey, Vec3 ez, Rgb color) {
+    auto p = [&](int a, int b, int c) {
+        return o + ex * static_cast<float>(a) + ey * static_cast<float>(b) + ez * static_cast<float>(c);
+    };
+    quad(p(0, 0, 1), p(1, 0, 1), p(1, 1, 1), p(0, 1, 1), color);  // +ez
+    quad(p(1, 0, 0), p(0, 0, 0), p(0, 1, 0), p(1, 1, 0), color);  // -ez
+    quad(p(1, 0, 1), p(1, 0, 0), p(1, 1, 0), p(1, 1, 1), color);  // +ex
+    quad(p(0, 0, 0), p(0, 0, 1), p(0, 1, 1), p(0, 1, 0), color);  // -ex
+    quad(p(0, 1, 1), p(1, 1, 1), p(1, 1, 0), p(0, 1, 0), color);  // +ey
+    quad(p(0, 0, 0), p(1, 0, 0), p(1, 0, 1), p(0, 0, 1), color);  // -ey
 }
 
 void MeshData::cylinder(Vec3 base, float radiusBottom, float radiusTop, float height, int segments, Rgb color) {
@@ -260,6 +301,25 @@ MeshData buildWater() {
     for (float z = V::kMin; z < V::kMax; z += 10.0f)
         m.quad({V::kRiverWest - 3.0f, y, z + 10.0f}, {V::kRiverEast + 3.0f, y, z + 10.0f}, {V::kRiverEast + 3.0f, y, z},
                {V::kRiverWest - 3.0f, y, z}, kWater);
+    return m;
+}
+
+}  // namespace atman::bridge
+
+namespace atman::bridge {
+
+MeshData buildSnake(int i) {
+    MeshData m;
+    const std::vector<Vec3> pts = spiral(i, 0.32f);
+    tube(m, pts, 0.055f, kSnake, kSnakeBand);
+    // The hood: a flattened blob just behind the raised head.
+    m.blob(pts.back(), 0.09f, 0.55f, kSnake);
+    return m;
+}
+
+MeshData buildRope(int i) {
+    MeshData m;
+    tube(m, spiral(i, 0.0f), 0.04f, kRope, kRopeTwist);
     return m;
 }
 

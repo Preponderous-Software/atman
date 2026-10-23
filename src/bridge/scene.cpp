@@ -20,10 +20,29 @@ Scene::Scene(strata::Engine& engine) : engine_(engine) {
     water_ = upload(buildWater());
 }
 
+void Scene::update(const World& w) {
+    for (int i = 0; i < valley::kCoilCount; ++i) {
+        const Seen seen = snakeVisible(w, i) ? Seen::Snake : isDusk(w) ? Seen::Rope : Seen::Nothing;
+        if (seen == coilSeen_[i]) continue;
+        remove(coilMesh_[i]);
+        if (seen == Seen::Snake) coilMesh_[i] = upload(buildSnake(i));
+        else if (seen == Seen::Rope) coilMesh_[i] = upload(buildRope(i));
+        coilSeen_[i] = seen;
+    }
+}
+
+void Scene::remove(uint32_t& id) {
+    if (!id) return;
+    engine_.removeMesh(id);
+    id = 0;
+    --meshes_;
+}
+
 Scene::~Scene() {
     try {
-        if (village_) engine_.removeMesh(village_);
-        if (water_) engine_.removeMesh(water_);
+        for (uint32_t& id : coilMesh_) remove(id);
+        remove(village_);
+        remove(water_);
         engine_.setTerrain(nullptr);
     } catch (const strata::Error&) {
         // The engine is going away with us; nothing to tidy.

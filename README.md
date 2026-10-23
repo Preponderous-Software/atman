@@ -10,11 +10,16 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M1 of the [MVP](MVP.md).** You can walk the valley in first person: the
+**Status: milestone M2 of the [MVP](MVP.md).** You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
-equinox. The HUD shows the time, the body's needs, your standing and the quest log. Nothing can be
-done yet beyond walking and looking; the teachings start in M2.
+equinox. The HUD shows the time, the body's needs, your standing and the quest log.
+
+At dusk the first teaching begins, The Rope. Three snakes lie on the path between the village and
+the ghat. A fear meter rises as you come near one, and you cannot bring yourself to walk up to it.
+Light the lamp (F), go as close as you dare and look at it steadily for about two seconds: it is a
+rope, and it stays a rope. Nothing is scored. After the last one the fear meter leaves the HUD
+and does not come back. The chores in the quest log cannot be done yet.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
@@ -23,6 +28,10 @@ done yet beyond walking and looking; the teachings start in M2.
 | The village from the ghat | Sunset over the river, just after six |
 |---|---|
 | ![Looking west from the ghat over the village toward the low sun](docs/images/m1-village-from-ghat.jpg) | ![The river at sunset, the sky orange over dark hills](docs/images/m1-sunset.jpg) |
+
+| Lamplight on a snake at half past seven | It was a rope |
+|---|---|
+| ![At night by lamplight, a dark snake coiled on the path with its head raised; the HUD shows the fear meter high](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
@@ -48,6 +57,7 @@ simulation and its tests, with no engine.
 | Mouse | Look |
 | W A S D | Walk |
 | Shift | Hurry |
+| F | Light the lamp, or put it out |
 | F1 | Show or hide the controls |
 | Esc | Free the mouse (Esc again quits) |
 

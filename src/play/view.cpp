@@ -14,6 +14,8 @@ constexpr float kFovY = 70.0f;
 constexpr float kTextSize = 16.0f;
 constexpr float kLine = 20.0f;
 constexpr float kMargin = 16.0f;
+constexpr float kLampRange = 10.0f;
+constexpr float kLampIntensity = 1.4f;
 
 void text(std::vector<StrataText>& out, std::vector<std::string>& keep, float x, float y, const std::string& s,
           const float color[4]) {
@@ -45,6 +47,27 @@ float setSky(strata::Engine& engine, const World& w) {
     return sun.elevation_degrees;
 }
 
+void setLamp(strata::Engine& engine, const World& w) {
+    if (!w.lampLit) {
+        engine.setPointLights(nullptr, 0);
+        return;
+    }
+    // Held low and a little ahead, on the right.
+    const Player& p = w.player;
+    const float sy = detSin(p.yaw), cy = detCos(p.yaw);
+    const float y = V::walkHeight(p.x, p.z) + V::kEyeHeight - 0.55f;
+    StrataPointLight lamp{};
+    lamp.position[0] = p.x + 0.35f * sy + 0.25f * cy;
+    lamp.position[1] = y;
+    lamp.position[2] = p.z - 0.35f * cy + 0.25f * sy;
+    lamp.range = kLampRange;
+    lamp.color[0] = 1.0f;
+    lamp.color[1] = 0.62f;
+    lamp.color[2] = 0.26f;
+    lamp.intensity = kLampIntensity;
+    engine.setPointLights(&lamp, 1);
+}
+
 StrataCamera playerCamera(const World& w, float aspect) {
     const Player& p = w.player;
     const Vec3 d = lookDirection(p.yaw, p.pitch);
@@ -68,6 +91,8 @@ std::vector<HudLine> hudLines(const World& w) {
     lines.push_back({"Thirst    " + bar(w.needs.thirst, 10)});
     lines.push_back({"Hunger    " + bar(w.needs.hunger, 10)});
     lines.push_back({"Tiredness " + bar(w.needs.tiredness, 10)});
+    if (fearShown(w)) lines.push_back({"Fear      " + bar(w.fear, 10)});
+    lines.push_back({std::string("Lamp      ") + (w.lampLit ? "lit" : "out")});
     lines.push_back({std::string("Standing  ") + standingText(w.standing)});
     lines.push_back({""});
     lines.push_back({"QUESTS", true});
@@ -78,6 +103,7 @@ std::vector<HudLine> hudLines(const World& w) {
 
 void render(strata::Engine& engine, const World& w, bool help) {
     setSky(engine, w);
+    setLamp(engine, w);
     int32_t width = 0, height = 0;
     engine.drawableSize(width, height);
     const float aspect = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
@@ -101,7 +127,7 @@ void render(strata::Engine& engine, const World& w, bool help) {
     text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2, "+", ink);
     if (help)
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize,
-             "W A S D walk   Shift hurry   Mouse look   Esc free the mouse   F1 hide help", ink);
+             "W A S D walk   Shift hurry   Mouse look   F lamp   Esc free the mouse   F1 hide help", ink);
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     engine.submitText(texts.data(), texts.size());
     engine.endFrame();
