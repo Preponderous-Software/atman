@@ -74,6 +74,11 @@ cmake --build build --config Release
 ctest --test-dir build -C Release
 ```
 
+On Windows, `tools/play-atman.bat` does all of this in one step. It installs CMake and the Visual
+Studio C++ build tools with winget if they are missing, clones or updates `main` into
+`%USERPROFILE%\atman-play`, builds the game and starts it. Extra arguments go to the game, for
+example `play-atman.bat --tour`.
+
 On Linux, SDL3 needs the X11 development packages (`libx11-dev libxext-dev libxcursor-dev libxi-dev
 libxfixes-dev libxrandr-dev libxss-dev`). `cmake -DATMAN_WITH_STRATA=OFF` builds only the
 simulation and its tests, with no engine.
