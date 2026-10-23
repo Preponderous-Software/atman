@@ -92,11 +92,18 @@ target_include_directories(atman_save PUBLIC src)
 target_link_libraries(atman_save PUBLIC atman_sim)
 atman_warnings(atman_save)
 
+# Sound: what the valley sounds like (cues, from the world) and the synth that
+# makes every sound from nothing (no recordings). No device and no engine.
+add_library(atman_audio STATIC src/audio/cues.cpp src/audio/synth.cpp)
+target_include_directories(atman_audio PUBLIC src)
+target_link_libraries(atman_audio PUBLIC atman_sim)
+atman_warnings(atman_audio)
+
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope clay chores autopilot determinism geometry codex saves)
+  foreach(t movement clock rope clay chores autopilot determinism geometry codex saves audio)
     add_executable(test_${t} tests/test_${t}.cpp)
-    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex atman_save)
+    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex atman_save atman_audio)
     target_include_directories(test_${t} PRIVATE tests)
     atman_warnings(test_${t})
     if(EMSCRIPTEN)
@@ -125,9 +132,19 @@ if(ATMAN_WITH_STRATA OR ATMAN_WEB)
     GIT_TAG ${ATMAN_STRATA_REF})
   FetchContent_MakeAvailable(strata)
 
+  # The sound card, through miniaudio (public domain, third_party/miniaudio/),
+  # built with its own warnings.
+  find_package(Threads REQUIRED)
+  add_library(atman_miniaudio STATIC src/audio/miniaudio.cpp)
+  target_include_directories(atman_miniaudio SYSTEM PUBLIC third_party/miniaudio)
+  target_link_libraries(atman_miniaudio PUBLIC Threads::Threads ${CMAKE_DL_LIBS})
+  add_library(atman_sound STATIC src/audio/device.cpp)
+  target_link_libraries(atman_sound PUBLIC atman_audio PRIVATE atman_miniaudio)
+  atman_warnings(atman_sound)
+
   add_library(atman_play STATIC src/bridge/scene.cpp src/play/codex_screen.cpp src/play/session.cpp src/play/view.cpp)
   target_include_directories(atman_play PUBLIC src)
-  target_link_libraries(atman_play PUBLIC atman_geometry atman_codex atman_save strata::static)
+  target_link_libraries(atman_play PUBLIC atman_geometry atman_codex atman_save atman_sound strata::static)
   atman_warnings(atman_play)
 
 endif()
@@ -148,7 +165,7 @@ if(ATMAN_WEB)
   target_link_options(atman-web PRIVATE
     -sSTACK_SIZE=1MB
     -lidbfs.js
-    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_save,_atman_restart,_atman_resize,_atman_status"
+    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_sound,_atman_cover,_atman_save,_atman_restart,_atman_resize,_atman_status"
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,UTF8ToString,FS,IDBFS,addRunDependency,removeRunDependency
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
   set_property(TARGET atman-web APPEND PROPERTY LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")

@@ -26,8 +26,8 @@ bool circleHitsCircle(float x, float z, float r, Vec2 c, float rc) {
 const std::array<House, kHouseCount> kHouses = {{
     {"Your house", {-10.5f, 8.0f, -5.5f, 12.0f}, 2.6f, 1.4f, true, {-8.0f, 8.0f}, 0},
     {"The potter's house", {-1.0f, -15.5f, 5.0f, -10.5f}, 2.8f, 1.5f, true, {2.0f, -10.5f}, 2},
-    {"West neighbour", {-19.0f, -6.5f, -14.0f, -1.5f}, 2.5f, 1.3f, false, {-14.0f, -4.0f}, 1},
-    {"East neighbour", {8.0f, 9.0f, 13.0f, 13.5f}, 2.6f, 1.4f, true, {10.5f, 9.0f}, 0},
+    {"A neighbour's house", {-19.0f, -6.5f, -14.0f, -1.5f}, 2.5f, 1.3f, false, {-14.0f, -4.0f}, 1},
+    {"A neighbour's house", {8.0f, 9.0f, 13.0f, 13.5f}, 2.6f, 1.4f, true, {10.5f, 9.0f}, 0},
     {"The shrine", {-4.0f, -26.0f, -1.0f, -23.0f}, 2.2f, 1.8f, false, {-2.5f, -23.0f}, 2},
 }};
 

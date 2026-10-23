@@ -23,6 +23,9 @@ constexpr Rgb kLimewash{0.62f, 0.55f, 0.42f};
 constexpr Rgb kLimewashShaded{0.50f, 0.44f, 0.33f};
 constexpr Rgb kTile{0.36f, 0.12f, 0.06f};
 constexpr Rgb kDoor{0.16f, 0.09f, 0.05f};
+constexpr Rgb kDoorIndigo{0.06f, 0.10f, 0.30f};  // your house
+constexpr Rgb kDoorOchre{0.55f, 0.25f, 0.06f};   // the potter's
+constexpr Rgb kSaffron{0.85f, 0.38f, 0.04f};     // the shrine's door and pennant
 constexpr Rgb kPlinth{0.33f, 0.17f, 0.09f};  // fired brick
 constexpr Rgb kStone{0.38f, 0.33f, 0.27f};
 constexpr Rgb kStoneWet{0.22f, 0.20f, 0.17f};
@@ -61,7 +64,7 @@ struct Look {
     }
 };
 
-void house(MeshData& m, const V::House& h, Rgb wash, const Look& L) {
+void house(MeshData& m, const V::House& h, Rgb wash, Rgb door, const Look& L) {
     const Box2& f = h.footprint;
     const float x0 = f.x0, x1 = f.x1, z0 = f.z0, z1 = f.z1;
     // Sit the house on the lowest ground under it, on a plinth.
@@ -73,14 +76,15 @@ void house(MeshData& m, const V::House& h, Rgb wash, const Look& L) {
     const float top = plinth + h.wallHeight;
     m.box({x0, plinth, z0}, {x1, top, z1}, L.other(wash));
 
-    // The door: a dark panel just proud of the wall it faces.
+    // The door: a panel just proud of the wall it faces, dark wood unless the
+    // house is one the player needs to find.
     const float dw = 0.55f, dh = 1.9f, e = 0.02f;
     const Vec2 d = h.door;
     switch (h.doorFace) {
-        case 0: m.quad({d.x + dw, plinth, z0 - e}, {d.x - dw, plinth, z0 - e}, {d.x - dw, plinth + dh, z0 - e}, {d.x + dw, plinth + dh, z0 - e}, L.other(kDoor)); break;
-        case 1: m.quad({x1 + e, plinth, d.z + dw}, {x1 + e, plinth, d.z - dw}, {x1 + e, plinth + dh, d.z - dw}, {x1 + e, plinth + dh, d.z + dw}, L.other(kDoor)); break;
-        case 2: m.quad({d.x - dw, plinth, z1 + e}, {d.x + dw, plinth, z1 + e}, {d.x + dw, plinth + dh, z1 + e}, {d.x - dw, plinth + dh, z1 + e}, L.other(kDoor)); break;
-        default: m.quad({x0 - e, plinth, d.z - dw}, {x0 - e, plinth, d.z + dw}, {x0 - e, plinth + dh, d.z + dw}, {x0 - e, plinth + dh, d.z - dw}, L.other(kDoor)); break;
+        case 0: m.quad({d.x + dw, plinth, z0 - e}, {d.x - dw, plinth, z0 - e}, {d.x - dw, plinth + dh, z0 - e}, {d.x + dw, plinth + dh, z0 - e}, L.other(door)); break;
+        case 1: m.quad({x1 + e, plinth, d.z + dw}, {x1 + e, plinth, d.z - dw}, {x1 + e, plinth + dh, d.z - dw}, {x1 + e, plinth + dh, d.z + dw}, L.other(door)); break;
+        case 2: m.quad({d.x - dw, plinth, z1 + e}, {d.x + dw, plinth, z1 + e}, {d.x + dw, plinth + dh, z1 + e}, {d.x - dw, plinth + dh, z1 + e}, L.other(door)); break;
+        default: m.quad({x0 - e, plinth, d.z - dw}, {x0 - e, plinth, d.z + dw}, {x0 - e, plinth + dh, d.z + dw}, {x0 - e, plinth + dh, d.z - dw}, L.other(door)); break;
     }
 
     // A gable roof with eaves, its ridge along x or z.
@@ -341,6 +345,18 @@ TerrainData buildTerrain(bool lens) {
     return t;
 }
 
+// A saffron pennant on a bamboo pole beside the shrine, seen over the roofs.
+void shrinePennant(MeshData& m, const Look& L) {
+    const V::House& h = V::kHouses[V::Shrine];
+    const float x = h.footprint.x1 + 0.12f, z = h.footprint.z1 + 0.12f;  // at the corner, too close to walk into
+    const float g = V::groundHeight(x, z), top = g + 6.5f;
+    m.cylinder({x, g, z}, 0.06f, 0.05f, 6.5f, 6, L.other(kWood));
+    // Both faces, so it shows from either side.
+    const Vec3 a{x, top, z}, b{x, top - 1.0f, z}, c{x + 1.6f, top - 0.45f, z + 0.2f};
+    m.triangle(a, b, c, L.other(kSaffron));
+    m.triangle(a, c, b, L.other(kSaffron));
+}
+
 // The clay bank: a heap of wet clay where the bank runs down to the water,
 // and the hollow it was dug from.
 void clayBank(MeshData& m, const Look& L) {
@@ -353,7 +369,11 @@ void clayBank(MeshData& m, const Look& L) {
 MeshData buildVillage(bool lens) {
     const Look L{lens};
     MeshData m;
-    for (int i = 0; i < V::kHouseCount; ++i) house(m, V::kHouses[i], i == V::Shrine ? kShrineWash : kLimewash, L);
+    for (int i = 0; i < V::kHouseCount; ++i) {
+        const Rgb door = i == V::YourHouse ? kDoorIndigo : i == V::PotterHouse ? kDoorOchre : i == V::Shrine ? kSaffron : kDoor;
+        house(m, V::kHouses[i], i == V::Shrine ? kShrineWash : kLimewash, door, L);
+    }
+    shrinePennant(m, L);
     well(m, L);
     potterYard(m, L);
     birdTree(m, L);

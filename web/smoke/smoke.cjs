@@ -8,7 +8,8 @@
 // them; the lamp lights; the codex opens on its page and closes again. On a
 // desktop the player also walks to the potter's wheel, throws a bowl and
 // types its name, which lands in the list of things made. Then a save survives
-// a reload (IndexedDB): the same place, the same time of day, the same pots.
+// a reload (IndexedDB): the same place, the same time of day, the same pots,
+// and the Sound button's choice (off) remembered.
 // Writes PNGs to <out-dir>.
 'use strict';
 const fs = require('fs');
@@ -233,7 +234,16 @@ function colourCount(png) {
   }
   await page.screenshot({ path: path.join(outDir, 'atman-moved.png'), timeout: 180000 });
 
-  // Save, reload, and the player is where and when they were, with their pots.
+  // The Sound button turns the sound off, and says so.
+  await page.locator('#soundBtn').click();
+  s = await until((st) => st.muted, 10000);
+  if (!s.muted) await fail('the Sound button did not turn the sound off');
+  await page.waitForFunction(() => document.getElementById('soundBtn').textContent === 'Sound: off', null,
+    { timeout: 10000 }).catch(() => {});
+  if ((await page.locator('#soundBtn').innerText()) !== 'Sound: off') await fail('the Sound button does not say the sound is off');
+
+  // Save, reload, and the player is where and when they were, with their pots
+  // (and the sound still off).
   await page.locator('#saveBtn').click();
   await page.waitForFunction(() => /Saved in this browser/.test(document.getElementById('saveNote').textContent), null,
     { timeout: 20000 }).catch(() => {});
@@ -248,6 +258,7 @@ function colourCount(png) {
   if (JSON.stringify(back.made) !== JSON.stringify(saved.made)) await fail('the pots did not survive a reload');
   if (!/Loaded your save/.test(back.message)) await fail('no "Loaded your save" message after a reload: ' + back.message);
   if (await page.locator('#help').isVisible()) await fail('How to play came back after it was closed once');
+  if (!back.muted) await fail('the sound came back on after a reload');
 
   if (errors.length) await fail('page errors: ' + errors.join(' | '));
   console.log(`OK (${phone ? 'phone' : 'desktop'})`);

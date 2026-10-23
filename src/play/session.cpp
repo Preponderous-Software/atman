@@ -1,5 +1,7 @@
 #include "play/session.h"
 
+#include <cmath>
+
 #include "save/save.h"
 
 namespace atman::play {
@@ -10,16 +12,29 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
-constexpr int kF5 = 62, kF9 = 66;
+constexpr int kF5 = 62, kF9 = 66, kM = 16;
+constexpr float kStride = 0.7f;  // metres a step
 constexpr float kLookPerPixel = 0.0025f;
 constexpr double kAutosaveSeconds = 120;
-constexpr double kMessageSeconds = 5;
+constexpr double kAfterSeconds = 14;  // the after-mode's first words stay a while
+constexpr double kGreetingSeconds = 10;
+// A new game's first words: where you are, and where to look for what to do.
+constexpr const char* kGreeting =
+    "Your house is beside you; its door, the indigo one, faces the well.\n"
+    "The NEXT line, top left, says what comes next.";
+
+int pagesOpen(const World& w) {
+    int n = 0;
+    for (bool c : w.codex) n += c ? 1 : 0;
+    return n;
+}
 constexpr float kHurryStick = 0.95f;
 
 }  // namespace
 
 Session::Session(strata::Engine& engine, const SessionOptions& options)
     : engine_(engine), options_(options), w_(newWorld(options.seed)), scene_(engine), pages_(engine) {
+    if (options_.sound) sound_.start();
     watching_ = following_ = options_.autopilot;
     World start = w_;
     if (!options_.slot.empty() && !options_.fresh && hasSave(options_.slot)) {
@@ -27,6 +42,8 @@ Session::Session(strata::Engine& engine, const SessionOptions& options)
         const LoadResult r = loadSave(options_.slot, loaded);
         if (r.ok) start = loaded;
         say(r.ok ? r.message : r.message + " A new game was started.");
+    } else if (!options_.autopilot) {
+        say(kGreeting, kGreetingSeconds);
     }
     adopt(start);
     if (!options_.browser) capture(true);
@@ -34,6 +51,7 @@ Session::Session(strata::Engine& engine, const SessionOptions& options)
 
 void Session::adopt(const World& w) {
     w_ = w;
+    heard_ = w;  // a loaded or new world is not a change to be heard
     cam_ = cameraAtEyes(w_);
     yaw_ = w_.player.yaw;
     pitch_ = w_.player.pitch;
@@ -41,12 +59,25 @@ void Session::adopt(const World& w) {
     once_ = Input{};
     typing_.clear();
     pending_ = 0;
+    pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
+    afterSeen_ = w_.after;
     if (pages_.isOpen()) pages_.close();
 }
 
-void Session::say(const std::string& text) {
+void Session::say(const std::string& text, double seconds) {
     message_ = text;
-    messageUntil_ = clock_ + kMessageSeconds;
+    messageUntil_ = clock_ + seconds;
+}
+
+void Session::noticeChanges() {
+    const int pages = pagesOpen(w_);
+    if (pages > pagesSeen_ && !watching_) say("A new page in the codex (Tab)");
+    pagesSeen_ = pages;
+    if (w_.after && !afterSeen_)
+        say("The teachings are done. Nothing more is asked of you.\n"
+            "Live the day as it comes, or step back and watch it lived (V).",
+            kAfterSeconds);
+    afterSeen_ = w_.after;
 }
 
 bool Session::save(const char* note) {
@@ -73,7 +104,23 @@ void Session::load() {
 void Session::restart() {
     adopt(newWorld(options_.seed));
     watching_ = following_ = false;
-    say("A new day in the village.");
+    say(kGreeting, kGreetingSeconds);
+}
+
+void Session::setMuted(bool muted, bool announce) {
+    sound_.setMuted(muted);
+    if (announce) say(muted ? "Sound off (M turns it on)" : "Sound on");
+}
+
+void Session::listen(double dt) {
+    for (audio::Cue c : audio::cues(heard_, w_)) sound_.play(c);
+    // Footsteps from how far the body went this frame.
+    const float dx = w_.player.x - heard_.player.x, dz = w_.player.z - heard_.player.z;
+    const float speed = dt > 0 ? std::sqrt(dx * dx + dz * dz) / static_cast<float>(dt) : 0.0f;
+    const float steps = speed > 0.3f && speed < 20.0f ? speed / kStride : 0.0f;
+    const Vec3 ears = watching_ ? cam_.eye : cameraAtEyes(w_).eye;
+    sound_.setAmbience(audio::ambience(w_, ears, steps));
+    heard_ = w_;
 }
 
 void Session::capture(bool on) {
@@ -143,7 +190,8 @@ void Session::onKeyDown(int scancode, bool repeat) {
         return;
     }
     if (repeat) return;
-    if (scancode == kTab) pages_.open(w_);
+    if (scancode == kM) setMuted(!sound_.muted());  // after naming: an m in a name is a letter
+    else if (scancode == kTab) pages_.open(w_);
     else if (scancode == kV && (w_.after || options_.autopilot)) {
         watching_ = !watching_;
         following_ = false;
@@ -219,6 +267,7 @@ void Session::frame(double dt) {
     if (pages_.isOpen()) {
         pending_ = 0;  // no time passes while the codex is open (the autosave still runs)
         pages_.render(w_);
+        listen(0);  // the valley goes on sounding, but nobody walks
         return;
     }
     if (watching_) {
@@ -231,9 +280,11 @@ void Session::frame(double dt) {
         pending_ -= 1.0 / kTickRate;
         step();
     }
+    noticeChanges();
     if (watching_ && following_) cam_ = cameraBehind(w_);
+    listen(dt);
     scene_.update(w_, watching_);
-    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_);
+    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_, cover_);
 }
 
 }  // namespace atman::play

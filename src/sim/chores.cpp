@@ -94,6 +94,16 @@ const char* useText(Use u) {
     return "";
 }
 
+std::string nextStep(const World& w) {
+    if (w.after) return "Nothing more is asked of you";
+    if (w.potsMade < kPotsForLens)
+        return "Throw pots at the potter's wheel (" + std::to_string(w.potsMade) + " of " + std::to_string(kPotsForLens) + ")";
+    if (!w.codex[static_cast<int>(CodexId::ClayAndPots)]) return "Look at your pots through the clay lens (C)";
+    if (!w.codex[static_cast<int>(CodexId::PotSpace)]) return "Break one of your pots (B)";
+    if (!w.fearRetired) return isDusk(w) ? "Walk back to the village along the path" : "Wait on the ghat steps for the sunset";
+    return isDusk(w) ? "Go home and sleep (E at your door)" : "Live the day; sleep at home after dark";
+}
+
 void choresTick(World& w, const Input& in) {
     if (!in.use) return;
     switch (usable(w)) {

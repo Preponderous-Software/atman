@@ -103,6 +103,15 @@ EMSCRIPTEN_KEEPALIVE int atman_save() { return g && g->session->save("Saved.") ?
 EMSCRIPTEN_KEEPALIVE void atman_restart() {
     if (g) g->session->restart();
 }
+// Sound on or off, from the page's Sound button (or its remembered choice,
+// quietly, when the page opens).
+EMSCRIPTEN_KEEPALIVE void atman_sound(int on, int announce) {
+    if (g) g->session->setMuted(on == 0, announce != 0);
+}
+// Where the page's own HUD covers the canvas, so the names of places keep clear of it.
+EMSCRIPTEN_KEEPALIVE void atman_cover(double right, double bottom) {
+    if (g) g->session->setCover(static_cast<float>(right), static_cast<float>(bottom));
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }
@@ -135,6 +144,7 @@ EMSCRIPTEN_KEEPALIVE const char* atman_status() {
     jsonBool(o, "atWheel", atWheel(w) && w.naming < 0 && !w.throwing.active);
     jsonBool(o, "lens", lensAvailable(w));
     jsonBool(o, "lampLit", w.lampLit);
+    jsonBool(o, "muted", s.muted());
     o += ",\"codexOpen\":" + std::to_string(codex::openEntries(w).size());
     o += ",\"typing\":";
     jsonString(o, s.typing());

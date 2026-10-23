@@ -24,8 +24,9 @@ void setLighting(strata::Engine& engine, bool lightweight = false);
 // Places the sun for the game's time; returns its elevation in degrees.
 float setSky(strata::Engine& engine, const World& w);
 
-// The carried lamp, as a point light, while it is lit.
-void setLamp(strata::Engine& engine, const World& w);
+// The point lights: the carried lamp while it is lit, and after sunset the
+// lamps in the village's doorways and a faint fill from the night sky.
+void setLights(strata::Engine& engine, const World& w, float sunElevation);
 
 StrataCamera playerCamera(const World& w, float aspect);
 
@@ -50,14 +51,14 @@ struct HudLine {
 };
 
 // The HUD's left column: the date and time, the body's needs (and fear, while
-// there is a snake), the lamp, what the player carries, standing, the quest
-// log, and the names of the pots the player has made. In the after-mode it is
+// there is a snake), the lamp, what the player carries, standing, what to do
+// next, the quest log, and the names of the pots the player has made. In the after-mode it is
 // quieter: no standing, and a line saying whether the player is living as
 // the avatar or watching it.
 std::vector<HudLine> hudLines(const World& w, bool watching = false);
 
 // The line under the crosshair: what the player can do here (throw, name,
-// break, a chore, eat, drink, sleep), or empty. `typing` is the name typed so
+// break, a chore, eat, drink, sleep, light the lamp after dark), or empty. `typing` is the name typed so
 // far while naming a pot.
 std::string prompt(const World& w, const std::string& typing);
 
@@ -68,7 +69,13 @@ std::string bar(float value, int width);
 // `watching`, the view is from that camera and the HUD says so. `noText`
 // leaves the words off the canvas (a narrow browser page shows them itself).
 // `message` (saved, loaded, refused) shows above the middle of the screen.
+// `cover` is the part of the canvas, from its top-left corner, that the page
+// covers with its own HUD; the names of places keep out of it.
+struct Cover {
+    float right = 0, bottom = 0;  // in canvas pixels
+};
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "",
-            const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "");
+            const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "",
+            Cover cover = {});
 
 }  // namespace atman::play

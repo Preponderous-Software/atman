@@ -39,8 +39,18 @@ list again.
 The first morning after both teachings is the after-mode, and it does not end. The chores come
 round again and earn nothing; Standing is gone from the HUD. Press V to step out of the body: the
 avatar carries on alone, drinking, eating, carrying water and clay, sitting on the ghat steps,
-going home at dusk, while you fly anywhere in the valley. V again steps back in. Nothing on screen
-says the game is over or won.
+going home at dusk, while you fly anywhere in the valley. V again steps back in. That morning the
+game says the teachings are done and nothing more is asked of you, and the drone of a tanpura comes
+in under the valley's sounds; nothing says the game is won.
+
+Until then the HUD's NEXT line says what comes next, and the names of houses and places show over
+them as you near them: your door is indigo, the potter's ochre, the shrine's saffron under a
+saffron pennant. After sunset each house lights a lamp by its door.
+
+Every sound is made by the game as it plays, with no recordings: the river, the wind, birds and a
+koel by day, crickets at night, footsteps on earth and on the ghat's stone, the wheel, a heartbeat
+while there is fear, a bell for each new page of the codex. M (or the page's Sound button) turns it
+off.
 
 The codex (Tab) holds each verse the game has taught, as a page with the Sanskrit in Devanagari and
 IAST, an English translation, the translator, the edition and the sources. A page opens when its
@@ -51,7 +61,7 @@ codex is open.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
-| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
+| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs, the NEXT line and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
 
 | The village from the ghat | Sunset over the river, just after six |
 |---|---|
@@ -59,7 +69,7 @@ codex is open.
 
 | Lamplight on a snake at half past seven | It was a rope |
 |---|---|
-| ![At night by lamplight, a dark snake coiled on the path with its head raised; the HUD shows the fear meter high](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
+| ![At night by lamplight, a dark snake coiled on the path with its head raised, lamps lit by the village doors behind; the HUD shows the fear meter high and NEXT reads "Walk back to the village along the path"](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
 
 | Throwing a water jar | Three pots, three names |
 |---|---|
@@ -75,7 +85,7 @@ codex is open.
 
 | The next morning | Watching the avatar go about its day |
 |---|---|
-| ![Waking at 6:35 on 22 March outside your house in the dawn light; the quest log is open again and the HUD reads "Living, V steps back to watch", with no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, V steps back in"](docs/images/m5-watching.jpg) |
+| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the quest log is open again, the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
@@ -119,6 +129,7 @@ simulation and its tests, with no engine.
 | C | The clay lens (after three pots) |
 | Tab | The codex (Up and Down choose a page; Tab or Esc goes back) |
 | V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
+| M | Sound on or off |
 | F1 | Show or hide the controls |
 | F5 / F9 | Save now / load the last save |
 | Esc | Free the mouse (Esc again quits) |
@@ -163,4 +174,6 @@ citation is defined, every entry names a translator, and every plate is current.
 
 [MIT](LICENSE). The plates are set in Tiro Devanagari Sanskrit, under the SIL Open Font License
 ([tools/plates/fonts/OFL.txt](tools/plates/fonts/OFL.txt)). The game decodes them with
-[stb_image](https://github.com/nothings/stb) (public domain or MIT, `third_party/stb/`).
+[stb_image](https://github.com/nothings/stb) (public domain or MIT, `third_party/stb/`), and plays
+sound through [miniaudio](https://github.com/mackron/miniaudio) 0.11.25 (public domain or MIT No
+Attribution, `third_party/miniaudio/`).

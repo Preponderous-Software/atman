@@ -5,6 +5,8 @@
 // teachings is the after-mode, which never ends.
 #pragma once
 
+#include <string>
+
 #include "sim/world.h"
 
 namespace atman {
@@ -30,6 +32,12 @@ const char* useText(Use u);
 // Whether both teachings are done: every snake seen through, a pot broken,
 // and the clay lens used.
 bool teachingsDone(const World& w);
+
+// The HUD's one-line answer to "what now?": the next teaching in the order
+// an afternoon allows, then sleep, then, in the after-mode, that nothing more
+// is asked. Keys are named in brackets, (C), for the page to rename on a
+// touch screen.
+std::string nextStep(const World& w);
 
 // Where to stand to sleep: just outside your door.
 Vec2 yourDoorstep();
