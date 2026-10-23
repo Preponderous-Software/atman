@@ -102,6 +102,7 @@
   <button id="newBtn" title="Start again at 4:30 on the first afternoon">New</button>
   <button id="watchBtn" hidden title="Step out and watch the avatar, or step back in (V)">Watch</button>
   <button id="codexBtn" title="The codex: the verses so far (Tab)">Codex</button>
+  <button id="soundBtn" title="Sound on or off (M)" aria-pressed="true">Sound: on</button>
   <button id="helpBtn" title="How to play" aria-label="How to play">?</button>
 </div>
 
@@ -144,20 +145,21 @@
 <div id="help" class="dialog" role="dialog" aria-labelledby="helpTitle">
   <h2 id="helpTitle">Atman</h2>
   <p>You wake in a river village on a spring afternoon, with a body, a name and a list of chores. At dusk there
-  are snakes on the path to the ghat. The potter has a wheel. Nothing here is scored.</p>
+  are snakes on the path to the ghat. The potter has a wheel. Nothing here is scored. The NEXT line says what
+  comes next; once both teachings are done and you have slept, the after-mode begins, and it has no end.</p>
   <ul class="for-keys">
     <li>Mouse: look. <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>: walk, <kbd>Shift</kbd>: hurry.</li>
     <li><kbd>E</kbd>: use what is here (fill, give, dig, drink, eat, sleep). <kbd>F</kbd>: the lamp.</li>
     <li>At the wheel, <kbd>1</kbd>&ndash;<kbd>4</kbd> throws a pot; type its name and press <kbd>Enter</kbd>.
       <kbd>B</kbd> breaks the pot you look at; <kbd>C</kbd> is the clay lens, after three pots.</li>
     <li><kbd>Tab</kbd>: the codex. <kbd>V</kbd>: in the after-mode, step out and watch.
-      <kbd>F1</kbd>: the controls on screen. <kbd>Esc</kbd>: free the mouse.</li>
+      <kbd>M</kbd>: sound. <kbd>F1</kbd>: the controls on screen. <kbd>Esc</kbd>: free the mouse.</li>
   </ul>
   <ul class="for-touch">
     <li>Drag on the left half to walk (all the way out to hurry); drag on the right half to look.</li>
     <li><b>Use</b> does what is here; <b>Lamp</b>, <b>Break</b> and <b>Lens</b> do what they say. At the wheel, tap a
       form to throw it, then name it.</li>
-    <li><b>Codex</b> along the top shows the verses so far.</li>
+    <li><b>Codex</b> along the top shows the verses so far; <b>Sound</b> turns the sound on or off.</li>
   </ul>
   <p style="color:var(--dim);font-size:13px">The game saves every two minutes, when you press Save (or <kbd>F5</kbd>),
   and when you leave the page; <kbd>F9</kbd> loads the last save. Saves stay in this browser on this device. Built on the <a href="https://github.com/Preponderous-Software/strata">Strata</a> engine;
@@ -220,6 +222,8 @@
     try { s = JSON.parse(call.status()); } catch (e) { return; }
     $('clock').textContent = (21 + s.day) + ' March, ' + s.clock;
     $('watchBtn').hidden = !s.after;
+    $('soundBtn').textContent = s.muted ? 'Sound: off' : 'Sound: on';
+    $('soundBtn').setAttribute('aria-pressed', s.muted ? 'false' : 'true');
     $('watchBtn').textContent = s.watching ? 'Step back in' : 'Watch';
     $('lensBtn').hidden = !s.lens;
     ['watching', 'codex', 'naming', 'atWheel'].forEach(function (k) { document.body.classList.toggle(k, s[k]); });
@@ -340,6 +344,12 @@
     });
     $('codexBtn').addEventListener('click', function () { call.press(43); setTimeout(refresh, 60); });
     $('watchBtn').addEventListener('click', function () { call.press(25); setTimeout(refresh, 60); });
+    $('soundBtn').addEventListener('click', function () {
+      var on = window.atmanStatus ? window.atmanStatus.muted : false;  // muted now, so this turns it on
+      call.sound(on ? 1 : 0, 1);
+      try { localStorage.setItem('atman-sound', on ? 'on' : 'off'); } catch (e) {}
+      setTimeout(refresh, 60);
+    });
     $('nameBox').addEventListener('submit', function (e) {
       e.preventDefault();
       call.name($('nameInput').value);
@@ -402,6 +412,7 @@
         save: api('atman_save', 'number'),
         restart: api('atman_restart'),
         help: api('atman_help', null, ['number']),
+        sound: api('atman_sound', null, ['number', 'number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };
@@ -411,6 +422,7 @@
       setTouch(touchMode);
       wire();
       sizeCanvas();
+      try { if (localStorage.getItem('atman-sound') === 'off') call.sound(0, 0); } catch (e) {}
       var seen = false;
       try { seen = localStorage.getItem('atman-seen-help') === '1'; } catch (e) {}
       if (!seen) $('help').style.display = 'block';
