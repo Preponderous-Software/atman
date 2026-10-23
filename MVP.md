@@ -21,7 +21,7 @@ Bracketed IDs refer to sources in [RESEARCH.md](RESEARCH.md). Chapters are descr
 | After (short) | The next morning: the autopilot carries on the chores, the player can watch or step back in, the quest log has no timers, nothing ends |
 | Codex | Every verse used so far, with Devanagari, IAST, translation and citation, plus the "other schools" page [S3] |
 | Saves | Save and continue at any point; a damaged save is refused and the previous one is kept |
-| Platform | Windows and Linux desktop |
+| Platform | Windows and Linux desktop, and the browser on the arcade (danielstephenson.dev/play) |
 
 ## Out of scope
 
@@ -30,7 +30,6 @@ Each of these is deferred, not rejected:
 - Chapters 3 to 5 (sheaths, three states, salt) and the witness camera.
 - Dream and deep-sleep renderings of the valley.
 - The full after-mode with the HUD dissolved.
-- The browser build.
 - Narration, music and Sanskrit pronunciation audio.
 - Scholar and teacher sign-off. This is required before a build is published, not before the MVP is
   playable.
@@ -51,6 +50,7 @@ Each check is something a playtester can do in the build without reading code.
 | After | The next morning the avatar walks its chores alone. The player can detach, watch, step back in, or quit. Nothing on screen says the game is over or won. |
 | Saves | Quitting and reloading returns to the same place and time. A save with one flipped byte is refused with a message, and the previous save loads. |
 | Autopilot | `--headless --autopilot` plays the whole MVP and matches the pinned fingerprint. |
+| Browser | The arcade serves the game. A player can walk, light the lamp, throw and name pots, and read the codex in a desktop browser, and walk and look on a phone. |
 
 ## Milestones
 
@@ -64,4 +64,5 @@ Each milestone is one pull request, merged when CI is green.
 | M3 Clay (done) | Wheel, naming, clay lens, pot-space |
 | M4 Codex (done) | Verse plates, the codex screen, the other-schools page |
 | M5 After | Autopilot, the after-mode, the pinned playthrough |
-| M6 Saves and Windows | Checksummed saves, Windows CI and a play script |
+| M6 Browser | A WebGL 2 build on Strata's wasm32 target, deployed to the arcade from CI, with a smoke test in desktop and phone browsers |
+| M7 Saves and Windows | Checksummed saves (on the desktop, and in browser storage on the arcade), Windows CI and a play script |
