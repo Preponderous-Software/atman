@@ -24,8 +24,9 @@ void setLighting(strata::Engine& engine, bool lightweight = false);
 // Places the sun for the game's time; returns its elevation in degrees.
 float setSky(strata::Engine& engine, const World& w);
 
-// The carried lamp, as a point light, while it is lit.
-void setLamp(strata::Engine& engine, const World& w);
+// The point lights: the carried lamp while it is lit, and after sunset the
+// lamps in the village's doorways and a faint fill from the night sky.
+void setLights(strata::Engine& engine, const World& w, float sunElevation);
 
 StrataCamera playerCamera(const World& w, float aspect);
 

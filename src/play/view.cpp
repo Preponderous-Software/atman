@@ -18,8 +18,11 @@ constexpr float kFovY = 70.0f;
 constexpr float kTextSize = 16.0f;
 constexpr float kLine = 20.0f;
 constexpr float kMargin = 16.0f;
-constexpr float kLampRange = 10.0f;
-constexpr float kLampIntensity = 1.4f;
+constexpr float kLampRange = 16.0f;
+constexpr float kLampIntensity = 3.0f;
+constexpr bridge::Rgb kLampColor{1.0f, 0.62f, 0.26f};
+constexpr float kDoorLampRange = 9.0f, kDoorLampIntensity = 1.6f;
+constexpr float kNightFill = 0.9f;
 constexpr float kFlySpeed = 4.0f, kFlyFast = 12.0f;  // metres per second
 constexpr float kLabelRange = 16.0f;       // places are named within this many metres
 constexpr float kHouseLabelRange = 30.0f;
@@ -96,6 +99,38 @@ void drawMotes(strata::Engine& engine, const World& w) {
     engine.submitPoints(points.data(), points.size());
 }
 
+// Where a house's doorway lamp hangs: beside the door, under the eave.
+Vec3 doorLamp(const V::House& h) {
+    static const float out[4][2] = {{0, -0.5f}, {0.5f, 0}, {0, 0.5f}, {-0.5f, 0}};  // off the wall, by face
+    const float x = h.door.x + out[h.doorFace][0], z = h.door.z + out[h.doorFace][1];
+    return {x, V::groundHeight(h.door.x, h.door.z) + 2.4f, z};
+}
+
+// 0 by day, rising to 1 as the sun goes 6 degrees below the horizon.
+float nightness(float sunElevation) { return clampf(-sunElevation / 6.0f, 0.0f, 1.0f); }
+
+// The doorway lamps' flames, seen from across the village.
+void drawDoorLamps(strata::Engine& engine, float night) {
+    if (night <= 0) return;
+    std::vector<StrataPoint> flames;
+    for (const V::House& h : V::kHouses) {
+        const Vec3 at = doorLamp(h);
+        StrataPoint p{};
+        p.position[0] = at.x;
+        p.position[1] = at.y;
+        p.position[2] = at.z;
+        p.size_pixels = 3.0f;
+        p.world_diameter = 0.22f;
+        p.color[0] = 1.0f;
+        p.color[1] = 0.75f;
+        p.color[2] = 0.35f;
+        p.color[3] = 0.9f * night;
+        p.flags = STRATA_POINT_SOFT;
+        flames.push_back(p);
+    }
+    engine.submitPoints(flames.data(), flames.size());
+}
+
 // A place the HUD names when the player is near it and can see it.
 struct Place {
     const char* name;
@@ -163,25 +198,35 @@ float setSky(strata::Engine& engine, const World& w) {
     return sun.elevation_degrees;
 }
 
-void setLamp(strata::Engine& engine, const World& w) {
-    if (!w.lampLit) {
-        engine.setPointLights(nullptr, 0);
-        return;
+void setLights(strata::Engine& engine, const World& w, float sunElevation) {
+    std::vector<StrataPointLight> lights;
+    auto add = [&](Vec3 at, float range, bridge::Rgb color, float intensity) {
+        StrataPointLight l{};
+        l.position[0] = at.x;
+        l.position[1] = at.y;
+        l.position[2] = at.z;
+        l.range = range;
+        l.color[0] = color.r;
+        l.color[1] = color.g;
+        l.color[2] = color.b;
+        l.intensity = intensity;
+        lights.push_back(l);
+    };
+    if (w.lampLit) {
+        // Held at the shoulder and a little ahead, on the right.
+        const Player& p = w.player;
+        const float sy = detSin(p.yaw), cy = detCos(p.yaw);
+        add({p.x + 0.35f * sy + 0.25f * cy, V::walkHeight(p.x, p.z) + V::kEyeHeight - 0.3f, p.z - 0.35f * cy + 0.25f * sy},
+            kLampRange, kLampColor, kLampIntensity);
     }
-    // Held low and a little ahead, on the right.
-    const Player& p = w.player;
-    const float sy = detSin(p.yaw), cy = detCos(p.yaw);
-    const float y = V::walkHeight(p.x, p.z) + V::kEyeHeight - 0.55f;
-    StrataPointLight lamp{};
-    lamp.position[0] = p.x + 0.35f * sy + 0.25f * cy;
-    lamp.position[1] = y;
-    lamp.position[2] = p.z - 0.35f * cy + 0.25f * sy;
-    lamp.range = kLampRange;
-    lamp.color[0] = 1.0f;
-    lamp.color[1] = 0.62f;
-    lamp.color[2] = 0.26f;
-    lamp.intensity = kLampIntensity;
-    engine.setPointLights(&lamp, 1);
+    // After sunset the village lights its doorways, and a faint fill from the
+    // sky keeps the shapes of things (the engine's moon alone leaves them black).
+    const float night = nightness(sunElevation);
+    if (night > 0) {
+        for (const V::House& h : V::kHouses) add(doorLamp(h), kDoorLampRange, kLampColor, kDoorLampIntensity * night);
+        add({8.0f, 40.0f, 0.0f}, 120.0f, {0.55f, 0.65f, 1.0f}, kNightFill * night);
+    }
+    engine.setPointLights(lights.empty() ? nullptr : lights.data(), static_cast<uint32_t>(lights.size()));
 }
 
 StrataCamera playerCamera(const World& w, float aspect) {
@@ -265,8 +310,8 @@ std::string prompt(const World& w, const std::string& typing) {
 
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing,
             const FreeCamera* watching, bool noText, const std::string& message) {
-    setSky(engine, w);
-    setLamp(engine, w);
+    const float elevation = setSky(engine, w);
+    setLights(engine, w, elevation);
     int32_t width = 0, height = 0;
     engine.drawableSize(width, height);
     const float aspect = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
@@ -278,6 +323,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     fd.clear_flags = STRATA_CLEAR_COLOR | STRATA_CLEAR_DEPTH | STRATA_CLEAR_SKY;
     engine.beginFrame(fd);
     drawMotes(engine, w);
+    drawDoorLamps(engine, nightness(elevation));
     const float dark = wakeDarkness(w);
     if (dark > 0) drawDarkness(engine, view.eye, view.yaw, view.pitch, dark, width, height);
 
