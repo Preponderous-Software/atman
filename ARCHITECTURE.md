@@ -1,14 +1,15 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestones M1 to M5): the valley's ground, river and village layout with walking and collision,
+(milestones M1 to M6): the valley's ground, river and village layout with walking and collision,
 the game clock, the body's needs, chapter 1, The Rope, chapter 2, Clay and Pots, the prologue's
 chores, sleep and the after-mode, and the autopilot with its pinned playthrough (`src/sim/`);
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
 the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
 (`content/`, `tools/plates/`, `src/codex/`) and its screen (`src/play/codex_screen.*`); and the
-desktop app with its headless tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
+desktop app with its headless tour (`app/main.cpp`), and the browser game (`app/web_main.cpp`,
+`web/`; see [docs/WEB.md](docs/WEB.md)), which share one game session (`src/play/session.*`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
 
@@ -46,9 +47,10 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep and the after-mode (`chores.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
 | `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it, a pot for its shards when it breaks, and every clay colour when the lens turns on |
 | `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
-| `src/play/` | The sun, camera and HUD (`view.*`) and the codex screen (`codex_screen.*`). Later a `Session` that drives the game for any front end: input, autosave |
+| `src/play/` | The sun, camera and HUD (`view.*`), the codex screen (`codex_screen.*`), and the `Session` that drives a game for either front end: input, the codex, watching the avatar (`session.*`) |
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept |
-| `app/main.cpp` | Desktop entry point |
+| `app/main.cpp` | Desktop entry point, the headless tour and the headless playthrough |
+| `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, and its smoke test |
 | `content/` | Codex entries (`codex/*.json`) and their plates (`plates/*.png`); later dialogue |
 | `tools/plates/` | Offline renderer and checker for verse plates, and the font (see [Text](#text)) |
 | `tests/` | Rules tests, a determinism fingerprint, a full autopilot playthrough |
@@ -91,7 +93,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Waking | A screen-sized black point in front of the eye, fading out | 1.5 |
 | Witness camera (after the MVP) | Free camera with picking, as in steading's fly-cam | 1.8 |
 | Dream drift (after the MVP) | `strata_set_mesh_transform` per frame | 1.7 |
-| Browser (MVP milestone M6) | WebGL 2 / wasm32 release asset | v0.4.0 |
+| Browser (MVP milestone M6) | Strata's WebGL 2 backend under Emscripten, built from source at the pinned commit | v0.4.0 |
 
 Strata is fetched with CMake `FetchContent` at a pinned full commit SHA (`ATMAN_STRATA_REF`), and a
 local checkout can be used with `-DFETCHCONTENT_SOURCE_DIR_STRATA=<path>`.

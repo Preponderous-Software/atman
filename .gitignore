@@ -4,3 +4,4 @@ tour/
 *.log
 Testing/
 autopilot/
+web/smoke/node_modules/

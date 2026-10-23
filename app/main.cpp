@@ -29,6 +29,7 @@
 #include "bridge/scene.h"
 #include "codex/codex.h"
 #include "play/codex_screen.h"
+#include "play/session.h"
 #include "play/view.h"
 #include "sim/autopilot.h"
 #include "sim/chores.h"
@@ -349,140 +350,20 @@ int runPlaythrough(strata::Engine& engine, const Args& args) {
 
 // ---- playing in a window
 
-constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33, kEnter = 40,
-              kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225, kRShift = 229,
-              kEscape = 41, kF1 = 58;
-
 int runGame(strata::Engine& engine, const Args& args) {
-    World w = newWorld(args.seed);
-    bridge::Scene scene(engine);
-    play::CodexScreen pages(engine);
-    // Watching: the player has stepped out of the body (after-mode, or
-    // --autopilot from the start) and the autopilot lives the day.
-    Autopilot pilot;
-    bool watching = args.autopilot;
-    bool following = args.autopilot;  // --autopilot: the camera follows the avatar until the player flies it
-    play::FreeCamera cam = play::cameraAtEyes(w);
-    bool keys[512] = {};
-    bool running = true, captured = false, help = true;
-    float yaw = w.player.yaw, pitch = w.player.pitch;
-    // One-shot actions from key presses, handed to the next tick.
-    Input once;
-    std::string typing, named;  // the name being typed, and the one just entered
-    auto capture = [&](bool on) {
-        engine.setRelativeMouseMode(on);
-        captured = on;
-    };
-    capture(true);
-
+    play::SessionOptions o;
+    o.seed = args.seed;
+    o.autopilot = args.autopilot;
+    o.speed = args.speed;
+    play::Session session(engine, o);
     using Clock = std::chrono::steady_clock;
     auto last = Clock::now();
-    double pending = 0;
-    while (running) {
+    while (session.running()) {
         StrataEvent e;
-        while (engine.pollEvent(e)) {
-            const bool naming = w.naming >= 0;
-            switch (e.type) {
-                case STRATA_EVENT_QUIT: running = false; break;
-                case STRATA_EVENT_KEY_DOWN:
-                    if (e.scancode >= 0 && e.scancode < 512) keys[e.scancode] = true;
-                    if (pages.isOpen()) {
-                        // Reading the codex: the valley waits.
-                        if ((e.scancode == kTab || e.scancode == kEscape) && !e.repeat) pages.close();
-                        else if (e.scancode == kUp || e.scancode == kW) pages.move(w, -1);
-                        else if (e.scancode == kDown || e.scancode == kS) pages.move(w, 1);
-                    } else if (e.scancode == kEscape) {
-                        if (captured) capture(false);
-                        else running = false;
-                    } else if (e.scancode == kF1) help = !help;
-                    else if (naming) {
-                        // While naming a pot, keys type; Enter keeps the name.
-                        if (e.scancode == kBackspace && !typing.empty()) typing.pop_back();
-                        else if ((e.scancode == kEnter || e.scancode == kKeypadEnter) && !e.repeat) {
-                            named = typing;
-                            once.name = named.c_str();
-                            typing.clear();
-                        }
-                    } else if (e.repeat) break;
-                    else if (e.scancode == kTab) pages.open(w);
-                    else if (e.scancode == kV && (w.after || args.autopilot)) {
-                        watching = !watching;
-                        following = false;
-                        if (watching) cam = play::cameraAtEyes(w);
-                        else {
-                            yaw = w.player.yaw;  // step back in, looking where the body looks
-                            pitch = w.player.pitch;
-                        }
-                    } else if (watching) break;  // the body's keys belong to the autopilot
-                    else if (e.scancode == kE) once.use = true;
-                    else if (e.scancode == kF) once.toggleLamp = true;
-                    else if (e.scancode == kB) once.breakPot = true;
-                    else if (e.scancode == kC) once.toggleLens = true;
-                    else if (e.scancode >= kOne && e.scancode <= kFour) once.throwForm = e.scancode - kOne;
-                    break;
-                case STRATA_EVENT_KEY_UP:
-                    if (e.scancode >= 0 && e.scancode < 512) keys[e.scancode] = false;
-                    break;
-                case STRATA_EVENT_TEXT_INPUT:
-                    if (naming)
-                        for (const char* c = e.text; *c; ++c)
-                            if (*c >= 32 && *c <= 126 && typing.size() < static_cast<size_t>(kNameLength)) typing += *c;
-                    break;
-                case STRATA_EVENT_MOUSE_BUTTON_DOWN:
-                    if (!captured) capture(true);
-                    break;
-                case STRATA_EVENT_MOUSE_MOTION:
-                    if (captured && watching) {
-                        following = false;
-                        cam.yaw += e.dx * 0.0025f;
-                        cam.pitch = clampf(cam.pitch - e.dy * 0.0025f, -1.45f, 1.45f);
-                    } else if (captured) {
-                        yaw += e.dx * 0.0025f;
-                        pitch = clampf(pitch - e.dy * 0.0025f, -1.45f, 1.45f);
-                    }
-                    break;
-                case STRATA_EVENT_RESIZED: engine.resize(e.width, e.height); break;
-                default: break;
-            }
-        }
+        while (engine.pollEvent(e)) session.handle(e);
         const auto now = Clock::now();
-        const double frame = std::chrono::duration<double>(now - last).count();
-        pending += frame * args.speed;
+        session.frame(std::chrono::duration<double>(now - last).count());
         last = now;
-        if (pending > 0.25 * args.speed) pending = 0.25 * args.speed;  // after a stall, do not try to catch up
-        if (pages.isOpen()) {
-            pending = 0;  // no time passes while the codex is open
-            pages.render(w);
-            engine.present();
-            continue;
-        }
-        if (watching) {
-            const float f = (keys[kW] ? 1.0f : 0.0f) - (keys[kS] ? 1.0f : 0.0f);
-            const float s = (keys[kD] ? 1.0f : 0.0f) - (keys[kA] ? 1.0f : 0.0f);
-            if (f != 0 || s != 0) following = false;
-            play::fly(cam, f, s, keys[kLShift] || keys[kRShift], static_cast<float>(frame < 0.1 ? frame : 0.1));
-        }
-        while (pending >= 1.0 / kTickRate) {
-            pending -= 1.0 / kTickRate;
-            if (watching) {
-                once = Input{};
-                tick(w, pilot.next(w));
-                continue;
-            }
-            Input in = once;
-            once = Input{};
-            if (w.naming < 0) {  // no walking while typing a name
-                in.forward = (keys[kW] ? 1.0f : 0.0f) - (keys[kS] ? 1.0f : 0.0f);
-                in.strafe = (keys[kD] ? 1.0f : 0.0f) - (keys[kA] ? 1.0f : 0.0f);
-                in.hurry = keys[kLShift] || keys[kRShift];
-            }
-            in.yaw = yaw;
-            in.pitch = pitch;
-            tick(w, in);
-        }
-        if (watching && following) cam = play::cameraBehind(w);
-        scene.update(w, watching);
-        play::render(engine, w, help, typing, watching ? &cam : nullptr);
         engine.present();
     }
     return 0;
