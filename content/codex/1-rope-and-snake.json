@@ -1,0 +1,29 @@
+{
+  "id": "rope-and-snake",
+  "menu": "The rope and the snake",
+  "unlock": "RopeAndSnake",
+  "title": "The rope and the snake",
+  "source": "Gauḍapāda, Māṇḍūkya Kārikā 2.17–2.18",
+  "cites": ["C2"],
+  "devanagari": [
+    "अनिश्चिता यथा रज्जुरन्धकारे विकल्पिता ।",
+    "सर्पधारादिभिर्भावैस्तद्वदात्मा विकल्पितः ॥ २.१७ ॥",
+    "निश्चितायां यथा रज्ज्वां विकल्पो विनिवर्तते ।",
+    "रज्जुरेवेति चाद्वैतं तद्वदात्मविनिश्चयः ॥ २.१८ ॥"
+  ],
+  "iast": [
+    "aniścitā yathā rajjur andhakāre vikalpitā",
+    "sarpadhārādibhir bhāvais tadvad ātmā vikalpitaḥ",
+    "niścitāyāṃ yathā rajjvāṃ vikalpo vinivartate",
+    "rajjur eveti cādvaitaṃ tadvad ātmaviniścayaḥ"
+  ],
+  "english": [
+    "As a rope not clearly seen in the dark is imagined to be a snake, a trickle of water and other things, so the Self is imagined to be many things.",
+    "When the rope is seen clearly, the imagining stops, and there is only the rope, with nothing second to it. So it is when the Self is known for certain."
+  ],
+  "translator": "Working translation for Atman from the Sanskrit, awaiting review",
+  "edition": "Sanskrit: Āgamaśāstra, ed. V. G. Āpaṭe, Ānandāśrama Sanskrit Series 10 (Pune, 1921), as input on GRETIL",
+  "notes": [
+    "The snake was never there, and the rope never changed. Advaita calls an error like this prātibhāsika: an appearance that lasts only until it is seen through. The village, its chores and its people are not that kind of error; they are real for living in. [C1] [S1]"
+  ]
+}

@@ -5,10 +5,11 @@
 //
 // Controls: mouse to look, W A S D to walk, Shift to hurry, F for the lamp,
 // 1-4 at the wheel to throw a pot (then type its name and press Enter), B to
-// break the pot in view, C for the clay lens, F1 for help, Esc to free the
-// mouse (Esc again quits). --tour walks a fixed route
-// through the valley into the night, back up the path past the snakes with the
-// lamp, and, headless, writes a screenshot at each stop to DIR.
+// break the pot in view, C for the clay lens, Tab for the codex (Up and Down
+// to choose a page), F1 for help, Esc to free the mouse (Esc again quits).
+// --tour walks a fixed route through the valley into the night, back up the
+// path past the snakes with the lamp, opens the codex, and, headless, writes a
+// screenshot at each stop to DIR.
 #include <chrono>
 #include <cmath>
 #include <cinttypes>
@@ -17,6 +18,8 @@
 #include <string>
 
 #include "bridge/scene.h"
+#include "codex/codex.h"
+#include "play/codex_screen.h"
 #include "play/view.h"
 #include "sim/clay.h"
 #include "sim/valley.h"
@@ -73,7 +76,8 @@ void usage() {
 
 // One stop, in order: light the lamp; walk to (x, z); turn to the view, or to
 // a coil or a pot; start throwing a form; wait (time passes, the sun moves);
-// name the pot; toggle the clay lens; break the pot in view; take a shot.
+// name the pot; toggle the clay lens; break the pot in view; open the codex
+// on an entry; take a shot.
 // Built with the setters below, so each stop says only what it does.
 struct TourStop {
     bool walk = false;
@@ -86,7 +90,8 @@ struct TourStop {
     const char* potName = nullptr;
     bool lens = false;
     bool breakPot = false;
-    const char* shot = nullptr;  // screenshot file name
+    const char* codexPage = nullptr;  // a codex entry's id
+    const char* shot = nullptr;       // screenshot file name
 
     constexpr TourStop to(float px, float pz) const { TourStop s = *this; s.walk = true; s.x = px; s.z = pz; return s; }
     constexpr TourStop look(float y, float p) const { TourStop s = *this; s.yaw = y; s.pitch = p; return s; }
@@ -98,6 +103,7 @@ struct TourStop {
     constexpr TourStop named(const char* n) const { TourStop s = *this; s.potName = n; return s; }
     constexpr TourStop toggleLens() const { TourStop s = *this; s.lens = true; return s; }
     constexpr TourStop breaking() const { TourStop s = *this; s.breakPot = true; return s; }
+    constexpr TourStop codex(const char* id) const { TourStop s = *this; s.codexPage = id; return s; }
     constexpr TourStop shoot(const char* name) const { TourStop s = *this; s.shot = name; return s; }
 };
 
@@ -107,7 +113,7 @@ constexpr TourStop kStop{};
 // pots at the wheel, look through the clay lens, break the water jar. Down the
 // path to the ghat, then sit on the steps while the sun goes down. At night,
 // walk back up the path: see the first snake in the dark, then light the lamp
-// and look at each one closely until it is a rope.
+// and look at each one closely until it is a rope. Then read the codex.
 const TourStop kTour[] = {
     kStop.look(0.9f, -0.03f).shoot("01-your-door"),
     kStop.to(-1.0f, 4.5f).look(0.75f, -0.22f).shoot("02-well"),
@@ -136,6 +142,9 @@ const TourStop kTour[] = {
     kStop.to(19.4f, 4.1f).atCoil(1).wait(3),
     kStop.to(14.4f, 5.1f).atCoil(0).wait(3),
     kStop.look(1.75f, -0.3f).wait(1).shoot("16-fear-gone"),
+    kStop.codex("rope-and-snake").shoot("17-codex-rope"),
+    kStop.codex("pot-space").shoot("18-codex-pot-space"),
+    kStop.codex("other-schools").shoot("19-other-schools"),
 };
 
 // Waits are given as seconds, or as -1 "until 6:00 pm" and -2 "until 7:20 pm".
@@ -149,7 +158,22 @@ int waitTicks(const World& w, int waitSeconds) {
 int runTour(strata::Engine& engine, const Args& args) {
     World w = newWorld(args.seed);
     bridge::Scene scene(engine);
+    play::CodexScreen pages(engine);
     for (const TourStop& stop : kTour) {
+        if (stop.codexPage) {
+            const int entry = codex::find(stop.codexPage);
+            if (entry < 0 || !codex::isOpen(w, codex::kEntries[entry])) {
+                std::fprintf(stderr, "atman: the tour found codex page '%s' closed\n", stop.codexPage);
+                return 1;
+            }
+            pages.show(w, entry);
+            pages.render(w);
+            engine.present();
+            std::printf("%-22s codex page %s\n", stop.shot, stop.codexPage);
+            if (!args.framesDir.empty()) engine.saveScreenshotPng(args.framesDir + "/" + stop.shot + ".png");
+            pages.close();
+            continue;
+        }
         if (stop.lamp && !w.lampLit) {
             Input in;
             in.yaw = w.player.yaw;
@@ -233,6 +257,10 @@ int runTour(strata::Engine& engine, const Args& args) {
         std::fprintf(stderr, "atman: the tour ended with the fear meter still on the HUD\n");
         return 1;
     }
+    if (codex::openEntries(w).size() != static_cast<size_t>(codex::kEntryCount)) {
+        std::fprintf(stderr, "atman: the tour ended with codex pages still closed\n");
+        return 1;
+    }
     if (w.potsMade != 3 || !w.pots[0].broken || w.pots[1].broken || w.pots[2].broken || w.naming >= 0) {
         std::fprintf(stderr, "atman: the tour did not throw, name and break its pots\n");
         return 1;
@@ -243,11 +271,13 @@ int runTour(strata::Engine& engine, const Args& args) {
 // ---- playing in a window
 
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kF = 9, kB = 5, kC = 6, kOne = 30, kFour = 33, kEnter = 40,
-              kKeypadEnter = 88, kBackspace = 42, kLShift = 225, kRShift = 229, kEscape = 41, kF1 = 58;
+              kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225, kRShift = 229,
+              kEscape = 41, kF1 = 58;
 
 int runGame(strata::Engine& engine, const Args& args) {
     World w = newWorld(args.seed);
     bridge::Scene scene(engine);
+    play::CodexScreen pages(engine);
     bool keys[512] = {};
     bool running = true, captured = false, help = true;
     float yaw = w.player.yaw, pitch = w.player.pitch;
@@ -271,7 +301,12 @@ int runGame(strata::Engine& engine, const Args& args) {
                 case STRATA_EVENT_QUIT: running = false; break;
                 case STRATA_EVENT_KEY_DOWN:
                     if (e.scancode >= 0 && e.scancode < 512) keys[e.scancode] = true;
-                    if (e.scancode == kEscape) {
+                    if (pages.isOpen()) {
+                        // Reading the codex: the valley waits.
+                        if ((e.scancode == kTab || e.scancode == kEscape) && !e.repeat) pages.close();
+                        else if (e.scancode == kUp || e.scancode == kW) pages.move(w, -1);
+                        else if (e.scancode == kDown || e.scancode == kS) pages.move(w, 1);
+                    } else if (e.scancode == kEscape) {
                         if (captured) capture(false);
                         else running = false;
                     } else if (e.scancode == kF1) help = !help;
@@ -284,6 +319,7 @@ int runGame(strata::Engine& engine, const Args& args) {
                             typing.clear();
                         }
                     } else if (e.repeat) break;
+                    else if (e.scancode == kTab) pages.open(w);
                     else if (e.scancode == kF) once.toggleLamp = true;
                     else if (e.scancode == kB) once.breakPot = true;
                     else if (e.scancode == kC) once.toggleLens = true;
@@ -314,6 +350,12 @@ int runGame(strata::Engine& engine, const Args& args) {
         pending += std::chrono::duration<double>(now - last).count();
         last = now;
         if (pending > 0.25) pending = 0.25;  // after a stall, do not try to catch up
+        if (pages.isOpen()) {
+            pending = 0;  // no time passes while the codex is open
+            pages.render(w);
+            engine.present();
+            continue;
+        }
         while (pending >= 1.0 / kTickRate) {
             pending -= 1.0 / kTickRate;
             Input in = once;

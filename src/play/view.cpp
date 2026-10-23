@@ -186,7 +186,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (help)
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize,
              std::string("W A S D walk   Shift hurry   Mouse look   F lamp   ") +
-                 (lensAvailable(w) ? "C clay lens   " : "") + "Esc free the mouse   F1 hide help",
+                 (lensAvailable(w) ? "C clay lens   " : "") + "Tab codex   Esc free the mouse   F1 hide help",
              ink);
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     engine.submitText(texts.data(), texts.size());

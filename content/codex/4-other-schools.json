@@ -1,0 +1,44 @@
+{
+  "id": "other-schools",
+  "menu": "Other schools",
+  "unlock": "always",
+  "title": "Other schools: “that you are”",
+  "source": "Chāndogya Upaniṣad 6.8.7",
+  "cites": ["P1"],
+  "devanagari": [
+    "स य एषोऽणिमैतदात्म्यमिदं सर्वम् । तत्सत्यम् । स आत्मा ।",
+    "तत्त्वमसि श्वेतकेतो ॥ ६.८.७ ॥"
+  ],
+  "iast": [
+    "sa ya eṣo 'ṇimaitad ātmyam idaṃ sarvam / tat satyam / sa ātmā /",
+    "tat tvam asi śvetaketo"
+  ],
+  "english": [
+    "“That which is the finest essence—this whole world has that as its soul. That is Reality. That is Ātman (Soul). That art thou, Śvetaketu.”"
+  ],
+  "translator": "Robert Ernest Hume, The Thirteen Principal Upanishads (Oxford University Press, 1921); his Sanskrit gloss left out",
+  "edition": "Sanskrit: Chāndogya Upaniṣad, Sansknet project input, as on GRETIL",
+  "readings": [
+    {
+      "school": "Advaita",
+      "teacher": "Śaṅkara",
+      "text": "The game follows this reading. You, the self, are Brahman, with no second thing beside it. The difference between them is put there by ignorance, as the snake is put on the rope.",
+      "cites": ["C1", "S1"]
+    },
+    {
+      "school": "Viśiṣṭādvaita",
+      "teacher": "Rāmānuja",
+      "text": "“That” and “you” name one reality, Brahman, with different content. Individual selves are real modes of Brahman, which stands to them as a soul stands to its body. There is unity, and the differences within it are real.",
+      "cites": ["S12"]
+    },
+    {
+      "school": "Dvaita",
+      "teacher": "Madhva",
+      "text": "The self and Brahman are always distinct: Brahman alone is independent, and selves depend on it. Madhva divides the words differently, carrying the “a” over from the word before, and reads atat tvam asi: “you are not that.”",
+      "cites": ["S13"]
+    }
+  ],
+  "notes": [
+    "The grammar alone does not settle it: the final “that” is neuter, and “that you are” is already an interpretation. [S11] Atman teaches Advaita. It is one school's reading, not what Hinduism says."
+  ]
+}

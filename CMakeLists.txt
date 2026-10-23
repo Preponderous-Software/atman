@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.19)
 project(atman VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -49,11 +49,29 @@ target_include_directories(atman_geometry PUBLIC src)
 target_link_libraries(atman_geometry PUBLIC atman_sim)
 atman_warnings(atman_geometry)
 
+# The codex: its entries and their plates, built in from content/ (see
+# cmake/embed_codex.cmake), and the PNG decoder for the plates. Still no engine.
+file(GLOB ATMAN_CODEX_SOURCES CONFIGURE_DEPENDS content/codex/*.json content/plates/*.png)
+set(ATMAN_CODEX_DATA ${CMAKE_CURRENT_BINARY_DIR}/generated/codex_data.cpp)
+add_custom_command(
+  OUTPUT ${ATMAN_CODEX_DATA}
+  COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DOUT=${ATMAN_CODEX_DATA}
+          -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/embed_codex.cmake
+  DEPENDS ${ATMAN_CODEX_SOURCES} cmake/embed_codex.cmake
+  COMMENT "Building the codex plates in")
+add_library(atman_stb STATIC src/codex/stb.cpp)
+target_include_directories(atman_stb PUBLIC src)
+target_include_directories(atman_stb SYSTEM PRIVATE third_party/stb)
+add_library(atman_codex STATIC src/codex/codex.cpp ${ATMAN_CODEX_DATA})
+target_include_directories(atman_codex PUBLIC src)
+target_link_libraries(atman_codex PUBLIC atman_sim PRIVATE atman_stb)
+atman_warnings(atman_codex)
+
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope clay determinism geometry)
+  foreach(t movement clock rope clay determinism geometry codex)
     add_executable(test_${t} tests/test_${t}.cpp)
-    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry)
+    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex)
     target_include_directories(test_${t} PRIVATE tests)
     atman_warnings(test_${t})
     add_test(NAME ${t} COMMAND test_${t})
@@ -76,9 +94,9 @@ if(ATMAN_WITH_STRATA)
     GIT_TAG ${ATMAN_STRATA_REF})
   FetchContent_MakeAvailable(strata)
 
-  add_library(atman_play STATIC src/bridge/scene.cpp src/play/view.cpp)
+  add_library(atman_play STATIC src/bridge/scene.cpp src/play/codex_screen.cpp src/play/view.cpp)
   target_include_directories(atman_play PUBLIC src)
-  target_link_libraries(atman_play PUBLIC atman_geometry strata::static)
+  target_link_libraries(atman_play PUBLIC atman_geometry atman_codex strata::static)
   atman_warnings(atman_play)
 
   add_executable(atman app/main.cpp)

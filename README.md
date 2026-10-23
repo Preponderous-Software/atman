@@ -10,7 +10,7 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M3 of the [MVP](MVP.md).** You can walk the valley in first person: the
+**Status: milestone M4 of the [MVP](MVP.md).** You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
 equinox. The HUD shows the time, the body's needs, your standing and the quest log.
@@ -27,6 +27,13 @@ After three pots you have the clay lens (C): pots, bricks, roof tiles and the ri
 one material, and the list reads "Rice for Amma: clay". Motes of light hang over the board. They
 were there before the first pot, and a pot only hides the ones inside it. Break one (B) and its
 name leaves the list, while not one mote moves. The chores in the quest log cannot be done yet.
+
+The codex (Tab) holds each verse the game has taught, as a page with the Sanskrit in Devanagari and
+IAST, an English translation, the translator, the edition and the sources. A page opens when its
+teaching happens: the rope and the snake (Gauḍapāda's Māṇḍūkya Kārikā 2.17–2.18), clay and its names
+(Chāndogya Upaniṣad 6.1.4) and the space in the pot (Kārikā 3.3–3.4). One page is open from the
+start: how Advaita, Viśiṣṭādvaita and Dvaita each read *tat tvam asi*. The game pauses while the
+codex is open.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
@@ -47,6 +54,10 @@ name leaves the list, while not one mote moves. The chores in the quest log cann
 | Through the clay lens | The jar broken, the space unmoved |
 |---|---|
 | ![Through the clay lens: pots, the board's brick piers and the house plinth in one clay colour, everything else grey; the list reads "Ganga water: clay"](docs/images/m3-clay-lens.jpg) | ![Shards of the water jar on the board among motes of light; Ganga water has left the list](docs/images/m3-pot-space.jpg) |
+
+| The codex: the rope and the snake | Other schools |
+|---|---|
+| ![The codex page for Māṇḍūkya Kārikā 2.17–2.18: the verse in Devanagari and IAST, an English translation, a note and the sources, with the codex menu on the left](docs/images/m4-codex-rope.jpg) | ![The other-schools page: Chāndogya 6.8.7 and the readings of Advaita, Viśiṣṭādvaita and Dvaita, with citations](docs/images/m4-other-schools.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
@@ -76,6 +87,7 @@ simulation and its tests, with no engine.
 | 1 2 3 4 | At the wheel: throw a water jar, a bowl, a cup or a lamp, then type its name and press Enter |
 | B | Break the pot you are looking at |
 | C | The clay lens (after three pots) |
+| Tab | The codex (Up and Down choose a page; Tab or Esc goes back) |
 | F1 | Show or hide the controls |
 | Esc | Free the mouse (Esc again quits) |
 
@@ -107,6 +119,16 @@ Corrections from people who know this tradition are welcome as issues.
 `python3 tools/check_docs.py` checks that every relative link and heading anchor resolves, and that
 every citation ID (such as [P1]) is defined in RESEARCH.md. CI runs it on every pull request.
 
+## The codex plates
+
+Strata draws ASCII text only, so each codex page is an image ("plate") made ahead of time from
+`content/codex/*.json` and committed under `content/plates/`. After changing an entry, run
+`python3 tools/plates/make_plates.py` (it needs Pillow built with libraqm, for Devanagari shaping).
+`python3 tools/plates/make_plates.py --check` needs nothing beyond Python. It checks that every
+citation is defined, every entry names a translator, and every plate is current. CI runs it.
+
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE). The plates are set in Tiro Devanagari Sanskrit, under the SIL Open Font License
+([tools/plates/fonts/OFL.txt](tools/plates/fonts/OFL.txt)). The game decodes them with
+[stb_image](https://github.com/nothings/stb) (public domain or MIT, `third_party/stb/`).

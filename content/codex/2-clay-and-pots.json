@@ -1,0 +1,24 @@
+{
+  "id": "clay-and-pots",
+  "menu": "Clay and its names",
+  "unlock": "ClayAndPots",
+  "title": "Clay and its names",
+  "source": "Chāndogya Upaniṣad 6.1.4",
+  "cites": ["P1"],
+  "devanagari": [
+    "यथा सोम्यैकेन मृत्पिण्डेन सर्वं मृन्मयं विज्ञातं स्यात् ।",
+    "वाचारम्भणं विकारो नामधेयं मृत्तिकेत्येव सत्यम् ॥ ६.१.४ ॥"
+  ],
+  "iast": [
+    "yathā somyaikena mṛtpiṇḍena sarvaṃ mṛnmayaṃ vijñātaṃ syāt",
+    "vācārambhaṇaṃ vikāro nāmadheyaṃ mṛttikety eva satyam"
+  ],
+  "english": [
+    "“Just as, my dear, by one piece of clay everything made of clay may be known—the modification is merely a verbal distinction, a name; the reality is just ‘clay’—”"
+  ],
+  "translator": "Robert Ernest Hume, The Thirteen Principal Upanishads (Oxford University Press, 1921)",
+  "edition": "Sanskrit: Chāndogya Upaniṣad, Sansknet project input, as on GRETIL",
+  "notes": [
+    "Uddālaka is teaching his son Śvetaketu, who has come home proud of his learning. A water jar, a bowl and a lamp are different names and shapes, and each is useful as what it is. What they are made of is one thing: clay."
+  ]
+}

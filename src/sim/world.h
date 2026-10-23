@@ -65,8 +65,8 @@ struct Throwing {
     float seconds = 0;
 };
 
-// Codex entries the player has met. M2 only records them; the codex screen
-// comes in M4.
+// Codex entries the player has met; each one opens a page of the codex
+// (src/codex/).
 enum class CodexId : int32_t { RopeAndSnake = 0, ClayAndPots = 1, PotSpace = 2, Count = 3 };
 constexpr int kCodexCount = static_cast<int>(CodexId::Count);
 
