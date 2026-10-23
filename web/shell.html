@@ -238,7 +238,9 @@
         panel.appendChild(d);
       });
     }
-    $('prompt').textContent = s.prompt;
+    // On a touch screen the prompt names the button, not the key.
+    $('prompt').textContent = touchMode ? s.prompt.replace(/^E  /, 'Use: ').replace(/^F  /, 'Lamp: ').replace(/^B  /, 'Break: ')
+                                        : s.prompt;
     $('msg').textContent = s.message;
     if (!s.naming && last.naming) $('nameInput').value = '';
     if (s.naming && !last.naming && touchMode) setTimeout(function () { $('nameInput').focus(); }, 50);
