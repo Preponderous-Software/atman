@@ -36,6 +36,15 @@ struct Box3 {
     }
 };
 
+// Whether a line of sight from `eye` along unit `dir` passes within `radius`
+// of `c`, ahead of the eye; `t` is how far along the line that happens.
+inline bool sightPasses(Vec3 eye, Vec3 dir, Vec3 c, float radius, float& t) {
+    const Vec3 v = c - eye;
+    t = dot(v, dir);
+    if (t <= 0) return false;
+    return dot(v, v) - t * t <= radius * radius;
+}
+
 inline float clampf(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
 
 constexpr float kPi = 3.14159265358979f;

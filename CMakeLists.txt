@@ -26,10 +26,12 @@ function(atman_warnings target)
   endif()
 endfunction()
 
-# The simulation: the valley, walking, the clock, the body's needs, the Rope. No engine,
-# no GPU, so it builds and tests in seconds. Never fuse multiply-adds: the
-# rules must give bit-identical results on every compiler.
+# The simulation: the valley, walking, the clock, the body's needs, the Rope,
+# Clay and Pots. No engine, no GPU, so it builds and tests in seconds. Never
+# fuse multiply-adds: the rules must give bit-identical results on every
+# compiler.
 add_library(atman_sim STATIC
+  src/sim/clay.cpp
   src/sim/valley.cpp
   src/sim/world.cpp)
 target_include_directories(atman_sim PUBLIC src)
@@ -49,7 +51,7 @@ atman_warnings(atman_geometry)
 
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope determinism geometry)
+  foreach(t movement clock rope clay determinism geometry)
     add_executable(test_${t} tests/test_${t}.cpp)
     target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry)
     target_include_directories(test_${t} PRIVATE tests)

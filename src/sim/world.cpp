@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "sim/clay.h"
 #include "sim/valley.h"
 
 namespace atman {
@@ -153,6 +154,7 @@ void tick(World& w, const Input& in) {
     w.needs.tiredness = clampf(w.needs.tiredness + kTirednessPerMinute * minutes, 0.0f, 1.0f);
     ++w.tick;
     rope(w);
+    clayTick(w, in);
 }
 
 bool isDusk(const World& w) {
@@ -173,12 +175,8 @@ int lookedAtCoil(const World& w) {
     for (int i = 0; i < valley::kCoilCount; ++i) {
         const Vec2 c = valley::kCoils[i];
         if (distanceTo(p, c) > kLampReach) continue;
-        const Vec3 v = Vec3{c.x, valley::groundHeight(c.x, c.z) + kCoilTop, c.z} - eye;
-        const float t = dot(v, d);
-        if (t <= 0) continue;
-        // How far the line of sight passes from the coil's centre.
-        const float miss2 = dot(v, v) - t * t;
-        if (miss2 > kCoilRadiusLook * kCoilRadiusLook) continue;
+        float t = 0;
+        if (!sightPasses(eye, d, {c.x, valley::groundHeight(c.x, c.z) + kCoilTop, c.z}, kCoilRadiusLook, t)) continue;
         if (best < 0 || t < bestT) {
             best = i;
             bestT = t;
@@ -234,6 +232,18 @@ uint64_t fingerprint(const World& w) {
         f.add(c.gaze);
     }
     for (bool c : w.codex) f.add(c);
+    for (const Pot& p : w.pots) {
+        f.add(p.made);
+        f.add(p.broken);
+        f.add(p.form);
+        f.bytes(p.name.data(), p.name.size());
+    }
+    f.add(w.potsMade);
+    f.add(w.throwing.active);
+    f.add(w.throwing.form);
+    f.add(w.throwing.seconds);
+    f.add(w.naming);
+    f.add(w.clayLens);
     return f.h;
 }
 

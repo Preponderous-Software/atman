@@ -10,7 +10,7 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M2 of the [MVP](MVP.md).** You can walk the valley in first person: the
+**Status: milestone M3 of the [MVP](MVP.md).** You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
 equinox. The HUD shows the time, the body's needs, your standing and the quest log.
@@ -19,7 +19,14 @@ At dusk the first teaching begins, The Rope. Three snakes lie on the path betwee
 the ghat. A fear meter rises as you come near one, and you cannot bring yourself to walk up to it.
 Light the lamp (F), go as close as you dare and look at it steadily for about two seconds: it is a
 rope, and it stays a rope. Nothing is scored. After the last one the fear meter leaves the HUD
-and does not come back. The chores in the quest log cannot be done yet.
+and does not come back.
+
+The second teaching, Clay and Pots, is at the potter's wheel. Throw a water jar, a bowl, a cup or
+a lamp (1–4), give it a name, and it goes on the drying board and into your list of things made.
+After three pots you have the clay lens (C): pots, bricks, roof tiles and the riverbank all show as
+one material, and the list reads "Rice for Amma: clay". Motes of light hang over the board. They
+were there before the first pot, and a pot only hides the ones inside it. Break one (B) and its
+name leaves the list, while not one mote moves. The chores in the quest log cannot be done yet.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
@@ -32,6 +39,14 @@ and does not come back. The chores in the quest log cannot be done yet.
 | Lamplight on a snake at half past seven | It was a rope |
 |---|---|
 | ![At night by lamplight, a dark snake coiled on the path with its head raised; the HUD shows the fear meter high](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
+
+| Throwing a water jar | Three pots, three names |
+|---|---|
+| ![At the potter's wheel, a water jar rising on the wheel; the prompt reads "Throwing a water jar"](docs/images/m3-at-the-wheel.jpg) | ![A lamp, a bowl and a water jar on the drying board; the HUD lists Ganga water, Rice for Amma, Evening lamp under MADE](docs/images/m3-named-pots.jpg) |
+
+| Through the clay lens | The jar broken, the space unmoved |
+|---|---|
+| ![Through the clay lens: pots, the board's brick piers and the house plinth in one clay colour, everything else grey; the list reads "Ganga water: clay"](docs/images/m3-clay-lens.jpg) | ![Shards of the water jar on the board among motes of light; Ganga water has left the list](docs/images/m3-pot-space.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
@@ -58,6 +73,9 @@ simulation and its tests, with no engine.
 | W A S D | Walk |
 | Shift | Hurry |
 | F | Light the lamp, or put it out |
+| 1 2 3 4 | At the wheel: throw a water jar, a bowl, a cup or a lamp, then type its name and press Enter |
+| B | Break the pot you are looking at |
+| C | The clay lens (after three pots) |
 | F1 | Show or hide the controls |
 | Esc | Free the mouse (Esc again quits) |
 

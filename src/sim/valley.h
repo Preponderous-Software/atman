@@ -71,6 +71,19 @@ constexpr float kWheelRadius = 0.6f;
 constexpr Box2 kKiln{10.5f, -18.5f, 13.0f, -16.0f};
 constexpr float kKilnHeight = 1.8f;
 
+// The drying board beside the wheel, where pots the player throws are set
+// down, one per slot from west to east. Solid, like the wheel.
+constexpr Box2 kBoard{9.6f, -11.35f, 15.0f, -10.65f};
+constexpr float kBoardHeight = 0.4f;     // the plank's top, above the ground
+constexpr int kBoardSlots = 6;
+inline Vec2 boardSlot(int i) { return {10.1f + 0.9f * static_cast<float>(i), -11.0f}; }
+// The height of the plank's top: level, kBoardHeight above the highest ground under it.
+float boardTop();
+
+// The space over the board, where the motes of light hang (chapter 2).
+constexpr Box3 kMoteSpace{{9.5f, 0.42f, -11.5f}, {15.1f, 1.2f, -10.5f}};  // y is above the ground
+constexpr int kMoteCount = 360;
+
 constexpr Vec2 kBirdTree{20.0f, 11.0f};  // the tree by the ghat where the two birds sit
 constexpr float kTrunkRadius = 0.55f;
 

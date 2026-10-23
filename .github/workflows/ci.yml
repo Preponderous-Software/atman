@@ -68,7 +68,7 @@ jobs:
         run: |
           mkdir -p tour
           ./build/atman --headless --tour --frames tour --width 960 --height 540
-          test "$(ls tour/*.png | wc -l)" -eq 12
+          test "$(ls tour/*.png | wc -l)" -eq 16
       - uses: actions/upload-artifact@v4
         with:
           name: tour-linux
