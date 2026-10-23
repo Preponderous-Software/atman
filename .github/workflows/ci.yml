@@ -21,6 +21,21 @@ jobs:
       - name: Links and citations resolve
         run: python tools/check_docs.py
 
+      - name: Codex entries are cited and their plates are current
+        run: python tools/plates/make_plates.py --check
+
+      - name: Plate check catches a stale plate and an undefined citation
+        run: |
+          sed -i 's/"cites": \["P1"\]/"cites": ["P1", "P999"]/' content/codex/2-clay-and-pots.json
+          if python tools/plates/make_plates.py --check > out.txt; then
+            cat out.txt; echo "plate check passed a changed entry"; exit 1
+          fi
+          cat out.txt
+          grep -q '\[P999\] is not defined' out.txt
+          grep -q 'clay-and-pots.png: out of date' out.txt
+          git checkout content/codex/2-clay-and-pots.json
+          rm out.txt
+
       - name: Checker catches a broken citation and a broken link
         run: |
           printf 'See [P999] and [missing](NOPE.md) and [bad anchor](README.md#no-such-heading).\n' > broken.md
@@ -68,7 +83,7 @@ jobs:
         run: |
           mkdir -p tour
           ./build/atman --headless --tour --frames tour --width 960 --height 540
-          test "$(ls tour/*.png | wc -l)" -eq 16
+          test "$(ls tour/*.png | wc -l)" -eq 19
       - uses: actions/upload-artifact@v4
         with:
           name: tour-linux

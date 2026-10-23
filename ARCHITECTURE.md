@@ -1,12 +1,13 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestones M1 to M3): the valley's ground, river and village layout with walking and collision,
+(milestones M1 to M4): the valley's ground, river and village layout with walking and collision,
 the game clock, the body's needs, chapter 1, The Rope, and chapter 2, Clay and Pots (`src/sim/`);
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
-the lamp, the motes, the camera and the HUD (`src/play/view.*`); and the desktop app with its
-headless tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
+the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
+(`content/`, `tools/plates/`, `src/codex/`) and its screen (`src/play/codex_screen.*`); and the
+desktop app with its headless tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
 
@@ -43,11 +44,12 @@ generic features a real consumer needs. Atman may propose engine additions (list
 |---|---|
 | `src/sim/` | Engine-free, deterministic rules: the valley, chores, the fear meter, snakes and ropes, pots and clay, chapter state, the clock, the autopilot |
 | `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it, a pot for its shards when it breaks, and every clay colour when the lens turns on |
-| `src/play/` | The sun, camera and HUD (`view.*`). Later a `Session` that drives the game for any front end: input, codex screen, autosave |
+| `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
+| `src/play/` | The sun, camera and HUD (`view.*`) and the codex screen (`codex_screen.*`). Later a `Session` that drives the game for any front end: input, autosave |
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept |
 | `app/main.cpp` | Desktop entry point |
-| `content/` | Codex entries and dialogue as data files |
-| `tools/plates/` | Offline renderer for verse plates (see [Text](#text)) |
+| `content/` | Codex entries (`codex/*.json`) and their plates (`plates/*.png`); later dialogue |
+| `tools/plates/` | Offline renderer and checker for verse plates, and the font (see [Text](#text)) |
 | `tests/` | Rules tests, a determinism fingerprint, a full autopilot playthrough |
 
 ## Simulation core
@@ -78,6 +80,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Pots on the wheel | The pot mesh scaled by `strata_set_mesh_transform` as it rises | 1.7 |
 | Clay lens | The terrain, village and pots rebuilt with clay in one colour and the rest grey, and uploaded again | 1.3 / 1.4 |
 | Space in the pots | Soft points (`STRATA_POINT_SOFT`) with alpha blending at fixed positions from the sim, untouched when a pot mesh is swapped for its shards | 1.5 |
+| Codex pages | Each plate uploaded once with `strata_create_texture_rgba8` and drawn on an unlit quad (`STRATA_MESH_UNLIT`) in front of a camera of its own, far from the valley, cleared to the plate's dark colour; the menu is overlay text | 1.7 |
 | HUD and its retirement | Overlay text and lines with alpha, faded out by the play layer | 1.5 |
 | Mouse look | `strata_set_relative_mouse_mode` | 1.8 |
 | Witness camera (after the MVP) | Free camera with picking, as in steading's fly-cam | 1.8 |
@@ -92,25 +95,31 @@ local checkout can be used with `-DFETCHCONTENT_SOURCE_DIR_STRATA=<path>`.
 Strata's text overlay uses an 8×8 bitmap font that covers printable ASCII only. Devanagari needs
 shaping (conjuncts, vowel signs), and even IAST letters such as ā and ṣ fall outside that range.
 
-The MVP draws verses as **plates**:
+The game draws verses as **plates**:
 
-1. `tools/plates/` renders each codex entry offline to an RGBA PNG, using a shaping text stack
-   (Pillow with libraqm, or HarfBuzz) and an OFL-licensed Devanagari face such as Tiro Devanagari
-   Sanskrit.
-2. The PNGs are committed under `content/plates/` with the source text beside them, and CI checks
-   that the plates are current.
-3. At run time the bridge uploads each plate with `strata_create_texture_rgba8` and shows it on an
-   unlit quad (`STRATA_MESH_UNLIT`).
+1. `tools/plates/make_plates.py` renders each codex entry offline to a 1600 × 900 PNG, using
+   Pillow with libraqm for shaping and Tiro Devanagari Sanskrit (OFL), which also covers IAST. The
+   left column is left dark for the game's menu.
+2. The PNGs are committed under `content/plates/` beside their entries. Each records a SHA-256 of
+   its entry and of the renderer in a PNG text chunk, so `make_plates.py --check` can tell a stale
+   plate with plain Python, no Pillow or fonts. CI runs the check.
+3. CMake builds the entries and plates into the game (`cmake/embed_codex.cmake`), so it needs no
+   files beside it. At run time the codex screen decodes a plate with stb_image the first time it
+   is shown and uploads it with `strata_create_texture_rgba8`.
 
 The HUD stays in English ASCII. A UTF-8 glyph-atlas text path in Strata is a possible later engine
 addition.
 
 ## Codex data
 
-Each codex entry is a data file with: an id, the source text and verse (for example "Chāndogya
-Upaniṣad 6.8.7"), Devanagari, IAST, an English translation, the translator and edition, and one or
-more citation IDs from [RESEARCH.md](RESEARCH.md). CI fails if an entry cites an ID that
-RESEARCH.md does not define, or if a translation has no named translator.
+Each codex entry is a JSON file, `content/codex/<order>-<id>.json`, with: an id, its menu line
+(ASCII), what opens it (a `CodexId` record, or `always`), a title, the source and verse (for
+example "Chāndogya Upaniṣad 6.8.7"), Devanagari and IAST line by line, an English translation, the
+translator, the Sanskrit edition, one or more citation IDs from [RESEARCH.md](RESEARCH.md), and
+optional notes and readings (the other-schools page uses readings). CI fails if an entry cites an
+ID that RESEARCH.md does not define, if a translation has no named translator, if a record opens
+no entry or more than one, or if a plate is stale. Where no public-domain translation was checked,
+the translator line says the translation is a working one made for Atman and awaiting review.
 
 ## Saves
 
@@ -126,7 +135,7 @@ save is kept. A save that fails its checksum is refused with a message, and the 
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
 | Playthrough | The autopilot finishes the MVP and lands on the pinned fingerprint |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |
-| Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date |
+| Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
 | Saves | Round trip; bit flips are rejected; the previous save survives |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |
 

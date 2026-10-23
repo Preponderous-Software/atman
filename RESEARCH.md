@@ -33,7 +33,7 @@ The core claims the game has to get right:
 
 1. **Liberation is not an achievement.** For Śaṅkara, action (*karma*) cannot produce mokṣa, because mokṣa is the self's nature that is already there. It is "accomplishing the accomplished" (S4). Games are built on action and reward, so this is the central design tension. The concept doc turns it into a mechanic: the game never awards mokṣa.
 2. **Experience versus knowledge.** Neo-Vedānta (Vivekananda and others) often describes realization as a special *experience* (*anubhava*). Rambachan (S4, S5) argues that Śaṅkara treats the Upaniṣadic teaching as the means of knowledge, and that this is different from mystical experience. The game must not suggest that a visual effect or a trance state *is* mokṣa. Effects illustrate an analogy. The understanding is the player's.
-3. **Other Vedānta schools read the same verses differently.** Viśiṣṭādvaita (Rāmānuja, 11th–12th c.) and Dvaita (Madhva, 13th c.) are living traditions with large followings, and they reject Advaita's identity reading of *tat tvam asi*. An in-game codex page should say this plainly, so the game does not present Advaita as "what Hinduism says." (S1, S6)
+3. **Other Vedānta schools read the same verses differently.** Viśiṣṭādvaita (Rāmānuja, 11th–12th c.) and Dvaita (Madhva, 13th c.) are living traditions with large followings, and they reject Advaita's identity reading of *tat tvam asi*. An in-game codex page should say this plainly, so the game does not present Advaita as "what Hinduism says." (S1, S6, S12, S13)
 4. **Māyā is not "the world is fake."** Advaita has three grades of reality: *pāramārthika* (absolute), *vyāvahārika* (empirical, transactional) and *prātibhāsika* (illusory, as in the rope-snake). The village, tasks and people in the game are *vyāvahārika*: real for living in. Only the snake is *prātibhāsika*. (C1, S2, S3)
 5. **Attribution of texts.** The *Vivekacūḍāmaṇi* and many hymns (the *Nirvāṇa Ṣaṭkam* among them) are traditionally credited to Śaṅkara, but scholars dispute this (S3, Hacker via S3). Cite them as "attributed to Śaṅkara."
 6. **No deity caricatures, no exotic set dressing.** The setting is a river village drawn from life. It is not a mystical-East backdrop. Sacred syllables (Om) and images are not used as decoration or as pickups.
@@ -97,6 +97,8 @@ Recommendation: quote **Hume (1921)** in-game, lightly modernized and marked as 
 | S9 | Paul Deussen, *The System of the Vedânta* (trans. Charles Johnston, 1912) | Public domain. Historically influential on Western readings, Watts's among them. |
 | S10 | Wilhelm Halbfass, *India and Europe: An Essay in Understanding* (SUNY Press, 1988) | How the West received Vedānta. Helps the game avoid repeating colonial or Orientalist framings. |
 | S11 | Joel P. Brereton, "Tat Tvam Asi in Context," *Zeitschrift der Deutschen Morgenländischen Gesellschaft* 136:1 (1986), 98–109 | Grammar of the refrain: the final *tat* is neuter, so the standard "That thou art" is an interpretation. The codex should mention this and avoid overstating the identity reading as plain grammar. |
+| S12 | Shyam Ranganathan, "Rāmānuja (c. 1017 – c. 1137)," *Internet Encyclopedia of Philosophy* ([iep.utm.edu/ramanuja](https://iep.utm.edu/ramanuja/)) | Viśiṣṭādvaita's reading of *tat tvam asi*: co-ordinate predication (*sāmānādhikaraṇya*), and selves as modes of Brahman's body. The codex's other-schools page. |
+| S13 | Valerie Stoker, "Madhva (1238—1317)," *Internet Encyclopedia of Philosophy* ([iep.utm.edu/madhva](https://iep.utm.edu/madhva/)) | Dvaita: Brahman alone independent, selves dependent; Madhva's *atat tvam asi*, "you are not that". The codex's other-schools page. |
 
 ---
 
@@ -163,4 +165,15 @@ These shape tone, pacing and the player's first contact with the ideas. Each is 
 
 Earlier checks in this session: Watts, *The Supreme Identity* (Faber and Faber, 1950); Rambachan, *Accomplishing the Accomplished* (University of Hawaii Press, 1991); *Everything* uses Watts lectures, with an album sold by the Alan Watts Organization; Brahma Sūtra 2.1.33 *lokavat tu līlākaivalyam*.
 
-Not yet checked against a physical copy: exact wording of any Hume (1921) or Olivelle (1998) translation used in-game.
+### Codex texts (2026-10-22, M4)
+
+| Entry | Checked against | Result |
+|---|---|---|
+| Hume's English for Chāndogya 6.1.4 and 6.8.7 | The 1921 printing, scanned on the Internet Archive ([thirteenprincipa028442mbp](https://archive.org/details/thirteenprincipa028442mbp)) | Quoted word for word in the codex, except Hume's gloss "(*satya*)" in 6.8.7, which is left out and said so |
+| Sanskrit of Chāndogya 6.1.4 and 6.8.7 | GRETIL's Chāndogya Upaniṣad (Sansknet project input) | IAST as GRETIL gives it; Devanagari transliterated from it, with final consonants joined to the next word |
+| Sanskrit of Māṇḍūkya Kārikā 2.17–2.18 and 3.3–3.4 | GRETIL's Āgamaśāstra, input by Peter Schreiner from Āpaṭe's Ānandāśrama edition (Pune, 1921) | Matches; the rope-snake verses are 2.17–2.18 and the pot-space verses open at 3.3–3.4, as C2 says |
+| English for the Kārikā verses | No public-domain translation was checked | The codex uses a working translation made for Atman from the Sanskrit and says so on the plate. It needs a reviewer's check (§7, question 2). |
+| Rāmānuja on *tat tvam asi* | S12 | "That" and "thou" signify an underlying unity with different qualitative content; Brahman stands to selves as soul to body |
+| Madhva's *atat tvam asi* | S13 | Carrying the "a" over from the preceding word gives *atat tvam asi*, "you are not that" |
+
+Not yet checked against a physical copy: Olivelle (1998) for any passage, and Hume's page numbers.

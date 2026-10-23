@@ -1,0 +1,29 @@
+{
+  "id": "pot-space",
+  "menu": "The space in the pot",
+  "unlock": "PotSpace",
+  "title": "The space in the pot",
+  "source": "Gauḍapāda, Māṇḍūkya Kārikā 3.3–3.4",
+  "cites": ["C2"],
+  "devanagari": [
+    "आत्मा ह्याकाशवज्जीवैर्घटाकाशैरिवोदितः ।",
+    "घटादिवच्च संघातैर्जातावेतन्निदर्शनम् ॥ ३.३ ॥",
+    "घटादिषु प्रलीनेषु घटाकाशादयो यथा ।",
+    "आकाशे संप्रलीयन्ते तद्वज्जीवा इहात्मनि ॥ ३.४ ॥"
+  ],
+  "iast": [
+    "ātmā hy ākāśavaj jīvair ghaṭākāśair ivoditaḥ",
+    "ghaṭādivac ca saṃghātair jātāv etan nidarśanam",
+    "ghaṭādiṣu pralīneṣu ghaṭākāśādayo yathā",
+    "ākāśe saṃpralīyante tadvaj jīvā ihātmani"
+  ],
+  "english": [
+    "The Self is like space. It is spoken of as many individual selves, as space is spoken of as the spaces inside pots, and bodies are like the pots. This is the example for being born.",
+    "When the pots are broken, the space that was in them is gone into space. In the same way, individual selves are gone into the Self."
+  ],
+  "translator": "Working translation for Atman from the Sanskrit, awaiting review",
+  "edition": "Sanskrit: Āgamaśāstra, ed. V. G. Āpaṭe, Ānandāśrama Sanskrit Series 10 (Pune, 1921), as input on GRETIL",
+  "notes": [
+    "Nothing went anywhere. The lights over the drying board were the same before the pot was made and after it broke; only the pot changed. Gauḍapāda carries the example on through 3.9."
+  ]
+}
