@@ -313,7 +313,7 @@ std::string prompt(const World& w, const std::string& typing) {
 }
 
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing,
-            const FreeCamera* watching, bool noText, const std::string& message) {
+            const FreeCamera* watching, bool noText, const std::string& message, Cover cover) {
     const float elevation = setSky(engine, w);
     setLights(engine, w, elevation);
     int32_t width = 0, height = 0;
@@ -361,6 +361,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
             const float top = kMargin + kLine * static_cast<float>(i);
             if (sy + kTextSize > top && sy < top + kTextSize && left < hudRight[i]) covered = true;
         }
+        if (left < cover.right && sy < cover.bottom) covered = true;  // under the page's own HUD
         if (covered) continue;
         text(texts, keep, left, sy, name, fade);
     }

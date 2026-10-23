@@ -284,7 +284,7 @@ void Session::frame(double dt) {
     if (watching_ && following_) cam_ = cameraBehind(w_);
     listen(dt);
     scene_.update(w_, watching_);
-    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_);
+    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_, cover_);
 }
 
 }  // namespace atman::play

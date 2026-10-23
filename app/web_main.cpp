@@ -108,6 +108,10 @@ EMSCRIPTEN_KEEPALIVE void atman_restart() {
 EMSCRIPTEN_KEEPALIVE void atman_sound(int on, int announce) {
     if (g) g->session->setMuted(on == 0, announce != 0);
 }
+// Where the page's own HUD covers the canvas, so the names of places keep clear of it.
+EMSCRIPTEN_KEEPALIVE void atman_cover(double right, double bottom) {
+    if (g) g->session->setCover(static_cast<float>(right), static_cast<float>(bottom));
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }

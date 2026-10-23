@@ -65,6 +65,8 @@ public:
     bool muted() const { return sound_.muted(); }
     // No words on the canvas (a narrow page shows them itself).
     void setCompactHud(bool on) { compact_ = on; }
+    // The part of the canvas the page covers with its HUD (canvas pixels from the top left).
+    void setCover(float right, float bottom) { cover_ = {right, bottom}; }
 
     const World& world() const { return w_; }
     bool captured() const { return captured_; }
@@ -99,6 +101,7 @@ private:
     static constexpr int kMaxScancode = 512;
     bool keys_[kMaxScancode] = {};
     bool running_ = true, captured_ = false, help_ = true, compact_ = false;
+    Cover cover_;
     float yaw_ = 0, pitch_ = 0;
     float stickForward_ = 0, stickStrafe_ = 0;
     Input once_;                // one-shot actions from key presses, for the next tick

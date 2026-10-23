@@ -200,6 +200,17 @@
     var compact = st.clientWidth < 760;
     call.resize(Math.round(st.clientWidth * k), Math.round(st.clientHeight * k), compact ? 1 : 0);
     document.body.classList.toggle('compact', compact);
+    tellCover();
+  }
+
+  // The game keeps the names of places out from under the page's HUD panel,
+  // in the canvas's own pixels.
+  function tellCover() {
+    var p = $('panel'), c = $('canvas');
+    if (!ready) return;
+    if (!p.offsetParent || !c.clientWidth) { call.cover(0, 0); return; }  // not shown
+    var scale = c.width / c.clientWidth;
+    call.cover((p.offsetLeft + p.offsetWidth) * scale, (p.offsetTop + p.offsetHeight) * scale);
   }
 
   // ---- saves: /atman-save lives in IndexedDB; each save is flushed at once
@@ -241,6 +252,7 @@
         d.textContent = touchWords(l.text) || ' ';
         panel.appendChild(d);
       });
+      tellCover();
     }
     $('prompt').textContent = touchWords(s.prompt);
     $('msg').textContent = touchWords(s.message);
@@ -356,7 +368,7 @@
       $('nameInput').blur();
       setTimeout(refresh, 60);
     });
-    $('panel').addEventListener('click', function () { $('panel').classList.toggle('folded'); });
+    $('panel').addEventListener('click', function () { $('panel').classList.toggle('folded'); tellCover(); });
     $('saveBtn').addEventListener('click', function () { call.save(); refresh(); });
     $('newBtn').addEventListener('click', function () {
       if (document.pointerLockElement) document.exitPointerLock();
@@ -413,6 +425,7 @@
         restart: api('atman_restart'),
         help: api('atman_help', null, ['number']),
         sound: api('atman_sound', null, ['number', 'number']),
+        cover: api('atman_cover', null, ['number', 'number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };

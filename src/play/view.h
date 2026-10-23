@@ -69,7 +69,13 @@ std::string bar(float value, int width);
 // `watching`, the view is from that camera and the HUD says so. `noText`
 // leaves the words off the canvas (a narrow browser page shows them itself).
 // `message` (saved, loaded, refused) shows above the middle of the screen.
+// `cover` is the part of the canvas, from its top-left corner, that the page
+// covers with its own HUD; the names of places keep out of it.
+struct Cover {
+    float right = 0, bottom = 0;  // in canvas pixels
+};
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "",
-            const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "");
+            const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "",
+            Cover cover = {});
 
 }  // namespace atman::play
