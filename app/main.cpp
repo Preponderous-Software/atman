@@ -3,9 +3,10 @@
 //   atman [--seed N] [--width W --height H]
 //   atman --headless --tour --frames DIR [--width W --height H]
 //
-// Controls: mouse to look, W A S D to walk, Shift to hurry, F1 for help, Esc
-// to free the mouse (Esc again quits). --tour walks a fixed route through the
-// valley into the night and, headless, writes a screenshot at each stop to DIR.
+// Controls: mouse to look, W A S D to walk, Shift to hurry, F for the lamp, F1
+// for help, Esc to free the mouse (Esc again quits). --tour walks a fixed route
+// through the valley into the night, back up the path past the snakes with the
+// lamp, and, headless, writes a screenshot at each stop to DIR.
 #include <chrono>
 #include <cmath>
 #include <cinttypes>
@@ -67,30 +68,41 @@ void usage() {
 
 // ---- the tour: a fixed walk for screenshots and CI smoke runs
 
-// One stop: walk to (x, z) (skipped when `walk` is false), turn to the view,
-// wait `waitSeconds` (time passes; the sun moves), and take a shot.
+// One stop: light the lamp (if `lamp`), walk to (x, z) (skipped when `walk`
+// is false), turn to the view or to coil `aim` - 1 (when `aim` > 0), wait
+// `waitSeconds` (time passes; the sun moves), and take a shot.
 struct TourStop {
     bool walk;
     float x, z;
     float yaw, pitch;
     int waitSeconds;
+    bool lamp;
+    int aim;
     const char* name;  // screenshot file name, or nullptr for no shot
 };
 
 // From your door past the well and the potter's yard, down the path to the
-// ghat, then sit on the steps while the sun goes down.
+// ghat, then sit on the steps while the sun goes down. At night, walk back up
+// the path: see the first snake in the dark, then light the lamp and look at
+// each one closely until it is a rope.
 const TourStop kTour[] = {
-    {false, 0, 0, 0.9f, -0.03f, 0, "01-your-door"},
-    {true, -1.0f, 4.5f, 0.75f, -0.22f, 0, "02-well"},
-    {true, -1.5f, -3.0f, 0, 0, 0, nullptr},
-    {true, 6.0f, -6.0f, 0.2f, -0.12f, 0, "03-potters-yard"},
-    {true, 14.0f, -1.0f, 0, 0, 0, nullptr},
-    {true, 23.5f, 0.0f, kPi / 2, -0.15f, 0, "04-ghat"},
-    {false, 0, 0, -2.95f, 0.28f, 0, "05-bird-tree"},
-    {false, 0, 0, -kPi / 2, -0.04f, 0, "06-village-from-ghat"},
-    {true, 29.5f, 0.0f, kPi / 2 - 0.35f, 0.03f, 0, nullptr},
-    {false, 0, 0, kPi / 2 - 0.35f, 0.03f, -1, "07-sunset"},
-    {false, 0, 0, kPi / 2 - 0.35f, 0.05f, -2, "08-night"},
+    {false, 0, 0, 0.9f, -0.03f, 0, false, 0, "01-your-door"},
+    {true, -1.0f, 4.5f, 0.75f, -0.22f, 0, false, 0, "02-well"},
+    {true, -1.5f, -3.0f, 0, 0, 0, false, 0, nullptr},
+    {true, 6.0f, -6.0f, 0.2f, -0.12f, 0, false, 0, "03-potters-yard"},
+    {true, 14.0f, -1.0f, 0, 0, 0, false, 0, nullptr},
+    {true, 23.5f, 0.0f, kPi / 2, -0.15f, 0, false, 0, "04-ghat"},
+    {false, 0, 0, -2.95f, 0.28f, 0, false, 0, "05-bird-tree"},
+    {false, 0, 0, -kPi / 2, -0.04f, 0, false, 0, "06-village-from-ghat"},
+    {true, 29.5f, 0.0f, kPi / 2 - 0.35f, 0.03f, 0, false, 0, nullptr},
+    {false, 0, 0, kPi / 2 - 0.35f, 0.03f, -1, false, 0, "07-sunset"},
+    {false, 0, 0, kPi / 2 - 0.35f, 0.05f, -2, false, 0, "08-night"},
+    {true, 26.5f, 2.6f, 0, 0, 3, false, 3, "09-snake-on-the-path"},
+    {true, 24.0f, 3.2f, 0, 0, 0, true, 3, "10-lamp-on-the-snake"},
+    {false, 0, 0, 0, 0, 2, false, 3, "11-rope"},
+    {true, 19.4f, 4.1f, 0, 0, 3, false, 2, nullptr},
+    {true, 14.4f, 5.1f, 0, 0, 3, false, 1, nullptr},
+    {false, 0, 0, 1.75f, -0.3f, 1, false, 0, "12-fear-gone"},
 };
 
 // Waits are given as seconds, or as -1 "until 6:00 pm" and -2 "until 7:20 pm".
@@ -105,6 +117,13 @@ int runTour(strata::Engine& engine, const Args& args) {
     World w = newWorld(args.seed);
     bridge::Scene scene(engine);
     for (const TourStop& stop : kTour) {
+        if (stop.lamp && !w.lampLit) {
+            Input in;
+            in.yaw = w.player.yaw;
+            in.pitch = w.player.pitch;
+            in.toggleLamp = true;
+            tick(w, in);
+        }
         if (stop.walk) {
             bool arrived = false;
             for (int t = 0; t < 120 * kTickRate && !arrived; ++t) {
@@ -123,8 +142,17 @@ int runTour(strata::Engine& engine, const Args& args) {
             }
         }
         // Turn to the view over a second, then wait.
+        float yaw = stop.yaw, pitch = stop.pitch;
+        if (stop.aim > 0) {
+            const Vec2 c = valley::kCoils[stop.aim - 1];
+            const float dx = c.x - w.player.x, dz = c.z - w.player.z;
+            const float dy = valley::groundHeight(c.x, c.z) + 0.1f -
+                             (valley::walkHeight(w.player.x, w.player.z) + valley::kEyeHeight);
+            yaw = std::atan2(dx, -dz);
+            pitch = std::atan2(dy, std::sqrt(dx * dx + dz * dz));
+        }
         const float yaw0 = w.player.yaw, pitch0 = w.player.pitch;
-        float dyaw = stop.yaw - yaw0;
+        float dyaw = yaw - yaw0;
         while (dyaw > kPi) dyaw -= 2 * kPi;
         while (dyaw < -kPi) dyaw += 2 * kPi;
         const int turn = kTickRate, wait = waitTicks(w, stop.waitSeconds);
@@ -132,30 +160,40 @@ int runTour(strata::Engine& engine, const Args& args) {
             const float k = t < turn ? static_cast<float>(t + 1) / turn : 1.0f;
             Input in;
             in.yaw = yaw0 + dyaw * k;
-            in.pitch = pitch0 + (stop.pitch - pitch0) * k;
+            in.pitch = pitch0 + (pitch - pitch0) * k;
             tick(w, in);
         }
         if (!stop.name) continue;
+        scene.update(w);
         play::render(engine, w, false);
         engine.present();
         const float elevation = play::setSky(engine, w);
-        std::printf("%-22s player (%6.2f, %6.2f) at %s, sun %5.1f deg\n", stop.name, w.player.x, w.player.z,
-                    clockText(w).c_str(), elevation);
+        std::printf("%-22s player (%6.2f, %6.2f) at %s, sun %5.1f deg, fear %.2f\n", stop.name, w.player.x,
+                    w.player.z, clockText(w).c_str(), elevation, w.fear);
         if (!args.framesDir.empty()) engine.saveScreenshotPng(args.framesDir + "/" + stop.name + ".png");
     }
     std::printf("%zu meshes, fingerprint %016" PRIx64 "\n", scene.meshCount(), fingerprint(w));
+    for (const Coil& c : w.coils)
+        if (!c.seenThrough) {
+            std::fprintf(stderr, "atman: the tour ended with a snake still on the path\n");
+            return 1;
+        }
+    if (!w.fearRetired) {
+        std::fprintf(stderr, "atman: the tour ended with the fear meter still on the HUD\n");
+        return 1;
+    }
     return 0;
 }
 
 // ---- playing in a window
 
-constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kLShift = 225, kRShift = 229, kEscape = 41, kF1 = 58;
+constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kF = 9, kLShift = 225, kRShift = 229, kEscape = 41, kF1 = 58;
 
 int runGame(strata::Engine& engine, const Args& args) {
     World w = newWorld(args.seed);
     bridge::Scene scene(engine);
     bool keys[512] = {};
-    bool running = true, captured = false, help = true;
+    bool running = true, captured = false, help = true, toggleLamp = false;
     float yaw = w.player.yaw, pitch = w.player.pitch;
     auto capture = [&](bool on) {
         engine.setRelativeMouseMode(on);
@@ -177,6 +215,7 @@ int runGame(strata::Engine& engine, const Args& args) {
                         if (captured) capture(false);
                         else running = false;
                     } else if (e.scancode == kF1) help = !help;
+                    else if (e.scancode == kF && !e.repeat) toggleLamp = true;
                     break;
                 case STRATA_EVENT_KEY_UP:
                     if (e.scancode >= 0 && e.scancode < 512) keys[e.scancode] = false;
@@ -206,8 +245,11 @@ int runGame(strata::Engine& engine, const Args& args) {
             in.hurry = keys[kLShift] || keys[kRShift];
             in.yaw = yaw;
             in.pitch = pitch;
+            in.toggleLamp = toggleLamp;
+            toggleLamp = false;
             tick(w, in);
         }
+        scene.update(w);
         play::render(engine, w, help);
         engine.present();
     }

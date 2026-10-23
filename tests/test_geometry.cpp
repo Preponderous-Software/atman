@@ -64,6 +64,38 @@ int main() {
         blob.blob({0, 5, 0}, 2, 0.7f, {});
         CHECK(valid(blob));
         CHECK(outward(blob, {0, 5, 0}) == 1.0f);
+        // A tilted box faces outward as well as an upright one.
+        MeshData tilted;
+        tilted.orientedBox({0, 0, 0}, {0.6f, 0, -0.8f}, {0, 1, 0}, {1.6f, 0, 1.2f}, {});
+        CHECK(valid(tilted));
+        CHECK(outward(tilted, {1.1f, 0.5f, 0.2f}) == 1.0f);
+    }
+
+    // Each coil, as snake or rope, lies on the ground where the rules put it.
+    // The snake raises its head; the rope lies flat. Same spiral, same place.
+    for (int i = 0; i < V::kCoilCount; ++i) {
+        const MeshData snake = buildSnake(i), rope = buildRope(i);
+        CHECK(valid(snake));
+        CHECK(valid(rope));
+        const Vec2 c = V::kCoils[i];
+        const float g = V::groundHeight(c.x, c.z);
+        auto extent = [&](const MeshData& m, float& top, float& reach) {
+            top = -1e9f;
+            reach = 0;
+            for (size_t v = 0; v < m.vertexCount(); ++v) {
+                const float x = m.positions[v * 3], y = m.positions[v * 3 + 1], z = m.positions[v * 3 + 2];
+                top = std::fmax(top, y - g);
+                reach = std::fmax(reach, std::sqrt((x - c.x) * (x - c.x) + (z - c.z) * (z - c.z)));
+            }
+        };
+        float snakeTop, snakeReach, ropeTop, ropeReach;
+        extent(snake, snakeTop, snakeReach);
+        extent(rope, ropeTop, ropeReach);
+        CHECK(snakeTop > 0.3f);
+        CHECK(ropeTop < 0.15f);
+        CHECK(ropeReach < V::kCoilRadius + 0.1f);
+        CHECK(snakeReach < V::kCoilRadius + 0.15f);
+        CHECK(ropeReach > V::kCoilRadius - 0.1f);
     }
 
     // A house faces outward too (its roof and gables included).

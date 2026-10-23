@@ -18,16 +18,89 @@ constexpr float kThirstPerMinute = 1.0f / (6 * 60);
 constexpr float kHungerPerMinute = 1.0f / (10 * 60);
 constexpr float kTirednessPerMinute = 1.0f / (14 * 60);
 
+// The Rope. Fear rises within kFearRadius of a snake, and nobody walks closer
+// than kBalkRadius to one. The lamp reaches kLampReach; looking at a snake by
+// its light for kGazeSeconds is enough to see what it is.
+constexpr float kFearRadius = 9.0f;
+constexpr float kBalkRadius = 1.4f;
+constexpr float kLampReach = 3.5f;
+constexpr float kGazeSeconds = 2.0f;
+constexpr float kFearRisePerSecond = 0.6f;
+constexpr float kFearFallPerSecond = 0.25f;
+constexpr float kCoilTop = 0.1f;  // the height a look aims at, above the ground
+constexpr float kCoilRadiusLook = valley::kCoilRadius + 0.2f;  // a little slack around the coil
+
+float distanceTo(const Player& p, Vec2 c) {
+    const float dx = p.x - c.x, dz = p.z - c.z;
+    return std::sqrt(dx * dx + dz * dz);
+}
+
+// A step from (x0, z0) to (x1, z1) is refused if it takes the player closer to
+// a snake that is already too close. Steps away are always allowed, so dusk
+// falling with the player beside a coil never traps them.
+bool balks(const World& w, float x0, float z0, float x1, float z1) {
+    for (int i = 0; i < valley::kCoilCount; ++i) {
+        if (!snakeVisible(w, i)) continue;
+        const Vec2 c = valley::kCoils[i];
+        const float d0 = (x0 - c.x) * (x0 - c.x) + (z0 - c.z) * (z0 - c.z);
+        const float d1 = (x1 - c.x) * (x1 - c.x) + (z1 - c.z) * (z1 - c.z);
+        if (d1 < kBalkRadius * kBalkRadius && d1 < d0) return true;
+    }
+    return false;
+}
+
+bool stopped(const World& w, float x, float z) {
+    return valley::blocked(x, z) || balks(w, w.player.x, w.player.z, x, z);
+}
+
 // Moves the player by (dx, dz), sliding along whatever blocks the way: each
 // axis is tried on its own, so walking into a wall at an angle follows it.
-void move(Player& p, float dx, float dz) {
-    if (!valley::blocked(p.x + dx, p.z + dz)) {
+void move(World& w, float dx, float dz) {
+    Player& p = w.player;
+    if (!stopped(w, p.x + dx, p.z + dz)) {
         p.x += dx;
         p.z += dz;
         return;
     }
-    if (!valley::blocked(p.x + dx, p.z)) p.x += dx;
-    else if (!valley::blocked(p.x, p.z + dz)) p.z += dz;
+    if (!stopped(w, p.x + dx, p.z)) p.x += dx;
+    else if (!stopped(w, p.x, p.z + dz)) p.z += dz;
+}
+
+// One tick of the chapter: fear follows the nearest snake, and lamplit looking
+// sees through it. Nothing else changes when a snake becomes a rope: no score,
+// no standing, no quest. That is the teaching (see MVP.md, "No reward").
+void rope(World& w) {
+    const float dt = 1.0f / kTickRate;
+    if (w.fearRetired || !isDusk(w)) return;
+
+    const int looked = w.lampLit ? lookedAtCoil(w) : -1;
+    for (int i = 0; i < valley::kCoilCount; ++i) {
+        Coil& c = w.coils[i];
+        if (c.seenThrough) continue;
+        c.gaze = i == looked ? c.gaze + dt : clampf(c.gaze - dt, 0.0f, kGazeSeconds);
+        if (c.gaze >= kGazeSeconds) {
+            c.seenThrough = true;
+            c.gaze = 0;
+            w.codex[static_cast<int>(CodexId::RopeAndSnake)] = true;
+        }
+    }
+
+    float target = 0;
+    bool anySnake = false;
+    for (int i = 0; i < valley::kCoilCount; ++i) {
+        if (!snakeVisible(w, i)) continue;
+        anySnake = true;
+        const float d = distanceTo(w.player, valley::kCoils[i]);
+        const float closeness = clampf(1.0f - (d - kBalkRadius) / (kFearRadius - kBalkRadius), 0.0f, 1.0f);
+        if (closeness > target) target = closeness;
+    }
+    if (!anySnake) {
+        w.fear = 0;
+        w.fearRetired = true;
+        return;
+    }
+    if (w.fear < target) w.fear = clampf(w.fear + kFearRisePerSecond * dt, 0.0f, target);
+    else w.fear = clampf(w.fear - kFearFallPerSecond * dt, target, 1.0f);
 }
 
 struct Fnv {
@@ -71,13 +144,47 @@ void tick(World& w, const Input& in) {
     const float step = (in.hurry ? kHurrySpeed : kWalkSpeed) / kTickRate;
     const float sy = detSin(p.yaw), cy = detCos(p.yaw);
     // Forward is (sin yaw, -cos yaw) on the ground; right is (cos yaw, sin yaw).
-    move(p, (sy * f + cy * s) * step, (-cy * f + sy * s) * step);
+    move(w, (sy * f + cy * s) * step, (-cy * f + sy * s) * step);
+    if (in.toggleLamp) w.lampLit = !w.lampLit;
 
     const float minutes = static_cast<float>(kGameMinutesPerSecond / kTickRate);
     w.needs.thirst = clampf(w.needs.thirst + kThirstPerMinute * minutes, 0.0f, 1.0f);
     w.needs.hunger = clampf(w.needs.hunger + kHungerPerMinute * minutes, 0.0f, 1.0f);
     w.needs.tiredness = clampf(w.needs.tiredness + kTirednessPerMinute * minutes, 0.0f, 1.0f);
     ++w.tick;
+    rope(w);
+}
+
+bool isDusk(const World& w) {
+    const int minute = static_cast<int>(gameMinutes(w)) % 1440;
+    return minute >= kDuskMinute || minute < kDawnMinute;
+}
+
+bool snakeVisible(const World& w, int i) { return isDusk(w) && !w.coils[i].seenThrough; }
+
+bool fearShown(const World& w) { return isDusk(w) && !w.fearRetired; }
+
+int lookedAtCoil(const World& w) {
+    const Player& p = w.player;
+    const Vec3 eye{p.x, valley::walkHeight(p.x, p.z) + valley::kEyeHeight, p.z};
+    const Vec3 d = lookDirection(p.yaw, p.pitch);
+    int best = -1;
+    float bestT = 0;
+    for (int i = 0; i < valley::kCoilCount; ++i) {
+        const Vec2 c = valley::kCoils[i];
+        if (distanceTo(p, c) > kLampReach) continue;
+        const Vec3 v = Vec3{c.x, valley::groundHeight(c.x, c.z) + kCoilTop, c.z} - eye;
+        const float t = dot(v, d);
+        if (t <= 0) continue;
+        // How far the line of sight passes from the coil's centre.
+        const float miss2 = dot(v, v) - t * t;
+        if (miss2 > kCoilRadiusLook * kCoilRadiusLook) continue;
+        if (best < 0 || t < bestT) {
+            best = i;
+            bestT = t;
+        }
+    }
+    return best;
 }
 
 double gameMinutes(const World& w) {
@@ -119,6 +226,14 @@ uint64_t fingerprint(const World& w) {
     f.add(w.needs.tiredness);
     f.add(w.standing);
     for (bool d : w.questDone) f.add(d);
+    f.add(w.lampLit);
+    f.add(w.fear);
+    f.add(w.fearRetired);
+    for (const Coil& c : w.coils) {
+        f.add(c.seenThrough);
+        f.add(c.gaze);
+    }
+    for (bool c : w.codex) f.add(c);
     return f.h;
 }
 

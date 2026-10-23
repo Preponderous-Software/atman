@@ -30,6 +30,9 @@ struct MeshData {
     void triangle(Vec3 a, Vec3 b, Vec3 c, Rgb color);
     // An axis-aligned box with all six faces.
     void box(Vec3 lo, Vec3 hi, Rgb color);
+    // A box from corner `o` along edges ex, ey, ez (a right-handed set:
+    // ex x ey points along ez).
+    void orientedBox(Vec3 o, Vec3 ex, Vec3 ey, Vec3 ez, Rgb color);
     // An upright cylinder (or a cone, if the radii differ) with a top cap.
     void cylinder(Vec3 base, float radiusBottom, float radiusTop, float height, int segments, Rgb color);
     // A low-poly blob: a sphere of `radius`, squashed vertically by `squash`.
@@ -54,5 +57,10 @@ MeshData buildVillage();
 
 // The river's surface.
 MeshData buildWater();
+
+// Coil i on the path (valley::kCoils), as it is seen: a snake with its head
+// raised, or the rope it always was. Both follow the same spiral.
+MeshData buildSnake(int i);
+MeshData buildRope(int i);
 
 }  // namespace atman::bridge

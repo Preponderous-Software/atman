@@ -1,10 +1,11 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestone M1): the valley's ground, river and village layout with walking and collision, the game
-clock and the body's needs (`src/sim/`), the terrain grid and village meshes (`src/bridge/geometry.*`),
-their upload to Strata (`src/bridge/scene.*`), the sun, camera and HUD (`src/play/view.*`) and the
-desktop app with its headless tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
+(milestones M1 and M2): the valley's ground, river and village layout with walking and collision,
+the game clock, the body's needs and chapter 1, The Rope (`src/sim/`); the terrain grid, village,
+snake and rope meshes (`src/bridge/geometry.*`) and their upload to Strata (`src/bridge/scene.*`);
+the sun, the lamp, the camera and the HUD (`src/play/view.*`); and the desktop app with its headless
+tour (`app/main.cpp`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
 
@@ -40,7 +41,7 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | Path | Contents |
 |---|---|
 | `src/sim/` | Engine-free, deterministic rules: the valley, chores, the fear meter, snakes and ropes, pots and clay, chapter state, the clock, the autopilot |
-| `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`). From M2, triangle tags map a pick back to a game object. |
+| `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it |
 | `src/play/` | The sun, camera and HUD (`view.*`). Later a `Session` that drives the game for any front end: input, codex screen, autosave |
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept |
 | `app/main.cpp` | Desktop entry point |
@@ -71,8 +72,8 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Village, pots, the well | Meshes, textured meshes, cube shadow maps | 1.4 / 1.7 |
 | Dusk and morning | `strata_solar_position` (NOAA) and `strata_set_sun_direction` | 1.6 |
 | The lamp | Point lights (up to 32) | 1.1 |
-| Looking closer at a snake | `strata_raycast_meshes` returns the mesh and triangle | 1.8 |
-| Snake becomes rope | The bridge swaps the coil's texture with `strata_update_texture_rgba8` | 1.8 |
+| Looking closer at a snake | The sim's own line-of-sight test against each coil, so the rule stays deterministic and testable without a GPU (`strata_raycast_meshes`, ABI 1.8, is kept for picking that needs real triangles) | — |
+| Snake becomes rope | The bridge removes the coil's snake mesh and adds its rope mesh, built on the same spiral | 1.4 |
 | Clay lens | Textured meshes re-tinted to one clay texture | 1.7 |
 | Space in the pots | Soft points (`STRATA_POINT_SOFT`) with alpha blending, unaffected when the pot mesh is removed | 1.5 |
 | HUD and its retirement | Overlay text and lines with alpha, faded out by the play layer | 1.5 |
@@ -122,7 +123,7 @@ save is kept. A save that fails its checksum is refused with a message, and the 
 | Rules tests | Each chapter's facts change only the way the rules say |
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
 | Playthrough | The autopilot finishes the MVP and lands on the pinned fingerprint |
-| No-reward check | No score, achievement or reward event exists in the sim's event list |
+| No-reward check | Seeing through a snake changes the coil and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date |
 | Saves | Round trip; bit flips are rejected; the previous save survives |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |

@@ -23,6 +23,9 @@ void setLighting(strata::Engine& engine);
 // Places the sun for the game's time; returns its elevation in degrees.
 float setSky(strata::Engine& engine, const World& w);
 
+// The carried lamp, as a point light, while it is lit.
+void setLamp(strata::Engine& engine, const World& w);
+
 StrataCamera playerCamera(const World& w, float aspect);
 
 // One line of the HUD's text, top to bottom.
@@ -31,7 +34,8 @@ struct HudLine {
     bool heading = false;
 };
 
-// The HUD's left column: the time, the body's needs, standing, the quest log.
+// The HUD's left column: the time, the body's needs (and fear, while there is
+// a snake), the lamp, standing, the quest log.
 std::vector<HudLine> hudLines(const World& w);
 
 // "[#####.....]" for a value in 0..1.

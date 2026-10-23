@@ -82,6 +82,13 @@ constexpr std::array<Vec2, kTreeCount> kTrees = {{
 }};
 constexpr float kTreeTrunkRadius = 0.4f;
 
+// Where the coils lie at dusk: on the worn path from the village to the ghat
+// (the path runs along z = 4 - 0.2 (x - 20)). From the ghat they come in the
+// order 2, 1, 0.
+constexpr int kCoilCount = 3;
+constexpr std::array<Vec2, kCoilCount> kCoils = {{{12.0f, 5.6f}, {17.0f, 4.6f}, {21.5f, 3.7f}}};
+constexpr float kCoilRadius = 0.4f;
+
 // Where a new game starts: outside your house, looking east toward the river.
 constexpr Vec2 kStart{-8.0f, 15.0f};
 constexpr float kStartYaw = kPi / 2;
