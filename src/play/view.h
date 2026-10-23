@@ -51,8 +51,8 @@ struct HudLine {
 };
 
 // The HUD's left column: the date and time, the body's needs (and fear, while
-// there is a snake), the lamp, what the player carries, standing, the quest
-// log, and the names of the pots the player has made. In the after-mode it is
+// there is a snake), the lamp, what the player carries, standing, what to do
+// next, the quest log, and the names of the pots the player has made. In the after-mode it is
 // quieter: no standing, and a line saying whether the player is living as
 // the avatar or watching it.
 std::vector<HudLine> hudLines(const World& w, bool watching = false);

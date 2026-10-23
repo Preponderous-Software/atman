@@ -154,5 +154,33 @@ int main() {
         CHECK(usable(w) == Use::None);
     }
 
+    // What the HUD says to do next, from the first afternoon to the after-mode.
+    {
+        World w = newWorld(1);
+        auto atMinute = [&](int minute) {
+            w.tick = static_cast<int64_t>((minute - kStartMinute) / kGameMinutesPerSecond) * kTickRate;
+        };
+        CHECK(nextStep(w) == "Throw pots at the potter's wheel (0 of 3)");
+        w.potsMade = 2;
+        CHECK(nextStep(w) == "Throw pots at the potter's wheel (2 of 3)");
+        w.potsMade = kPotsForLens;
+        CHECK(nextStep(w).find("clay lens") != std::string::npos);
+        w.codex[static_cast<int>(CodexId::ClayAndPots)] = true;
+        CHECK(nextStep(w).find("Break") == 0);
+        w.codex[static_cast<int>(CodexId::PotSpace)] = true;
+        CHECK(nextStep(w) == "Wait on the ghat steps for the sunset");
+        atMinute(19 * 60);
+        CHECK(isDusk(w));
+        CHECK(nextStep(w) == "Walk back to the village along the path");
+        w.codex[static_cast<int>(CodexId::RopeAndSnake)] = true;
+        w.fearRetired = true;
+        CHECK(teachingsDone(w));
+        CHECK(nextStep(w).find("Go home and sleep") == 0);
+        moveTo(w, yourDoorstep());
+        use(w);
+        CHECK(w.after);
+        CHECK(nextStep(w) == "Nothing more is asked of you");
+    }
+
     TEST_MAIN_END();
 }

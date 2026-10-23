@@ -275,6 +275,9 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     if (w.carry != Carry::Nothing) lines.push_back({std::string("Carrying  ") + (w.carry == Carry::Water ? "water" : "clay")});
     if (!w.after) lines.push_back({std::string("Standing  ") + standingText(w.standing)});
     lines.push_back({""});
+    lines.push_back({"NEXT", true});
+    lines.push_back({nextStep(w)});
+    lines.push_back({""});
     lines.push_back({"QUESTS", true});
     for (int i = 0; i < kQuestCount; ++i)
         lines.push_back({std::string(w.questDone[i] ? "[x] " : "[ ] ") + questText(static_cast<QuestId>(i))});
