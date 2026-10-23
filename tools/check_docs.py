@@ -33,7 +33,8 @@ def anchors(path):
 
 
 def main():
-    docs = sorted(p for p in ROOT.rglob("*.md") if ".git" not in p.parts)
+    skip = lambda p: any(part == ".git" or part.startswith("build") or part == "_deps" for part in p.relative_to(ROOT).parts)
+    docs = sorted(p for p in ROOT.rglob("*.md") if not skip(p))
     defined = set(DEFINED.findall((ROOT / "RESEARCH.md").read_text(encoding="utf-8")))
     problems = []
     cites = 0

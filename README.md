@@ -1,7 +1,7 @@
 # Atman
 
 A small 3D game about Advaita Vedānta: the teaching that the self (Ātman) is the absolute
-(Brahman), and that liberation (mokṣa) is a recognition, not a reward. Atman is planned to run on
+(Brahman), and that liberation (mokṣa) is a recognition, not a reward. Atman runs on
 [Strata](https://github.com/Preponderous-Software/strata), a small C++ engine.
 
 You wake in a river village with a body, a name and a list of chores. At dusk a snake on the path
@@ -10,8 +10,46 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: design only.** Nothing is built yet. The documents below describe the game, the first
-playable slice, and how it will be built.
+**Status: milestone M1 of the [MVP](MVP.md).** You can walk the valley in first person: the
+village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
+sunset into night, with the sun where it really is over the middle Ganges plain on the spring
+equinox. The HUD shows the time, the body's needs, your standing and the quest log. Nothing can be
+done yet beyond walking and looking; the teachings start in M2.
+
+| The well, at a quarter to five | The ghat steps down to the river |
+|---|---|
+| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
+
+| The village from the ghat | Sunset over the river, just after six |
+|---|---|
+| ![Looking west from the ghat over the village toward the low sun](docs/images/m1-village-from-ghat.jpg) | ![The river at sunset, the sky orange over dark hills](docs/images/m1-sunset.jpg) |
+
+*Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
+
+## Build and play
+
+Atman builds with CMake 3.24 or newer and a C++17 compiler. Strata, and the SDL3 it uses, are
+fetched and built along with it, at the commit `ATMAN_STRATA_REF` in `CMakeLists.txt` pins
+(Strata v0.4.0).
+
+```sh
+cmake -S . -B build
+cmake --build build --config Release
+./build/atman               # Windows: build\Release\atman.exe
+ctest --test-dir build -C Release
+```
+
+On Linux, SDL3 needs the X11 development packages (`libx11-dev libxext-dev libxcursor-dev libxi-dev
+libxfixes-dev libxrandr-dev libxss-dev`). `cmake -DATMAN_WITH_STRATA=OFF` builds only the
+simulation and its tests, with no engine.
+
+| Input | Action |
+|---|---|
+| Mouse | Look |
+| W A S D | Walk |
+| Shift | Hurry |
+| F1 | Show or hide the controls |
+| Esc | Free the mouse (Esc again quits) |
 
 ## Documents
 
