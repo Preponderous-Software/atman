@@ -67,7 +67,8 @@ std::string bar(float value, int width);
 // Draws one frame (not presented). `help` adds the controls line. With
 // `watching`, the view is from that camera and the HUD says so. `noText`
 // leaves the words off the canvas (a narrow browser page shows them itself).
+// `message` (saved, loaded, refused) shows above the middle of the screen.
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "",
-            const FreeCamera* watching = nullptr, bool noText = false);
+            const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "");
 
 }  // namespace atman::play

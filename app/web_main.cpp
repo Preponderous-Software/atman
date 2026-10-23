@@ -11,7 +11,11 @@
 //    own text box, so a phone's keyboard comes up (atman_name()).
 //  - On a narrow page the canvas shows no words: the page shows the HUD, the
 //    crosshair and the prompt as text (atman_status()).
-//  - There are no saves yet (MVP milestone M7).
+//  - Saves are the desktop format (src/save: checksummed, previous save kept),
+//    written to /atman-save/default, which the page mounts on IndexedDB
+//    (IDBFS) and loads before main() runs. Every save is flushed to IndexedDB
+//    at once (Module.flushSaves in web/shell.html). The browser's saves stay
+//    in that browser: they are never sent anywhere.
 #include <cinttypes>
 #include <cstdio>
 #include <memory>
@@ -37,6 +41,8 @@ struct Game {
     double last = 0;
     std::string statusJson;
 };
+
+constexpr const char* kSlot = "/atman-save/default";
 
 Game* g = nullptr;
 
@@ -92,6 +98,11 @@ EMSCRIPTEN_KEEPALIVE void atman_name(const char* text) {
 EMSCRIPTEN_KEEPALIVE void atman_captured(int on) {
     if (g) g->session->setCaptured(on != 0);
 }
+// Saves now (the page calls this when it is hidden); 1 on success.
+EMSCRIPTEN_KEEPALIVE int atman_save() { return g && g->session->save("Saved.") ? 1 : 0; }
+EMSCRIPTEN_KEEPALIVE void atman_restart() {
+    if (g) g->session->restart();
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }
@@ -127,6 +138,8 @@ EMSCRIPTEN_KEEPALIVE const char* atman_status() {
     o += ",\"codexOpen\":" + std::to_string(codex::openEntries(w).size());
     o += ",\"typing\":";
     jsonString(o, s.typing());
+    o += ",\"message\":";
+    jsonString(o, s.message());
     o += ",\"prompt\":";
     jsonString(o, s.watching() ? std::string() : play::prompt(w, s.typing()));
     o += ",\"made\":[";
@@ -183,6 +196,8 @@ int main() {
 
     play::SessionOptions o;
     o.browser = true;
+    o.slot = kSlot;
+    o.afterSave = [] { emscripten_run_script("if (Module.flushSaves) Module.flushSaves()"); };
     g->session = std::make_unique<play::Session>(*g->engine, o);
 
     g->last = emscripten_get_now() / 1000.0;

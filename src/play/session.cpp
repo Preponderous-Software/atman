@@ -1,5 +1,7 @@
 #include "play/session.h"
 
+#include "save/save.h"
+
 namespace atman::play {
 
 namespace {
@@ -8,7 +10,10 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
+constexpr int kF5 = 62, kF9 = 66;
 constexpr float kLookPerPixel = 0.0025f;
+constexpr double kAutosaveSeconds = 120;
+constexpr double kMessageSeconds = 5;
 constexpr float kHurryStick = 0.95f;
 
 }  // namespace
@@ -16,10 +21,59 @@ constexpr float kHurryStick = 0.95f;
 Session::Session(strata::Engine& engine, const SessionOptions& options)
     : engine_(engine), options_(options), w_(newWorld(options.seed)), scene_(engine), pages_(engine) {
     watching_ = following_ = options_.autopilot;
+    World start = w_;
+    if (!options_.slot.empty() && !options_.fresh && hasSave(options_.slot)) {
+        World loaded;
+        const LoadResult r = loadSave(options_.slot, loaded);
+        if (r.ok) start = loaded;
+        say(r.ok ? r.message : r.message + " A new game was started.");
+    }
+    adopt(start);
+    if (!options_.browser) capture(true);
+}
+
+void Session::adopt(const World& w) {
+    w_ = w;
     cam_ = cameraAtEyes(w_);
     yaw_ = w_.player.yaw;
     pitch_ = w_.player.pitch;
-    if (!options_.browser) capture(true);
+    pilot_ = Autopilot{};
+    once_ = Input{};
+    typing_.clear();
+    pending_ = 0;
+    if (pages_.isOpen()) pages_.close();
+}
+
+void Session::say(const std::string& text) {
+    message_ = text;
+    messageUntil_ = clock_ + kMessageSeconds;
+}
+
+bool Session::save(const char* note) {
+    if (options_.slot.empty()) return false;
+    std::string why;
+    if (!writeSave(options_.slot, w_, &why)) {
+        say("Could not save: " + why);
+        return false;
+    }
+    lastSave_ = clock_;
+    if (note) say(note);
+    if (options_.afterSave) options_.afterSave();
+    return true;
+}
+
+void Session::load() {
+    if (options_.slot.empty()) return;
+    World loaded;
+    const LoadResult r = loadSave(options_.slot, loaded);
+    if (r.ok) adopt(loaded);
+    say(r.message);
+}
+
+void Session::restart() {
+    adopt(newWorld(options_.seed));
+    watching_ = following_ = false;
+    say("A new day in the village.");
 }
 
 void Session::capture(bool on) {
@@ -71,6 +125,15 @@ void Session::onKeyDown(int scancode, bool repeat) {
     }
     if (scancode == kF1) {
         help_ = !help_;
+        return;
+    }
+    if (scancode == kF5 && !repeat) {
+        if (options_.slot.empty()) say("This game does not save (it was started with --autopilot).");
+        else save("Saved.");
+        return;
+    }
+    if (scancode == kF9 && !repeat) {
+        load();
         return;
     }
     if (w_.naming >= 0) {
@@ -147,11 +210,14 @@ void Session::step() {
 }
 
 void Session::frame(double dt) {
+    clock_ += dt;
+    if (!message_.empty() && clock_ > messageUntil_) message_.clear();
+    if (!options_.slot.empty() && clock_ - lastSave_ > kAutosaveSeconds) save(nullptr);
     const double speed = options_.speed;
     pending_ += dt * speed;
     if (pending_ > 0.25 * speed) pending_ = 0.25 * speed;  // after a stall, do not try to catch up
     if (pages_.isOpen()) {
-        pending_ = 0;  // no time passes while the codex is open
+        pending_ = 0;  // no time passes while the codex is open (the autosave still runs)
         pages_.render(w_);
         return;
     }
@@ -167,7 +233,7 @@ void Session::frame(double dt) {
     }
     if (watching_ && following_) cam_ = cameraBehind(w_);
     scene_.update(w_, watching_);
-    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_);
+    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_);
 }
 
 }  // namespace atman::play

@@ -1,14 +1,14 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestones M1 to M6): the valley's ground, river and village layout with walking and collision,
+(milestones M1 to M7): the valley's ground, river and village layout with walking and collision,
 the game clock, the body's needs, chapter 1, The Rope, chapter 2, Clay and Pots, the prologue's
 chores, sleep and the after-mode, and the autopilot with its pinned playthrough (`src/sim/`);
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
 the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
 (`content/`, `tools/plates/`, `src/codex/`) and its screen (`src/play/codex_screen.*`); and the
-desktop app with its headless tour (`app/main.cpp`), and the browser game (`app/web_main.cpp`,
+saves (`src/save/`); the desktop app with its headless tour (`app/main.cpp`), and the browser game (`app/web_main.cpp`,
 `web/`; see [docs/WEB.md](docs/WEB.md)), which share one game session (`src/play/session.*`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
@@ -131,9 +131,18 @@ the translator line says the translation is a working one made for Atman and awa
 
 ## Saves
 
-The MVP uses Kindling's approach: a small binary format with a magic number, a version and a
-SHA-256 over the body. It is written to a temporary file and renamed into place, and the previous
-save is kept. A save that fails its checksum is refused with a message, and the previous one loads.
+Saves use Kindling's format (`src/save/`): the magic `ATMANSAV`, a version, the payload length, the
+World field by field in little-endian, and a SHA-256 over the payload. The checksum is checked
+before a byte of the payload is read, every read is bounds-checked, and a decoded World must be
+plausible (finite numbers, a possible clock, pots that match the board, names in plain text)
+before the rules run on it. A save is written to a temporary file and renamed into place, and the
+save it replaces is kept as the previous save. A damaged current save is refused with a message
+and the previous one loads; saving over a damaged save never replaces a good previous one.
+
+The session (`src/play/session.*`) loads the slot on start, saves every two minutes, on F5 and on
+quit, and loads on F9. What is only on screen is not saved: the codex page, the free camera and a
+half-typed name. The desktop slot is `%APPDATA%\Atman\default` or `~/.local/share/atman/default`; the
+browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md)).
 
 ## Testing
 
@@ -144,7 +153,7 @@ save is kept. A save that fails its checksum is refused with a message, and the 
 | Playthrough | The autopilot plays the MVP from a new game (chores, pots, lens, a broken pot, the snakes, sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
-| Saves | Round trip; bit flips are rejected; the previous save survives |
+| Saves | Round trips at several points of a playthrough (one with a pot waiting for its name); every single-byte flip and a truncation are refused; an impossible World is refused even with a good checksum; the previous save is kept and loads when the current one is damaged; a playthrough saved and loaded in the after-mode still ends on the pinned fingerprint (`tests/test_saves.cpp`); and in the browser a save survives a reload (the smoke test) |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |
 
 ## Engine additions

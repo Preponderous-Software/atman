@@ -65,4 +65,4 @@ Each milestone is one pull request, merged when CI is green.
 | M4 Codex (done) | Verse plates, the codex screen, the other-schools page |
 | M5 After (done) | Autopilot, the after-mode, the pinned playthrough |
 | M6 Browser (done) | A WebGL 2 build on Strata's wasm32 target, deployed to the arcade from CI, with a smoke test in desktop and phone browsers |
-| M7 Saves and Windows | Checksummed saves (on the desktop, and in browser storage on the arcade), Windows CI and a play script |
+| M7 Saves and Windows (done) | Checksummed saves (on the desktop, and in browser storage on the arcade), Windows CI and a play script |

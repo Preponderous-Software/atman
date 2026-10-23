@@ -85,14 +85,25 @@ target_include_directories(atman_codex PUBLIC src)
 target_link_libraries(atman_codex PUBLIC atman_sim PRIVATE atman_stb)
 atman_warnings(atman_codex)
 
+# Saves: the checksummed save format (Kindling's), slot files, and the
+# previous save kept. No engine.
+add_library(atman_save STATIC src/save/save.cpp src/save/sha256.cpp)
+target_include_directories(atman_save PUBLIC src)
+target_link_libraries(atman_save PUBLIC atman_sim)
+atman_warnings(atman_save)
+
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope clay chores autopilot determinism geometry codex)
+  foreach(t movement clock rope clay chores autopilot determinism geometry codex saves)
     add_executable(test_${t} tests/test_${t}.cpp)
-    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex)
+    target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex atman_save)
     target_include_directories(test_${t} PRIVATE tests)
     atman_warnings(test_${t})
-    add_test(NAME ${t} COMMAND test_${t})
+    if(EMSCRIPTEN)
+      # Under Node, the tests read and write the real filesystem.
+      target_link_options(test_${t} PRIVATE -sNODERAWFS=1)
+    endif()
+    add_test(NAME ${t} COMMAND test_${t} "${CMAKE_CURRENT_BINARY_DIR}")
   endforeach()
 endif()
 
@@ -116,7 +127,7 @@ if(ATMAN_WITH_STRATA OR ATMAN_WEB)
 
   add_library(atman_play STATIC src/bridge/scene.cpp src/play/codex_screen.cpp src/play/session.cpp src/play/view.cpp)
   target_include_directories(atman_play PUBLIC src)
-  target_link_libraries(atman_play PUBLIC atman_geometry atman_codex strata::static)
+  target_link_libraries(atman_play PUBLIC atman_geometry atman_codex atman_save strata::static)
   atman_warnings(atman_play)
 
 endif()
@@ -128,7 +139,7 @@ if(ATMAN_WITH_STRATA)
 endif()
 
 # emcmake cmake -S . -B build-web -DATMAN_WITH_STRATA=OFF -DATMAN_WEB=ON: the
-# page is atman.html + .js + .wasm (docs/WEB.md).
+# page is atman.html + .js + .wasm; saves go to IndexedDB (docs/WEB.md).
 if(ATMAN_WEB)
   add_executable(atman-web app/web_main.cpp)
   target_link_libraries(atman-web PRIVATE atman_play)
@@ -136,8 +147,9 @@ if(ATMAN_WEB)
   set_target_properties(atman-web PROPERTIES OUTPUT_NAME atman SUFFIX ".html")
   target_link_options(atman-web PRIVATE
     -sSTACK_SIZE=1MB
-    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_resize,_atman_status"
-    -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,UTF8ToString
+    -lidbfs.js
+    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_save,_atman_restart,_atman_resize,_atman_status"
+    -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,UTF8ToString,FS,IDBFS,addRunDependency,removeRunDependency
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
   set_property(TARGET atman-web APPEND PROPERTY LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
 endif()

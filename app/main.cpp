@@ -1,6 +1,6 @@
 // atman: the game on the Strata engine.
 //
-//   atman [--seed N] [--width W --height H]
+//   atman [--slot DIR] [--new] [--seed N] [--width W --height H]
 //   atman --autopilot [--speed N] [--width W --height H]
 //   atman --headless --tour --frames DIR [--width W --height H]
 //   atman --headless --autopilot [--frames DIR] [--width W --height H]
@@ -9,8 +9,14 @@
 // here (fill, give, dig, drink, eat, sleep), F for the lamp, 1-4 at the wheel
 // to throw a pot (then type its name and press Enter), B to break the pot in
 // view, C for the clay lens, Tab for the codex (Up and Down to choose a
-// page), V in the after-mode to step out and watch (and back in), F1 for
-// help, Esc to free the mouse (Esc again quits).
+// page), V in the after-mode to step out and watch (and back in), F5 to save,
+// F9 to load the last save, F1 for help, Esc to free the mouse (Esc again
+// quits).
+//
+// The game continues from its save in DIR (by default %APPDATA%\Atman\default
+// on Windows, ~/.local/share/atman/default elsewhere), saves every two minutes
+// and on quit, and keeps the save before last; --new starts over (the old save
+// is kept as the previous one). --autopilot never saves.
 //
 // --tour walks a fixed route through the valley into the night, back up the
 // path past the snakes with the lamp, opens the codex, sleeps, and watches the
@@ -31,6 +37,7 @@
 #include "play/codex_screen.h"
 #include "play/session.h"
 #include "play/view.h"
+#include "save/save.h"
 #include "sim/autopilot.h"
 #include "sim/chores.h"
 #include "sim/clay.h"
@@ -48,6 +55,8 @@ struct Args {
     bool tour = false;
     bool autopilot = false;
     int speed = 1;
+    std::string slot;
+    bool fresh = false;
     std::string framesDir;
     int width = 1280, height = 720;
 };
@@ -66,6 +75,8 @@ bool parseArgs(int argc, char** argv, Args& a) {
         else if (s == "--headless") a.headless = true;
         else if (s == "--tour") a.tour = true;
         else if (s == "--autopilot") a.autopilot = true;
+        else if (s == "--slot") a.slot = next("--slot");
+        else if (s == "--new") a.fresh = true;
         else if (s == "--speed") a.speed = std::atoi(next("--speed"));
         else if (s == "--frames") a.framesDir = next("--frames");
         else if (s == "--width") a.width = std::atoi(next("--width"));
@@ -88,7 +99,7 @@ bool parseArgs(int argc, char** argv, Args& a) {
 }
 
 void usage() {
-    std::puts("usage: atman [--seed N] [--width W --height H]\n"
+    std::puts("usage: atman [--slot DIR] [--new] [--seed N] [--width W --height H]\n"
               "       atman --autopilot [--speed N] [--width W --height H]\n"
               "       atman --headless --tour --frames DIR [--width W --height H]\n"
               "       atman --headless --autopilot [--frames DIR] [--width W --height H]");
@@ -355,6 +366,9 @@ int runGame(strata::Engine& engine, const Args& args) {
     o.seed = args.seed;
     o.autopilot = args.autopilot;
     o.speed = args.speed;
+    // Watching the autopilot never touches the player's save.
+    if (!args.autopilot) o.slot = args.slot.empty() ? defaultSlot() : args.slot;
+    o.fresh = args.fresh;
     play::Session session(engine, o);
     using Clock = std::chrono::steady_clock;
     auto last = Clock::now();
@@ -366,6 +380,7 @@ int runGame(strata::Engine& engine, const Args& args) {
         last = now;
         engine.present();
     }
+    session.save(nullptr);
     return 0;
 }
 

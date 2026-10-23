@@ -212,7 +212,7 @@ std::string prompt(const World& w, const std::string& typing) {
 }
 
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing,
-            const FreeCamera* watching, bool noText) {
+            const FreeCamera* watching, bool noText, const std::string& message) {
     setSky(engine, w);
     setLamp(engine, w);
     int32_t width = 0, height = 0;
@@ -246,6 +246,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!here.empty())
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
              static_cast<float>(height) / 2 + 2 * kLine, here, ink);
+    if (!message.empty())
+        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(message.size()),
+             static_cast<float>(height) * 0.3f, message, lamp);
     if (help) {
         // Two lines, so they fit a window 1280 pixels wide.
         const std::string first = watching ? "W A S D fly   Shift faster   Mouse look"
@@ -253,7 +256,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
                                                  (lensAvailable(w) ? "   C clay lens" : "");
         const std::string second = watching ? "V step back in   Tab codex   F1 hide help"
                                             : std::string(w.after ? "V watch   " : "") +
-                                                  "Tab codex   Esc free the mouse   F1 hide help";
+                                                  "Tab codex   F5 save   F9 load   Esc free the mouse   F1 hide help";
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize - kLine, first, ink);
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize, second, ink);
     }
