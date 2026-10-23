@@ -289,7 +289,7 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     }
     if (w.after) {
         lines.push_back({""});
-        lines.push_back({watching ? "Watching   V steps back in" : "Living   V steps back to watch"});
+        lines.push_back({watching ? "Watching   step back in (V)" : "Living   step back and watch (V)"});
     }
     return lines;
 }

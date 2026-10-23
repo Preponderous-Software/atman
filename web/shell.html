@@ -38,7 +38,7 @@
     display: none; }
   body.compact #cross { display: block; }
   #msg { left: 50%; transform: translateX(-50%); top: 26%; width: 92%; text-align: center; color: var(--lamp);
-    font-size: 14px; display: none; }
+    font-size: 14px; display: none; white-space: pre-line; }
   body.compact #msg { display: block; }
   #prompt { left: 50%; transform: translateX(-50%); top: calc(50% + 18px); width: 92%; text-align: center;
     display: none; font-size: 15px; font-weight: 600; }
@@ -234,18 +234,25 @@
         var d = document.createElement('div');
         d.className = l.heading ? 'heading' : 'line';
         if (i === 0) d.className = 'heading';
-        d.textContent = l.text || ' ';
+        d.textContent = touchWords(l.text) || ' ';
         panel.appendChild(d);
       });
     }
-    // On a touch screen the prompt names the button, not the key.
-    $('prompt').textContent = touchMode ? s.prompt.replace(/^E  /, 'Use: ').replace(/^F  /, 'Lamp: ').replace(/^B  /, 'Break: ')
-                                        : s.prompt;
-    $('msg').textContent = s.message;
+    $('prompt').textContent = touchWords(s.prompt);
+    $('msg').textContent = touchWords(s.message);
     if (!s.naming && last.naming) $('nameInput').value = '';
     if (s.naming && !last.naming && touchMode) setTimeout(function () { $('nameInput').focus(); }, 50);
     last.naming = s.naming;
     window.atmanStatus = s;
+  }
+
+  // On a touch screen the game's words name the buttons, not the keys:
+  // "E  dig clay" is "Use: dig clay", "(C)" is "(Lens)".
+  var buttonFor = { E: 'Use', F: 'Lamp', B: 'Break', C: 'Lens', V: 'Watch', Tab: 'Codex' };
+  function touchWords(text) {
+    if (!touchMode || !text) return text;
+    return text.replace(/^([EFB])  /, function (m, k) { return buttonFor[k] + ': '; })
+               .replace(/\((E|F|B|C|V|Tab)\b/g, function (m, k) { return '(' + buttonFor[k]; });
   }
 
   // ---- mouse: the page owns the pointer lock
