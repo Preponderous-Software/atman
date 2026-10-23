@@ -26,6 +26,7 @@ flowchart TB
         Play["Play layer<br/>input, HUD, codex screen, session"]
         Bridge["Render bridge<br/>game state to Strata meshes, lights, overlays"]
         Save["Saves<br/>checksummed, previous kept"]
+        Sound["Sound<br/>cues from the world, synthesized"]
     end
     subgraph Engine["Strata (separate repo)"]
         Render["Renderer, window, input, picking"]
@@ -34,6 +35,7 @@ flowchart TB
     Play --> Sim
     Sim --> Bridge --> Render
     Sim --> Save
+    Sim --> Sound
 ```
 
 **The engine boundary:** game rules never go into Strata. Strata is a shared engine and takes only
@@ -49,6 +51,7 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
 | `src/play/` | The sun, camera and HUD (`view.*`), the codex screen (`codex_screen.*`), and the `Session` that drives a game for either front end: input, the codex, watching the avatar (`session.*`) |
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept |
+| `src/audio/` | Sound: what the valley sounds like, worked out from the world (`cues.*`: the steady sounds of the place and hour, and a cue for each thing that happens); the synth that makes every sound from nothing (`synth.*`); and the sound card through miniaudio (`device.*`), silent when there is none. Only `device.*` touches a device. |
 | `app/main.cpp` | Desktop entry point, the headless tour and the headless playthrough |
 | `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, and its smoke test |
 | `content/` | Codex entries (`codex/*.json`) and their plates (`plates/*.png`); later dialogue |
@@ -155,6 +158,7 @@ browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md))
 | Geometry | The valley's meshes and terrain are valid for Strata and face outward; each form's pot matches the size the rules give it; the clay lens keeps the village's shape and only the clay's colour; each coil, as snake or rope, lies where the rules put it; and the terrain is the ground the rules walk on (`tests/test_geometry.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
 | Saves | Round trips at several points of a playthrough (one with a pot waiting for its name); every single-byte flip and a truncation are refused; an impossible World is refused even with a good checksum; the previous save is kept and loads when the current one is damaged; a playthrough saved and loaded in the after-mode still ends on the pinned fingerprint (`tests/test_saves.cpp`); and in the browser a save survives a reload (the smoke test) |
+| Audio | Each change in the world brings its cue and nothing else does; the steady sounds follow the place and the hour; every synthesized sound is finite, audible and unclipped, and a busy minute renders the same twice (`tests/test_audio.cpp`) |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |
 
 ## Engine additions
@@ -165,5 +169,5 @@ request first:
 - **UTF-8 text with a glyph atlas**, so IAST and Devanagari can be drawn live instead of as plates.
 - **Transparent meshes**, if the salt and dissolve effects in chapter 5 need more than alpha-blended
   points and lines.
-- **Audio**, for the river in deep sleep. Strata has no audio today; the game may handle sound
-  outside the engine.
+- **Audio**, for the river in deep sleep. Strata has no audio today, so the game plays its own sound
+  outside the engine, through miniaudio (`src/audio/`); an engine API would replace only `device.*`.
