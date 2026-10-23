@@ -1,8 +1,9 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestones M1 to M4): the valley's ground, river and village layout with walking and collision,
-the game clock, the body's needs, chapter 1, The Rope, and chapter 2, Clay and Pots (`src/sim/`);
+(milestones M1 to M5): the valley's ground, river and village layout with walking and collision,
+the game clock, the body's needs, chapter 1, The Rope, chapter 2, Clay and Pots, the prologue's
+chores, sleep and the after-mode, and the autopilot with its pinned playthrough (`src/sim/`);
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
 the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
@@ -42,7 +43,7 @@ generic features a real consumer needs. Atman may propose engine additions (list
 
 | Path | Contents |
 |---|---|
-| `src/sim/` | Engine-free, deterministic rules: the valley, chores, the fear meter, snakes and ropes, pots and clay, chapter state, the clock, the autopilot |
+| `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep and the after-mode (`chores.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
 | `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it, a pot for its shards when it breaks, and every clay colour when the lens turns on |
 | `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
 | `src/play/` | The sun, camera and HUD (`view.*`) and the codex screen (`codex_screen.*`). Later a `Session` that drives the game for any front end: input, autosave |
@@ -63,7 +64,10 @@ generic features a real consumer needs. Atman may propose engine additions (list
   through, pots named, pots broken, HUD elements retired). A chapter is complete when its facts
   hold. Nothing is scored.
 - **The autopilot is a feature.** It plays the MVP in CI, and in the after-mode it is the avatar
-  that keeps living (*prārabdha*, [C5]). The same code serves both.
+  that keeps living (*prārabdha*, [C5]). The same code serves both. It chooses what to do from the
+  World alone and walks there on a visibility graph around the village's obstacles, so the same
+  World always gets the same input. Watching is not World state: the free camera lives in the play
+  layer, and stepping out or back in changes nothing in the rules.
 
 ## Mapping the game to Strata
 
@@ -83,6 +87,8 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
 | Codex pages | Each plate uploaded once with `strata_create_texture_rgba8` and drawn on an unlit quad (`STRATA_MESH_UNLIT`) in front of a camera of its own, far from the valley, cleared to the plate's dark colour; the menu is overlay text | 1.7 |
 | HUD and its retirement | Overlay text and lines with alpha, faded out by the play layer | 1.5 |
 | Mouse look | `strata_set_relative_mouse_mode` | 1.8 |
+| Watching the avatar (after-mode) | A free camera in the play layer, and the avatar mesh moved by `strata_set_mesh_transform` | 1.7 |
+| Waking | A screen-sized black point in front of the eye, fading out | 1.5 |
 | Witness camera (after the MVP) | Free camera with picking, as in steading's fly-cam | 1.8 |
 | Dream drift (after the MVP) | `strata_set_mesh_transform` per frame | 1.7 |
 | Browser (MVP milestone M6) | WebGL 2 / wasm32 release asset | v0.4.0 |
@@ -133,7 +139,7 @@ save is kept. A save that fails its checksum is refused with a message, and the 
 |---|---|
 | Rules tests | Each chapter's facts change only the way the rules say |
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
-| Playthrough | The autopilot finishes the MVP and lands on the pinned fingerprint |
+| Playthrough | The autopilot plays the MVP from a new game (chores, pots, lens, a broken pot, the snakes, sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
 | Saves | Round trip; bit flips are rejected; the previous save survives |

@@ -102,6 +102,16 @@ constexpr int kCoilCount = 3;
 constexpr std::array<Vec2, kCoilCount> kCoils = {{{12.0f, 5.6f}, {17.0f, 4.6f}, {21.5f, 3.7f}}};
 constexpr float kCoilRadius = 0.4f;
 
+// The prologue's chores. Water is drawn from the river at the ghat's lowest
+// steps (x >= kDrawWaterX, within the ghat), clay is dug where the bank runs
+// down to the water north of the ghat, and both go to the potter: the water to
+// their door, the clay to the wheel.
+constexpr float kDrawWaterX = 29.0f;
+constexpr Vec2 kClayBank{25.6f, -14.0f};
+constexpr float kClayReach = 1.5f;
+constexpr float kDoorReach = 2.0f;       // from a door's centre
+constexpr float kWellReach = 2.0f;       // from the well's centre, to drink
+
 // Where a new game starts: outside your house, looking east toward the river.
 constexpr Vec2 kStart{-8.0f, 15.0f};
 constexpr float kStartYaw = kPi / 2;

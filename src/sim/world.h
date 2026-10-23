@@ -23,17 +23,22 @@ struct Player {
     float yaw = 0, pitch = 0;  // yaw 0 faces north (-z), positive turns right
 };
 
-// What the body wants. Each runs from 0 (content) to 1 (desperate). Nothing in
-// M1 satisfies them yet; they are on the HUD because the prologue is a
-// deliberately ordinary game, and later chapters take the HUD apart.
+// What the body wants. Each runs from 0 (content) to 1 (desperate). Water from
+// the well, a meal at home and a night's sleep answer them. They are on the
+// HUD because the prologue is a deliberately ordinary game, and later
+// chapters take the HUD apart.
 struct Needs {
     float thirst = 0.15f;
     float hunger = 0.25f;
     float tiredness = 0.3f;
 };
 
+// The day's chores. Each morning they are on the list again.
 enum class QuestId : int32_t { CarryWater = 0, FetchClay = 1, Count = 2 };
 constexpr int kQuestCount = static_cast<int>(QuestId::Count);
+
+// What the player has in their hands for a chore.
+enum class Carry : int32_t { Nothing = 0, Water = 1, Clay = 2 };
 
 // One of the coils on the path (chapter 1, The Rope). At dusk each is seen as
 // a snake until the player looks at it closely by lamplight; then it is a rope
@@ -87,6 +92,12 @@ struct World {
     Throwing throwing;
     int32_t naming = -1;   // the slot whose pot is waiting for a name, or -1
     bool clayLens = false;
+    Carry carry = Carry::Nothing;
+    int32_t day = 0;          // 0 is the first afternoon; each sleep adds one
+    int64_t wokeTick = -1;    // the tick the player last woke, or -1
+    // After: the morning after both teachings. Nothing ends; the chores come
+    // round again, nothing is scored, and the avatar can walk them alone.
+    bool after = false;
 };
 
 // One tick's worth of player intent, already resolved from keys and mouse.
@@ -100,6 +111,7 @@ struct Input {
     const char* name = nullptr;  // the name typed for the pot being named
     bool breakPot = false;     // break the pot the player is looking at
     bool toggleLens = false;   // the clay lens, once the player has it
+    bool use = false;          // fill, give, dig, drink, eat or sleep, whichever is here
 };
 
 World newWorld(uint64_t seed);

@@ -61,6 +61,10 @@ MeshData buildVillage(bool lens = false);
 // The river's surface.
 MeshData buildWater(bool lens = false);
 
+// The avatar, seen from outside in the after-mode: standing at the origin,
+// facing -z, about 1.7 m tall. The scene moves it with a transform.
+MeshData buildAvatar();
+
 // Coil i on the path (valley::kCoils), as it is seen: a snake with its head
 // raised, or the rope it always was. Both follow the same spiral.
 MeshData buildSnake(int i);

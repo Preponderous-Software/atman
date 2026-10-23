@@ -3,10 +3,12 @@ setlocal
 rem Plays Atman (the Advaita Vedanta game on the Strata engine) from the
 rem latest main branch, building it first. There are no saves yet: each run
 rem starts at 4:30 in the afternoon outside your house.
-rem Controls: mouse look, W A S D walk, Shift hurry, F lamp, 1-4 throw at the
-rem wheel, B break a pot, C clay lens, Tab codex, F1 help, Esc frees the mouse.
+rem Controls: mouse look, W A S D walk, Shift hurry, E use (chores, eat, drink,
+rem sleep), F lamp, 1-4 throw at the wheel, B break a pot, C clay lens, Tab
+rem codex, V watch in the after-mode, F1 help, Esc frees the mouse.
 rem Extra arguments are passed to the game, e.g.:
-rem   play-atman.bat --tour       watch the fixed tour through the valley and the codex
+rem   play-atman.bat --tour                  watch the fixed tour through the valley and the codex
+rem   play-atman.bat --autopilot --speed 10  watch the autopilot play the whole slice, ten times as fast
 
 set "AT_DIR=%USERPROFILE%\atman-play"
 set "AT_REPO=https://github.com/Preponderous-Software/atman.git"

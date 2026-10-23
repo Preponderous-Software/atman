@@ -10,7 +10,7 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: milestone M4 of the [MVP](MVP.md).** You can walk the valley in first person: the
+**Status: milestone M5 of the [MVP](MVP.md).** You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
 equinox. The HUD shows the time, the body's needs, your standing and the quest log.
@@ -26,7 +26,19 @@ a lamp (1–4), give it a name, and it goes on the drying board and into your li
 After three pots you have the clay lens (C): pots, bricks, roof tiles and the riverbank all show as
 one material, and the list reads "Rice for Amma: clay". Motes of light hang over the board. They
 were there before the first pot, and a pot only hides the ones inside it. Break one (B) and its
-name leaves the list, while not one mote moves. The chores in the quest log cannot be done yet.
+name leaves the list, while not one mote moves.
+
+The day has its chores, as an ordinary game would: carry water from the ghat to the potter's door,
+and dig clay on the riverbank north of the ghat for the wheel (E to fill, give, dig and leave).
+Each earns standing in the village. Drink at the well, eat at home, and at night sleep at your door
+(E): the screen goes dark and you wake at half past six the next morning, with the chores on the
+list again.
+
+The first morning after both teachings is the after-mode, and it does not end. The chores come
+round again and earn nothing; Standing is gone from the HUD. Press V to step out of the body: the
+avatar carries on alone, drinking, eating, carrying water and clay, sitting on the ghat steps,
+going home at dusk, while you fly anywhere in the valley. V again steps back in. Nothing on screen
+says the game is over or won.
 
 The codex (Tab) holds each verse the game has taught, as a page with the Sanskrit in Devanagari and
 IAST, an English translation, the translator, the edition and the sources. A page opens when its
@@ -59,6 +71,10 @@ codex is open.
 |---|---|
 | ![The codex page for Māṇḍūkya Kārikā 2.17–2.18: the verse in Devanagari and IAST, an English translation, a note and the sources, with the codex menu on the left](docs/images/m4-codex-rope.jpg) | ![The other-schools page: Chāndogya 6.8.7 and the readings of Advaita, Viśiṣṭādvaita and Dvaita, with citations](docs/images/m4-other-schools.jpg) |
 
+| The next morning | Watching the avatar go about its day |
+|---|---|
+| ![Waking at 6:35 on 22 March outside your house in the dawn light; the quest log is open again and the HUD reads "Living, V steps back to watch", with no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, V steps back in"](docs/images/m5-watching.jpg) |
+
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
 ## Build and play
@@ -77,7 +93,8 @@ ctest --test-dir build -C Release
 On Windows, `tools/play-atman.bat` does all of this in one step. It installs CMake and the Visual
 Studio C++ build tools with winget if they are missing, clones or updates `main` into
 `%USERPROFILE%\atman-play`, builds the game and starts it. Extra arguments go to the game, for
-example `play-atman.bat --tour`.
+example `play-atman.bat --tour`, or `play-atman.bat --autopilot --speed 10` to watch the autopilot
+play the whole slice at ten times speed.
 
 On Linux, SDL3 needs the X11 development packages (`libx11-dev libxext-dev libxcursor-dev libxi-dev
 libxfixes-dev libxrandr-dev libxss-dev`). `cmake -DATMAN_WITH_STRATA=OFF` builds only the
@@ -88,11 +105,13 @@ simulation and its tests, with no engine.
 | Mouse | Look |
 | W A S D | Walk |
 | Shift | Hurry |
+| E | Use what is here: fill the jar, give the water, dig or leave clay, drink, eat, sleep |
 | F | Light the lamp, or put it out |
 | 1 2 3 4 | At the wheel: throw a water jar, a bowl, a cup or a lamp, then type its name and press Enter |
 | B | Break the pot you are looking at |
 | C | The clay lens (after three pots) |
 | Tab | The codex (Up and Down choose a page; Tab or Esc goes back) |
+| V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
 | F1 | Show or hide the controls |
 | Esc | Free the mouse (Esc again quits) |
 
