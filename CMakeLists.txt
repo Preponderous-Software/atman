@@ -152,6 +152,7 @@ endif()
 if(ATMAN_WITH_STRATA)
   add_executable(atman app/main.cpp)
   target_link_libraries(atman PRIVATE atman_play)
+  target_compile_definitions(atman PRIVATE ATMAN_VERSION="${PROJECT_VERSION}")
   atman_warnings(atman)
 endif()
 

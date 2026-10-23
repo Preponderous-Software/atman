@@ -12,7 +12,8 @@ chores, and nothing is at stake.
 
 **Status: the [MVP](MVP.md) is complete (milestones M0 to M7).** Play it in a browser at
 **[atman.play.danielstephenson.dev](https://atman.play.danielstephenson.dev)**, on a computer or a
-phone ([docs/WEB.md](docs/WEB.md)). You can walk the valley in first person: the
+phone ([docs/WEB.md](docs/WEB.md)), or download it for Windows or Linux from the
+[releases page](https://github.com/Preponderous-Software/atman/releases). You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
 equinox. The HUD shows the time, the body's needs, your standing and the quest log.
@@ -142,6 +143,8 @@ simulation and its tests, with no engine.
 | [MVP.md](MVP.md) | The first playable slice, what "done" means for it, and the milestones |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Code layout, the simulation core, how each mechanic maps to Strata, text, saves, tests |
 | [RESEARCH.md](RESEARCH.md) | Sources: Upaniṣads, Śaṅkara and later Advaita, modern scholarship, Alan Watts and other modern teachers, related games, and a verification log |
+| [docs/RELEASING.md](docs/RELEASING.md) | Cutting a release: the version, playtest evidence and the Windows and Linux downloads |
+| [docs/playtests/](docs/playtests/) | Playtest notes for each release, and what was changed for them |
 
 ## Approach to the teaching
 
