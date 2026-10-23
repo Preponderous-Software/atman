@@ -373,9 +373,16 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!here.empty())
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
              static_cast<float>(height) / 2 + 2 * kLine, here, ink);
-    if (!message.empty())
-        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(message.size()),
-             static_cast<float>(height) * 0.3f, message, lamp);
+    // The message, one centred line per '\n'.
+    float my = static_cast<float>(height) * 0.3f;
+    for (size_t at = 0; at < message.size();) {
+        size_t end = message.find('\n', at);
+        if (end == std::string::npos) end = message.size();
+        const std::string line = message.substr(at, end - at);
+        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(line.size()), my, line, lamp);
+        my += kLine;
+        at = end + 1;
+    }
     if (help) {
         // Two lines, so they fit a window 1280 pixels wide.
         const std::string first = watching ? "W A S D fly   Shift faster   Mouse look"

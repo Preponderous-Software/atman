@@ -13,7 +13,13 @@ constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, 
 constexpr int kF5 = 62, kF9 = 66;
 constexpr float kLookPerPixel = 0.0025f;
 constexpr double kAutosaveSeconds = 120;
-constexpr double kMessageSeconds = 5;
+constexpr double kAfterSeconds = 14;  // the after-mode's first words stay a while
+
+int pagesOpen(const World& w) {
+    int n = 0;
+    for (bool c : w.codex) n += c ? 1 : 0;
+    return n;
+}
 constexpr float kHurryStick = 0.95f;
 
 }  // namespace
@@ -41,12 +47,25 @@ void Session::adopt(const World& w) {
     once_ = Input{};
     typing_.clear();
     pending_ = 0;
+    pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
+    afterSeen_ = w_.after;
     if (pages_.isOpen()) pages_.close();
 }
 
-void Session::say(const std::string& text) {
+void Session::say(const std::string& text, double seconds) {
     message_ = text;
-    messageUntil_ = clock_ + kMessageSeconds;
+    messageUntil_ = clock_ + seconds;
+}
+
+void Session::noticeChanges() {
+    const int pages = pagesOpen(w_);
+    if (pages > pagesSeen_ && !watching_) say("A new page in the codex (Tab)");
+    pagesSeen_ = pages;
+    if (w_.after && !afterSeen_)
+        say("The teachings are done. Nothing more is asked of you.\n"
+            "Live the day as it comes, or step back and watch it lived (V).",
+            kAfterSeconds);
+    afterSeen_ = w_.after;
 }
 
 bool Session::save(const char* note) {
@@ -231,6 +250,7 @@ void Session::frame(double dt) {
         pending_ -= 1.0 / kTickRate;
         step();
     }
+    noticeChanges();
     if (watching_ && following_) cam_ = cameraBehind(w_);
     scene_.update(w_, watching_);
     render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_);

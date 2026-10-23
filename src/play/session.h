@@ -74,7 +74,8 @@ private:
     void capture(bool on);
     void onKeyDown(int scancode, bool repeat);
     void step();
-    void say(const std::string& text);
+    void say(const std::string& text, double seconds = 5);
+    void noticeChanges();  // tells the player of a new codex page or the after-mode beginning
     void adopt(const World& w);  // takes a loaded or new world as the one being played
 
     strata::Engine& engine_;
@@ -95,6 +96,8 @@ private:
     std::string typing_, named_;  // the name being typed, and the one just entered
     double pending_ = 0;
     double clock_ = 0, lastSave_ = 0;  // seconds of play, for the autosave
+    int pagesSeen_ = 0;     // codex pages the player has been told of
+    bool afterSeen_ = false;  // whether the after-mode has been announced
     std::string message_;
     double messageUntil_ = 0;
 };
