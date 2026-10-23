@@ -388,9 +388,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
         const std::string first = watching ? "W A S D fly   Shift faster   Mouse look"
                                            : std::string("W A S D walk   Shift hurry   Mouse look   E use   F lamp") +
                                                  (lensAvailable(w) ? "   C clay lens" : "");
-        const std::string second = watching ? "V step back in   Tab codex   F1 hide help"
+        const std::string second = watching ? "V step back in   Tab codex   M sound   F1 hide help"
                                             : std::string(w.after ? "V watch   " : "") +
-                                                  "Tab codex   F5 save   F9 load   Esc free the mouse   F1 hide help";
+                                                  "Tab codex   F5 save   F9 load   M sound   Esc free the mouse   F1 hide help";
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize - kLine, first, ink);
         text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize, second, ink);
     }

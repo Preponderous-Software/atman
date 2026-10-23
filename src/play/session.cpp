@@ -1,5 +1,7 @@
 #include "play/session.h"
 
+#include <cmath>
+
 #include "save/save.h"
 
 namespace atman::play {
@@ -10,7 +12,8 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
-constexpr int kF5 = 62, kF9 = 66;
+constexpr int kF5 = 62, kF9 = 66, kM = 16;
+constexpr float kStride = 0.7f;  // metres a step
 constexpr float kLookPerPixel = 0.0025f;
 constexpr double kAutosaveSeconds = 120;
 constexpr double kAfterSeconds = 14;  // the after-mode's first words stay a while
@@ -26,6 +29,7 @@ constexpr float kHurryStick = 0.95f;
 
 Session::Session(strata::Engine& engine, const SessionOptions& options)
     : engine_(engine), options_(options), w_(newWorld(options.seed)), scene_(engine), pages_(engine) {
+    if (options_.sound) sound_.start();
     watching_ = following_ = options_.autopilot;
     World start = w_;
     if (!options_.slot.empty() && !options_.fresh && hasSave(options_.slot)) {
@@ -40,6 +44,7 @@ Session::Session(strata::Engine& engine, const SessionOptions& options)
 
 void Session::adopt(const World& w) {
     w_ = w;
+    heard_ = w;  // a loaded or new world is not a change to be heard
     cam_ = cameraAtEyes(w_);
     yaw_ = w_.player.yaw;
     pitch_ = w_.player.pitch;
@@ -93,6 +98,22 @@ void Session::restart() {
     adopt(newWorld(options_.seed));
     watching_ = following_ = false;
     say("A new day in the village.");
+}
+
+void Session::setMuted(bool muted, bool announce) {
+    sound_.setMuted(muted);
+    if (announce) say(muted ? "Sound off (M turns it on)" : "Sound on");
+}
+
+void Session::listen(double dt) {
+    for (audio::Cue c : audio::cues(heard_, w_)) sound_.play(c);
+    // Footsteps from how far the body went this frame.
+    const float dx = w_.player.x - heard_.player.x, dz = w_.player.z - heard_.player.z;
+    const float speed = dt > 0 ? std::sqrt(dx * dx + dz * dz) / static_cast<float>(dt) : 0.0f;
+    const float steps = speed > 0.3f && speed < 20.0f ? speed / kStride : 0.0f;
+    const Vec3 ears = watching_ ? cam_.eye : cameraAtEyes(w_).eye;
+    sound_.setAmbience(audio::ambience(w_, ears, steps));
+    heard_ = w_;
 }
 
 void Session::capture(bool on) {
@@ -162,7 +183,8 @@ void Session::onKeyDown(int scancode, bool repeat) {
         return;
     }
     if (repeat) return;
-    if (scancode == kTab) pages_.open(w_);
+    if (scancode == kM) setMuted(!sound_.muted());  // after naming: an m in a name is a letter
+    else if (scancode == kTab) pages_.open(w_);
     else if (scancode == kV && (w_.after || options_.autopilot)) {
         watching_ = !watching_;
         following_ = false;
@@ -238,6 +260,7 @@ void Session::frame(double dt) {
     if (pages_.isOpen()) {
         pending_ = 0;  // no time passes while the codex is open (the autosave still runs)
         pages_.render(w_);
+        listen(0);  // the valley goes on sounding, but nobody walks
         return;
     }
     if (watching_) {
@@ -252,6 +275,7 @@ void Session::frame(double dt) {
     }
     noticeChanges();
     if (watching_ && following_) cam_ = cameraBehind(w_);
+    listen(dt);
     scene_.update(w_, watching_);
     render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_);
 }

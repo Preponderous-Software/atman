@@ -8,6 +8,7 @@
 #include <functional>
 #include <string>
 
+#include "audio/device.h"
 #include "bridge/scene.h"
 #include "play/codex_screen.h"
 #include "play/view.h"
@@ -26,6 +27,7 @@ struct SessionOptions {
     // In a browser the page owns the pointer lock and the canvas size; Esc
     // never quits.
     bool browser = false;
+    bool sound = true;       // open the sound card (it runs silent if there is none)
     // Called after every save written (the browser flushes it to IndexedDB).
     std::function<void()> afterSave;
 };
@@ -58,6 +60,9 @@ public:
     // The page took or released the pointer lock.
     void setCaptured(bool on);
     void setHelp(bool on) { help_ = on; }
+    // Sound on or off (M); it fades rather than stops. `announce` says so on screen.
+    void setMuted(bool muted, bool announce = true);
+    bool muted() const { return sound_.muted(); }
     // No words on the canvas (a narrow page shows them itself).
     void setCompactHud(bool on) { compact_ = on; }
 
@@ -78,9 +83,13 @@ private:
     void noticeChanges();  // tells the player of a new codex page or the after-mode beginning
     void adopt(const World& w);  // takes a loaded or new world as the one being played
 
+    void listen(double dt);  // the sounds of this frame's change, and of the place
+
     strata::Engine& engine_;
     SessionOptions options_;
+    audio::Sound sound_;
     World w_;
+    World heard_;  // the world as it last sounded, for this frame's cues
     bridge::Scene scene_;
     CodexScreen pages_;
     Autopilot pilot_;
