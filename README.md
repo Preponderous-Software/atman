@@ -61,7 +61,7 @@ codex is open.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
-| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
+| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs, the NEXT line and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
 
 | The village from the ghat | Sunset over the river, just after six |
 |---|---|
@@ -69,7 +69,7 @@ codex is open.
 
 | Lamplight on a snake at half past seven | It was a rope |
 |---|---|
-| ![At night by lamplight, a dark snake coiled on the path with its head raised; the HUD shows the fear meter high](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
+| ![At night by lamplight, a dark snake coiled on the path with its head raised, lamps lit by the village doors behind; the HUD shows the fear meter high and NEXT reads "Walk back to the village along the path"](docs/images/m2-lamp-on-the-snake.jpg) | ![The same spot: a straw-coloured rope lies coiled on the path where the snake was](docs/images/m2-rope.jpg) |
 
 | Throwing a water jar | Three pots, three names |
 |---|---|
@@ -85,7 +85,7 @@ codex is open.
 
 | The next morning | Watching the avatar go about its day |
 |---|---|
-| ![Waking at 6:35 on 22 March outside your house in the dawn light; the quest log is open again and the HUD reads "Living, V steps back to watch", with no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, V steps back in"](docs/images/m5-watching.jpg) |
+| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the quest log is open again, the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
