@@ -16,7 +16,7 @@ phone ([docs/WEB.md](docs/WEB.md)), or download it for Windows or Linux from the
 [releases page](https://github.com/Preponderous-Software/atman/releases). You can walk the valley in first person: the
 village, the well, the potter's yard, the ghat and the bird tree, from late afternoon through
 sunset into night, with the sun where it really is over the middle Ganges plain on the spring
-equinox. The HUD shows the time, the body's needs, your standing and the quest log.
+equinox. The HUD shows the time, the body's needs, your standing and the day's chores.
 
 At dusk the first teaching begins, The Rope. Three snakes lie on the path between the village and
 the ghat. A fear meter rises as you come near one, and you cannot bring yourself to walk up to it.
@@ -62,7 +62,7 @@ codex is open.
 
 | The well, at a quarter to five | The ghat steps down to the river |
 |---|---|
-| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs, the NEXT line and quests](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
+| ![First person by the village well: lime-washed houses with tiled roofs, the potter's drying pots, the HUD with needs, the NEXT line and chores](docs/images/m1-well.jpg) | ![Stone ghat steps leading down to the river at late afternoon](docs/images/m1-ghat.jpg) |
 
 | The village from the ghat | Sunset over the river, just after six |
 |---|---|
@@ -86,7 +86,7 @@ codex is open.
 
 | The next morning | Watching the avatar go about its day |
 |---|---|
-| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the quest log is open again, the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
+| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the chores are listed again, the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
