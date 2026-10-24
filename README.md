@@ -10,7 +10,8 @@ took to be "you" are examined the way the Upaniṣads examine them, and the game
 comes apart. At the end nothing rolls credits. You are still in the village, still doing the
 chores, and nothing is at stake.
 
-**Status: the [MVP](MVP.md) is complete (milestones M0 to M7).** Play it in a browser at
+**Status: the [MVP](MVP.md) is complete (milestones M0 to M7), and chapter 3, Three States, has
+been added since.** Play it in a browser at
 **[atman.play.danielstephenson.dev](https://atman.play.danielstephenson.dev)**, on a computer or a
 phone ([docs/WEB.md](docs/WEB.md)), or download it for Windows or Linux from the
 [releases page](https://github.com/Preponderous-Software/atman/releases). You can walk the valley in first person: the
@@ -37,7 +38,15 @@ Each earns standing in the village. Drink at the well, eat at home, and at night
 (E): the screen goes dark and you wake at half past six the next morning, with the chores on the
 list again.
 
-The first morning after both teachings is the after-mode, and it does not end. The chores come
+The night after the rope and the clay, the third teaching, Three States, comes in sleep. You dream
+the valley: the same houses and paths in an evening light, except that the sun runs backwards and
+every place wears the next one's name, and nothing on the HUD finds that strange ("Nothing here
+seems strange"). After a minute and a quarter the dream goes out, and deep sleep is a black screen
+with only the river and a dim point that slowly breathes. Then you wake, and two pages of the codex
+are open: Yājñavalkya on the dream, and the fourth, what was there through waking, dream and deep
+sleep.
+
+The morning after the deep sleep is the after-mode, and it does not end. The chores come
 round again and earn nothing; Standing is gone from the HUD. Press V to step out of the body: the
 avatar carries on alone, drinking, eating, carrying water and clay, sitting on the ghat steps,
 going home at dusk, while you fly anywhere in the valley. V again steps back in. That morning the
@@ -56,7 +65,8 @@ off.
 The codex (Tab) holds each verse the game has taught, as a page with the Sanskrit in Devanagari and
 IAST, an English translation, the translator, the edition and the sources. A page opens when its
 teaching happens: the rope and the snake (Gauḍapāda's Māṇḍūkya Kārikā 2.17–2.18), clay and its names
-(Chāndogya Upaniṣad 6.1.4) and the space in the pot (Kārikā 3.3–3.4). One page is open from the
+(Chāndogya Upaniṣad 6.1.4), the space in the pot (Kārikā 3.3–3.4), the dream (Bṛhadāraṇyaka
+Upaniṣad 4.3.9–10 and 4.3.14) and the fourth (Māṇḍūkya Upaniṣad 2 and 7). One page is open from the
 start: how Advaita, Viśiṣṭādvaita and Dvaita each read *tat tvam asi*. The game pauses while the
 codex is open.
 
@@ -83,6 +93,14 @@ codex is open.
 | The codex: the rope and the snake | Other schools |
 |---|---|
 | ![The codex page for Māṇḍūkya Kārikā 2.17–2.18: the verse in Devanagari and IAST, an English translation, a note and the sources, with the codex menu on the left](docs/images/m4-codex-rope.jpg) | ![The other-schools page: Chāndogya 6.8.7 and the readings of Advaita, Viśiṣṭādvaita and Dvaita, with citations](docs/images/m4-other-schools.jpg) |
+
+| The dream, at a quarter to six | Later in the dream: the sun back in the afternoon |
+|---|---|
+| ![The dream: the village at dusk light from your door; the HUD's NEXT reads "Nothing here seems strange" and the well is labelled "The potter's wheel"](docs/images/m6-dream.jpg) | ![Further on in the dream, by the well in bright afternoon sun at 2:38 pm by the HUD's clock; the well is still labelled "The potter's wheel" and a house "The shrine"](docs/images/m6-dream-sun.jpg) |
+
+| The codex: the dream | The codex: the fourth |
+|---|---|
+| ![The codex page for Bṛhadāraṇyaka Upaniṣad 4.3.9–10 and 4.3.14 in Devanagari, IAST and Hume's English: "There are no chariots there, no spans, no roads. But he projects from himself chariots, spans, roads."](docs/images/m6-codex-dream.jpg) | ![The codex page for Māṇḍūkya Upaniṣad 2 and 7 in Devanagari, IAST and Hume's English, ending "such they think is the fourth. He is the Self. He should be discerned."](docs/images/m6-codex-fourth.jpg) |
 
 | The next morning | Watching the avatar go about its day |
 |---|---|

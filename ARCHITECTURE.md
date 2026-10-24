@@ -46,11 +46,11 @@ generic features a real consumer needs. Atman may propose engine additions (list
 
 | Path | Contents |
 |---|---|
-| `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep and the after-mode (`chores.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
+| `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep, the dream and the deep sleep, and the after-mode (`chores.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
 | `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it, a pot for its shards when it breaks, and every clay colour when the lens turns on |
 | `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
 | `src/play/` | The sun, camera and HUD (`view.*`), the codex screen (`codex_screen.*`), and the `Session` that drives a game for either front end: input, the codex, watching the avatar (`session.*`) |
-| `src/save/` | Save format: magic, version, SHA-256, previous save kept |
+| `src/save/` | Save format: magic, version, SHA-256, previous save kept. Format 2 added chapter 3's fields; a format 1 save from 0.1.x still loads |
 | `src/audio/` | Sound: what the valley sounds like, worked out from the world (`cues.*`: the steady sounds of the place and hour, and a cue for each thing that happens); the synth that makes every sound from nothing (`synth.*`); and the sound card through miniaudio (`device.*`), silent when there is none. Only `device.*` touches a device. |
 | `app/main.cpp` | Desktop entry point, the headless tour and the headless playthrough |
 | `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, and its smoke test |
@@ -155,11 +155,12 @@ browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md))
 |---|---|
 | Rules tests | Each chapter's facts change only the way the rules say (`tests/test_movement.cpp`, `test_clock.cpp`, `test_rope.cpp`, `test_clay.cpp`, `test_chores.cpp`) |
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
-| Playthrough | The autopilot plays the MVP from a new game (chores, pots, lens, a broken pot, the snakes, sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
+| Three states | The first sleep after the rope and the clay is the dream (the sun backwards, no needs, nothing usable), then deep sleep (no input reaches anything), then the morning with the dream's and the fourth's pages and the after-mode; every other night is the cut to morning (`tests/test_states.cpp`) |
+| Playthrough | The autopilot plays the whole game from a new game (chores, pots, lens, a broken pot, the snakes, sleep, the dream and the deep sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |
 | Geometry | The valley's meshes and terrain are valid for Strata and face outward; each form's pot matches the size the rules give it; the clay lens keeps the village's shape and only the clay's colour; each coil, as snake or rope, lies where the rules put it; and the terrain is the ground the rules walk on (`tests/test_geometry.cpp`) |
 | Codex | Every entry's citation IDs exist in RESEARCH.md, and its plate is up to date (`make_plates.py --check`); each record opens exactly one entry, and every built-in plate decodes (`tests/test_codex.cpp`) |
-| Saves | Round trips at several points of a playthrough (one with a pot waiting for its name); every single-byte flip and a truncation are refused; an impossible World is refused even with a good checksum; the previous save is kept and loads when the current one is damaged; a playthrough saved and loaded in the after-mode still ends on the pinned fingerprint (`tests/test_saves.cpp`); and in the browser a save survives a reload (the smoke test) |
+| Saves | Round trips at several points of a playthrough (one with a pot waiting for its name); every single-byte flip and a truncation are refused; an impossible World is refused even with a good checksum; the previous save is kept and loads when the current one is damaged; a playthrough saved and loaded in the after-mode still ends on the pinned fingerprint; saves written by 0.1.2 (format 1, in `tests/fixtures/`) load, and the one from the after-mode dreams on its next night; a dream and a deep sleep round-trip (`tests/test_saves.cpp`); and in the browser a save survives a reload (the smoke test) |
 | Audio | Each change in the world brings its cue and nothing else does; the steady sounds follow the place and the hour; every synthesized sound is finite, audible and unclipped, and a busy minute renders the same twice (`tests/test_audio.cpp`) |
 | Headless tour | The desktop app renders fixed camera shots headless, as in Kindling's CI |
 

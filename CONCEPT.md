@@ -100,6 +100,11 @@ assumes it is gone.
   and nothing seems strange) [C2] [M4], then as deep sleep, where no input does anything. On waking,
   the camera can leave the avatar for the first time. This is the witness view (*sākṣī*), and the
   second bird finally makes sense [C6].
+- **As built (after the MVP):** the first night after chapters 1 and 2. In the dream the sun runs
+  backwards and each place wears the next one's name, and the HUD says "Nothing here seems
+  strange"; deep sleep is black, with the river and a dim, slowly breathing point; on waking the
+  codex opens the dream (Bṛhadāraṇyaka 4.3.9–10, 4.3.14) [P2] and the fourth (Māṇḍūkya 2, 7) [P3],
+  and the after-mode begins. The sheaths (chapter 3 here) are not built yet.
 
 ### 5. Salt in Water (*tat tvam asi*, तत् त्वम् असि)
 
