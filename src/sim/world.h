@@ -72,7 +72,20 @@ struct Throwing {
 
 // Codex entries the player has met; each one opens a page of the codex
 // (src/codex/).
-enum class CodexId : int32_t { RopeAndSnake = 0, ClayAndPots = 1, PotSpace = 2, Count = 3 };
+enum class CodexId : int32_t { RopeAndSnake = 0, ClayAndPots = 1, PotSpace = 2, Dream = 3, Fourth = 4, Count = 5 };
+
+// Chapter 3, Three States. The first night after the rope and the clay, sleep
+// is not a cut to morning: the player dreams the valley, a little wrong, then
+// sleeps deeply, where there is nothing at all, then wakes (Māṇḍūkya 3-7
+// [P3]). Every other night is the cut to morning.
+enum class Sleep : int32_t { Awake = 0, Dream = 1, Deep = 2 };
+constexpr int kDreamSeconds = 75;      // of play, walking the dream valley
+constexpr int kDeepSleepSeconds = 12;  // of play, with nothing on the screen
+// In the dream the sun runs backwards from just before dusk, this many game
+// minutes a second, and the clock with it. Nothing in the dream finds that
+// strange.
+constexpr int kDreamStartMinute = kDuskMinute - 5;  // 6:10 pm
+constexpr double kDreamMinutesPerSecond = 6.0;
 constexpr int kCodexCount = static_cast<int>(CodexId::Count);
 
 struct World {
@@ -98,6 +111,8 @@ struct World {
     // After: the morning after both teachings. Nothing ends; the chores come
     // round again, nothing is scored, and the avatar can walk them alone.
     bool after = false;
+    Sleep sleep = Sleep::Awake;
+    int64_t sleptTick = -1;  // the tick the dream or the deep sleep began, or -1
 };
 
 // One tick's worth of player intent, already resolved from keys and mouse.
@@ -119,10 +134,16 @@ void tick(World& w, const Input& in);
 
 // The game clock: minutes since midnight of the first day (may pass 1440).
 double gameMinutes(const World& w);
-// "4:30 pm", for the HUD.
+// The minute the sky shows and the HUD's clock reads: the game clock, except
+// in a dream, where it runs backwards from dusk.
+double skyMinutes(const World& w);
+// "4:30 pm", for the HUD (the sky's minute).
 std::string clockText(const World& w);
+// Seconds of play since the dream or the deep sleep began; 0 when awake.
+float sleptSeconds(const World& w);
 
-// True from dusk until dawn, when the light is dim enough to mistake a rope.
+// True from dusk until dawn, when the light is dim enough to mistake a rope
+// (by the sky's minute, so never in the dream).
 bool isDusk(const World& w);
 // True while coil i is seen as a snake.
 bool snakeVisible(const World& w, int i);

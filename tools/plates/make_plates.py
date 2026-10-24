@@ -28,7 +28,7 @@ PLATES = ROOT / "content" / "plates"
 FONTS = Path(__file__).resolve().parent / "fonts"
 KEY = "atman-plate-source"
 
-UNLOCKS = {"RopeAndSnake", "ClayAndPots", "PotSpace", "always"}
+UNLOCKS = {"RopeAndSnake", "ClayAndPots", "PotSpace", "Dream", "Fourth", "always"}
 REQUIRED = ["id", "menu", "unlock", "title", "source", "cites", "devanagari", "iast", "english", "translator",
             "edition"]
 MENU_LENGTH = 22  # the menu column fits this many characters after the "> " marker

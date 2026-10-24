@@ -1,6 +1,7 @@
 // The autopilot: a stand-in player that lives the day from the world alone.
-// Before the after-mode it plays the whole MVP (the chores, three pots, the
-// clay lens, a broken pot, the snakes at dusk, sleep), which is the pinned
+// Before the after-mode it plays the whole game (the chores, three pots, the
+// clay lens, a broken pot, the snakes at dusk, sleep, and the dream and the
+// deep sleep, walking to the ghat in the dream), which is the pinned
 // playthrough; in the after-mode it is the avatar walking its chores while
 // the player watches (prarabdha: the body goes on with what is already in
 // motion [C5]). Deterministic: the same world always gets the same input.
@@ -40,7 +41,9 @@ std::vector<Vec2> planRoute(Vec2 from, Vec2 to);
 bool playthroughDone(const World& w);
 
 // The fingerprint the playthrough ends on with seed 1 (see
-// tests/test_autopilot.cpp and atman --headless --autopilot).
-constexpr uint64_t kPlaythroughFingerprint = 0x7e91db2a0f1ce16cULL;
+// tests/test_autopilot.cpp and atman --headless --autopilot). Pinned again
+// for chapter 3: the playthrough now dreams and sleeps deeply before the
+// after-mode's first morning.
+constexpr uint64_t kPlaythroughFingerprint = 0xb0790a95717290beULL;
 
 }  // namespace atman

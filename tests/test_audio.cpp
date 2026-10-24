@@ -114,6 +114,18 @@ int main() {
         w.player.x = 26;
         w.player.z = 0;
         CHECK(ambience(w, {26, 1.6f, 0}, 1.8f).stone);
+
+        // The dream has the evening's birds, though it is night by the game
+        // clock; deep sleep has only the river, wherever the body lies.
+        w.after = false;
+        w.sleep = Sleep::Dream;
+        w.sleptTick = w.tick;
+        const Ambience dream = ambience(w, {-8, 1.6f, 15}, 1.0f);
+        CHECK(dream.birds > 0 && dream.crickets == 0);
+        w.sleep = Sleep::Deep;
+        const Ambience deep = ambience(w, {-8, 1.6f, 15}, 1.0f);
+        CHECK(deep.river > 0.5f);
+        CHECK(deep.wind == 0 && deep.birds == 0 && deep.crickets == 0 && deep.steps == 0 && deep.drone == 0);
     }
 
     // Every one-off sound is there, finite and neither silent nor clipping.

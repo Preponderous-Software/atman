@@ -1,5 +1,6 @@
 #include "sim/world.h"
 
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 
@@ -132,6 +133,12 @@ World newWorld(uint64_t seed) {
 }
 
 void tick(World& w, const Input& in) {
+    if (w.sleep == Sleep::Deep) {  // no body and no valley: nothing the player does reaches anything
+        ++w.tick;
+        sleepTick(w);
+        return;
+    }
+    const bool awake = w.sleep == Sleep::Awake;
     Player& p = w.player;
     p.yaw = in.yaw;
     p.pitch = clampf(in.pitch, -kMaxPitch, kMaxPitch);
@@ -147,20 +154,24 @@ void tick(World& w, const Input& in) {
     const float sy = detSin(p.yaw), cy = detCos(p.yaw);
     // Forward is (sin yaw, -cos yaw) on the ground; right is (cos yaw, sin yaw).
     move(w, (sy * f + cy * s) * step, (-cy * f + sy * s) * step);
+    ++w.tick;
+    if (!awake) {  // in the dream the body walks and looks, and that is all
+        sleepTick(w);
+        return;
+    }
     if (in.toggleLamp) w.lampLit = !w.lampLit;
 
     const float minutes = static_cast<float>(kGameMinutesPerSecond / kTickRate);
     w.needs.thirst = clampf(w.needs.thirst + kThirstPerMinute * minutes, 0.0f, 1.0f);
     w.needs.hunger = clampf(w.needs.hunger + kHungerPerMinute * minutes, 0.0f, 1.0f);
     w.needs.tiredness = clampf(w.needs.tiredness + kTirednessPerMinute * minutes, 0.0f, 1.0f);
-    ++w.tick;
     rope(w);
     clayTick(w, in);
     choresTick(w, in);
 }
 
 bool isDusk(const World& w) {
-    const int minute = static_cast<int>(gameMinutes(w)) % 1440;
+    const int minute = static_cast<int>(skyMinutes(w)) % 1440;
     return minute >= kDuskMinute || minute < kDawnMinute;
 }
 
@@ -191,8 +202,18 @@ double gameMinutes(const World& w) {
     return kStartMinute + static_cast<double>(w.tick) / kTickRate * kGameMinutesPerSecond;
 }
 
+float sleptSeconds(const World& w) {
+    return w.sleep == Sleep::Awake ? 0.0f : static_cast<float>(w.tick - w.sleptTick) / kTickRate;
+}
+
+double skyMinutes(const World& w) {
+    if (w.sleep != Sleep::Dream) return gameMinutes(w);
+    const double day = std::floor((gameMinutes(w) - kDawnMinute) / 1440.0) * 1440.0;  // the evening it began
+    return day + kDreamStartMinute - sleptSeconds(w) * kDreamMinutesPerSecond;
+}
+
 std::string clockText(const World& w) {
-    const int minute = static_cast<int>(gameMinutes(w)) % 1440;
+    const int minute = static_cast<int>(skyMinutes(w)) % 1440;
     char buf[32];
     std::snprintf(buf, sizeof buf, "%d:%02d %s", (minute / 60 + 11) % 12 + 1, minute % 60, minute < 720 ? "am" : "pm");
     return buf;
@@ -250,6 +271,8 @@ uint64_t fingerprint(const World& w) {
     f.add(w.day);
     f.add(w.wokeTick);
     f.add(w.after);
+    f.add(w.sleep);
+    f.add(w.sleptTick);
     return f.h;
 }
 

@@ -102,8 +102,10 @@ int main() {
 
     // Pinned again in M2 and M3: the World now also holds the lamp, fear, the
     // coils and the pots, so the fingerprint covers them (the walk itself is
-    // unchanged).
-    const uint64_t pinned = 0x240146e361db1cc1ULL;
+    // unchanged). Pinned again for chapter 3, which added the sleep's state
+    // and two codex pages to the World; the three scripted runs end where
+    // they did under 0.1.2 (the same positions, fear and pots).
+    const uint64_t pinned = 0xfc7ee28e8f0d40f1ULL;
     std::printf("scripted walk fingerprint: %016" PRIx64 " (player at %.3f, %.3f)\n", fingerprint(a), a.player.x,
                 a.player.z);
     CHECK(fingerprint(a) == pinned);
@@ -116,7 +118,7 @@ int main() {
                 fingerprint(d), d.player.x, d.player.z, d.fear, seen, valley::kCoilCount);
     CHECK(seen > 0);  // the walk does see through at least one snake
     CHECK(d.fearRetired);
-    CHECK(fingerprint(d) == 0xbe080cdd822128b1ULL);
+    CHECK(fingerprint(d) == 0xb359090000a90761ULL);
 
     const World c = scriptedClay(1);
     CHECK(fingerprint(c) == fingerprint(scriptedClay(1)));
@@ -124,7 +126,7 @@ int main() {
                 fingerprint(c), c.potsMade, c.clayLens ? 1 : 0, c.pots[0].broken ? 1 : 0, c.player.x, c.player.z);
     CHECK(c.potsMade == 3);
     CHECK(c.pots[0].broken && !c.pots[1].broken && !c.pots[2].broken);
-    CHECK(fingerprint(c) == 0x19c87d7443f8a0c8ULL);
+    CHECK(fingerprint(c) == 0x688bd8f1422f2ac8ULL);
 
     TEST_MAIN_END();
 }

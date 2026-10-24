@@ -71,10 +71,15 @@ struct Reader {
     }
 };
 
-// One description of the save's fields, used both ways.
+// The codex pages a format version holds: version 1 had the first three.
+constexpr int kVersion1Codex = 3;
+
+// One description of the save's fields, used both ways. `version` is the
+// format being read; writing is always kSaveVersion.
 template <class IO>
 struct Fields {
     IO& io;
+    uint32_t version = kSaveVersion;
 
     template <class T>
     void v(T& x) { io.value(x); }
@@ -97,7 +102,8 @@ struct Fields {
             v(c.seenThrough);
             v(c.gaze);
         }
-        for (bool& c : w.codex) v(c);
+        const int pages = version >= 2 ? kCodexCount : kVersion1Codex;
+        for (int i = 0; i < pages; ++i) v(w.codex[static_cast<size_t>(i)]);
         for (Pot& p : w.pots) {
             v(p.made);
             v(p.broken);
@@ -114,6 +120,9 @@ struct Fields {
         v(w.day);
         v(w.wokeTick);
         v(w.after);
+        if (version < 2) return;  // a version 1 save was made awake, before chapter 3 existed
+        v(w.sleep);
+        v(w.sleptTick);
     }
 };
 
@@ -144,6 +153,9 @@ bool plausible(const World& w, std::string* error) {
         return fail("carrying something unknown");
     if (std::fabs(w.player.x) > valley::kWalkLimit + 1 || std::fabs(w.player.z) > valley::kWalkLimit + 1)
         return fail("the player is outside the valley");
+    const int sleep = static_cast<int>(w.sleep);
+    if (sleep < 0 || sleep > static_cast<int>(Sleep::Deep)) return fail("an unknown kind of sleep");
+    if ((w.sleep == Sleep::Awake) != (w.sleptTick == -1) || w.sleptTick > w.tick) return fail("the sleep's clock is impossible");
     return true;
 }
 
@@ -183,14 +195,16 @@ bool decodeSave(const std::vector<uint8_t>& bytes, World& out, std::string* erro
     uint64_t length = 0;
     head.value(version);
     head.value(length);
-    if (version != kSaveVersion) return fail("saved by a different version of Atman (format " + std::to_string(version) + ")");
+    // Older formats still load: each later version only added fields.
+    if (version < 1 || version > kSaveVersion)
+        return fail("saved by a different version of Atman (format " + std::to_string(version) + ")");
     if (length != bytes.size() - 8 - 4 - 8 - 32) return fail("the save is truncated or has extra bytes");
     const uint8_t* payload = bytes.data() + 20;
     const std::array<uint8_t, 32> digest = sha256(payload, static_cast<size_t>(length));
     if (std::memcmp(digest.data(), payload + length, 32) != 0) return fail("the save is damaged (its checksum does not match)");
 
     Reader r{payload, static_cast<size_t>(length)};
-    Fields<Reader> fields{r};
+    Fields<Reader> fields{r, version};
     World w;
     fields.world(w);
     if (!r.ok || r.at != r.n) return fail("the save's contents do not parse");

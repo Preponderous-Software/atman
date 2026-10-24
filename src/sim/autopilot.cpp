@@ -191,6 +191,20 @@ Input Autopilot::next(const World& w) {
         else walkTo(w, at, hurry, in);
     };
 
+    if (w.sleep == Sleep::Deep) {
+        doing_ = "in deep sleep";
+        return in;
+    }
+    if (w.sleep == Sleep::Dream) {
+        doing_ = "dreaming";
+        if (!arrived(ghatTop())) walkTo(w, ghatTop(), false, in);
+        else {
+            in.yaw = kPi / 2;
+            in.pitch = 0;
+        }
+        return in;
+    }
+
     // The lamp: lit after dark, out by day.
     if (w.lampLit != isDusk(w)) in.toggleLamp = true;
 
