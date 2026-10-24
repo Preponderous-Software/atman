@@ -117,6 +117,38 @@ int main(int argc, char** argv) {
         CHECK(after.codex[static_cast<int>(CodexId::Fourth)] && after.after);
     }
 
+    // Saves from 0.2.x (format 2) still load. The fixtures were written by the
+    // 0.2.0 rules through writeSave (tools/make_save_fixtures.cpp; provenance in
+    // tests/fixtures/README.md): one halfway through the first night's dream,
+    // one in the after-mode ten minutes after the fourth's page opened.
+    {
+        World dream;
+        std::string why;
+        CHECK(decodeSave(readAll(ATMAN_FIXTURES "/v2-mid-dream.save"), dream, &why));
+        CHECK(dream.sleep == Sleep::Dream && dream.sleptTick >= 0 && !dream.after);
+        CHECK(!dream.codex[static_cast<int>(CodexId::Fourth)]);
+        CHECK(fingerprint(dream) == fingerprint(played(dream.tick)));  // just as the rules have it now
+        // The dream goes on from the save: the deep sleep, then the fourth.
+        Autopilot pilot;
+        const int64_t limit = dream.tick + 24 * 60 * minute;
+        bool deep = false;
+        while (dream.tick < limit && !dream.codex[static_cast<int>(CodexId::Fourth)]) {
+            tick(dream, pilot.next(dream));
+            deep = deep || dream.sleep == Sleep::Deep;
+        }
+        CHECK(deep);
+        CHECK(dream.codex[static_cast<int>(CodexId::Fourth)] && dream.after);
+
+        World after;
+        CHECK(decodeSave(readAll(ATMAN_FIXTURES "/v2-after-the-fourth.save"), after, &why));
+        CHECK(after.after && after.sleep == Sleep::Awake && after.day == 1);
+        CHECK(after.codex[static_cast<int>(CodexId::Dream)] && after.codex[static_cast<int>(CodexId::Fourth)]);
+        // (Not compared with a fresh playthrough: the after-mode's chores have
+        // changed since 0.2.0, so today's autopilot is elsewhere by then.)
+        // Re-saved under the current format, it comes back the same.
+        CHECK(roundTrips(after));
+    }
+
     // A dream and a deep sleep round-trip too.
     {
         World w = newWorld(1);
