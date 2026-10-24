@@ -137,7 +137,9 @@ play the whole slice at ten times speed.
 The game continues from its save: `%APPDATA%\Atman\default` on Windows, `~/.local/share/atman/default`
 elsewhere, or `--slot DIR`. It saves every two minutes, on F5 and on quit, and keeps the save before
 last. A save that fails its checksum is refused with a message and the previous one loads.
-`--new` starts over (the old save is kept as the previous one). `--autopilot` never saves.
+`--new` starts over (the old save is kept as the previous one). `--autopilot` never saves. A
+second village (F6) is saved beside the first, in `default-2` (or `DIR-2`); the settings (text
+size, captions, which village) are in the first's `settings.txt`.
 
 On Linux, SDL3 needs the X11 development packages (`libx11-dev libxext-dev libxcursor-dev libxi-dev
 libxfixes-dev libxrandr-dev libxss-dev`). `cmake -DATMAN_WITH_STRATA=OFF` builds only the
@@ -159,6 +161,7 @@ simulation and its tests, with no engine.
 | F1 | Show or hide the controls |
 | F2 | Text size: normal, large, larger |
 | F3 | Captions for the sounds that matter (a heartbeat when afraid, the wheel, the river in deep sleep); they also show while the sound is off |
+| F6 | Your other village: the game keeps two, each with its own save |
 | F5 / F9 | Save now / load the last save |
 | Esc | Free the mouse (Esc again quits) |
 
