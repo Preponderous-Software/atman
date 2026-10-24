@@ -1,6 +1,9 @@
 #include "play/session.h"
 
+#include <algorithm>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
 
 #include "save/save.h"
 
@@ -12,7 +15,9 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
-constexpr int kF5 = 62, kF9 = 66, kM = 16;
+constexpr int kF2 = 59, kF3 = 60, kF5 = 62, kF9 = 66, kM = 16;
+constexpr float kTextScales[Session::kTextSizes] = {1.0f, 1.25f, 1.5f};
+constexpr const char* kTextSizeNames[Session::kTextSizes] = {"normal", "large", "larger"};
 constexpr float kStride = 0.7f;  // metres a step
 constexpr float kLookPerPixel = 0.0025f;
 constexpr double kAutosaveSeconds = 120;
@@ -30,11 +35,23 @@ int pagesOpen(const World& w) {
 }
 constexpr float kHurryStick = 0.95f;
 
+// The slot's settings file: "text <0..2>" and "captions <0|1>", one a line.
+std::string settingsPath(const std::string& slot) { return slot + "/settings.txt"; }
+
 }  // namespace
 
 Session::Session(strata::Engine& engine, const SessionOptions& options)
     : engine_(engine), options_(options), w_(newWorld(options.seed)), scene_(engine), pages_(engine) {
     if (options_.sound) sound_.start();
+    if (!options_.slot.empty()) {
+        std::ifstream f(settingsPath(options_.slot));
+        std::string key;
+        int value = 0;
+        while (f >> key >> value) {
+            if (key == "text") setTextSize(value, false);
+            else if (key == "captions") setCaptions(value != 0, false);
+        }
+    }
     watching_ = following_ = options_.autopilot;
     World start = w_;
     if (!options_.slot.empty() && !options_.fresh && hasSave(options_.slot)) {
@@ -111,6 +128,31 @@ void Session::restart() {
     say(kGreeting, kGreetingSeconds);
 }
 
+void Session::setTextSize(int size, bool announce) {
+    textSize_ = std::clamp(size, 0, kTextSizes - 1);
+    setTextScale(kTextScales[textSize_]);
+    if (announce) {
+        say(std::string("Text size: ") + kTextSizeNames[textSize_] + " (F2)");
+        writeSettings();
+    }
+}
+
+void Session::setCaptions(bool on, bool announce) {
+    captions_ = on;
+    if (announce) {
+        say(on ? "Captions on (F3)" : "Captions off (F3)");
+        writeSettings();
+    }
+}
+
+void Session::writeSettings() {
+    if (options_.slot.empty()) return;
+    std::error_code ec;
+    std::filesystem::create_directories(options_.slot, ec);
+    std::ofstream(settingsPath(options_.slot)) << "text " << textSize_ << "\ncaptions " << (captions_ ? 1 : 0) << "\n";
+    if (options_.afterSave) options_.afterSave();  // the browser keeps the file in IndexedDB
+}
+
 void Session::setMuted(bool muted, bool announce) {
     sound_.setMuted(muted);
     if (announce) say(muted ? "Sound off (M turns it on)" : "Sound on");
@@ -123,7 +165,9 @@ void Session::listen(double dt) {
     const float speed = dt > 0 ? std::sqrt(dx * dx + dz * dz) / static_cast<float>(dt) : 0.0f;
     const float steps = speed > 0.3f && speed < 20.0f ? speed / kStride : 0.0f;
     const Vec3 ears = watching_ ? cam_.eye : cameraAtEyes(w_).eye;
-    sound_.setAmbience(audio::ambience(w_, ears, steps));
+    const audio::Ambience a = audio::ambience(w_, ears, steps);
+    sound_.setAmbience(a);
+    caption_ = captions_ || sound_.muted() ? audio::captions(w_, a) : std::string();
     heard_ = w_;
 }
 
@@ -176,6 +220,14 @@ void Session::onKeyDown(int scancode, bool repeat) {
     }
     if (scancode == kF1) {
         help_ = !help_;
+        return;
+    }
+    if (scancode == kF2 && !repeat) {
+        setTextSize((textSize_ + 1) % kTextSizes);
+        return;
+    }
+    if (scancode == kF3 && !repeat) {
+        setCaptions(!captions_);
         return;
     }
     if (scancode == kF5 && !repeat) {
@@ -288,7 +340,7 @@ void Session::frame(double dt) {
     if (watching_ && following_) cam_ = cameraBehind(w_);
     listen(dt);
     scene_.update(w_, watching_);
-    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_, cover_);
+    render(engine_, w_, help_ && !compact_, typing_, watching_ ? &cam_ : nullptr, compact_, message_, cover_, caption_);
 }
 
 }  // namespace atman::play

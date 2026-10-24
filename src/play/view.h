@@ -75,8 +75,18 @@ std::string bar(float value, int width);
 struct Cover {
     float right = 0, bottom = 0;  // in canvas pixels
 };
+// `caption` names the sounds that matter, for a player who cannot hear them
+// (see audio::captions); it shows centred above the controls.
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing = "",
             const FreeCamera* watching = nullptr, bool noText = false, const std::string& message = "",
-            Cover cover = {});
+            Cover cover = {}, const std::string& caption = "");
+
+// The HUD's text size: 1 is 16-pixel text, as at first; the player chooses
+// 1, 1.25 or 1.5 (F2).
+void setTextScale(float scale);
+
+// `text` split at its newlines, and each line wrapped at word boundaries to
+// at most `columns` characters (a longer word gets a line of its own).
+std::vector<std::string> wrapped(const std::string& text, size_t columns);
 
 }  // namespace atman::play

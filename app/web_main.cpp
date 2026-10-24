@@ -116,6 +116,13 @@ EMSCRIPTEN_KEEPALIVE void atman_cover(double right, double bottom) {
 EMSCRIPTEN_KEEPALIVE void atman_touch(int on) {
     if (g) g->session->setKeyHints(on == 0);
 }
+// The page's text size (0 to 2) and captions, from How to play's settings.
+EMSCRIPTEN_KEEPALIVE void atman_text(int size) {
+    if (g) g->session->setTextSize(size);
+}
+EMSCRIPTEN_KEEPALIVE void atman_captions(int on) {
+    if (g) g->session->setCaptions(on != 0);
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }
@@ -150,6 +157,10 @@ EMSCRIPTEN_KEEPALIVE const char* atman_status() {
     jsonBool(o, "lens", lensAvailable(w));
     jsonBool(o, "lampLit", w.lampLit);
     jsonBool(o, "muted", s.muted());
+    jsonBool(o, "captions", s.captions());
+    o += ",\"textSize\":" + std::to_string(s.textSize());
+    o += ",\"caption\":";
+    jsonString(o, s.caption());
     o += ",\"codexOpen\":" + std::to_string(codex::openEntries(w).size());
     o += ",\"typing\":";
     jsonString(o, s.typing());

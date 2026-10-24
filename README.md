@@ -150,6 +150,8 @@ simulation and its tests, with no engine.
 | V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
 | M | Sound on or off |
 | F1 | Show or hide the controls |
+| F2 | Text size: normal, large, larger |
+| F3 | Captions for the sounds that matter (a heartbeat when afraid, the wheel, the river in deep sleep); they also show while the sound is off |
 | F5 / F9 | Save now / load the last save |
 | Esc | Free the mouse (Esc again quits) |
 

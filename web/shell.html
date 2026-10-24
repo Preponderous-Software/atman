@@ -30,7 +30,7 @@
   button:focus-visible { outline: 2px solid var(--lamp); }
   .overlay { position: absolute; z-index: 1; pointer-events: none; text-shadow: 0 1px 2px #000, 0 0 6px #000; }
   #panel { top: 8px; left: 8px; max-width: min(78%, 360px); display: none; pointer-events: auto;
-    background: rgba(20, 15, 10, 0.55); border-radius: 8px; padding: 6px 9px; font-size: 13px; white-space: pre; }
+    background: rgba(20, 15, 10, 0.55); border-radius: 8px; padding: 6px 9px; font-size: 13px; white-space: pre-wrap; }
   body.compact #panel { display: block; }
   #panel.folded .line { display: none; }
   #panel .heading { color: var(--lamp); font-weight: 600; }
@@ -46,6 +46,14 @@
   body.touch.compact #msg:not(:empty) { left: max(10px, env(safe-area-inset-left)); transform: none;
     width: calc(100% - 176px - env(safe-area-inset-left) - env(safe-area-inset-right)); }
   body.compact #msg { display: block; }
+  /* The player's text size (How to play, or F2), for the words the page shows itself. */
+  body.text1 #panel { font-size: 16px; } body.text1 #msg, body.text1 #prompt, body.text1 #caption { font-size: 17px; }
+  body.text2 #panel { font-size: 19px; } body.text2 #msg, body.text2 #prompt, body.text2 #caption { font-size: 20px; }
+  #caption { left: max(14px, env(safe-area-inset-left)); bottom: 36px; max-width: calc(100% - 190px); font-size: 14px;
+    font-style: italic; display: none; }
+  body.compact #caption:not(:empty) { display: block; }
+  .settings { margin: 10px 0 0; display: grid; gap: 8px; }
+  .settings button { margin-left: 4px; }
   #prompt { left: 50%; transform: translateX(-50%); top: calc(50% + 18px); width: 92%; text-align: center;
     display: none; font-size: 15px; font-weight: 600; }
   body.compact #prompt { display: block; }
@@ -120,6 +128,7 @@
   <div id="cross" class="overlay">+</div>
   <div id="prompt" class="overlay"></div>
   <div id="msg" class="overlay"></div>
+  <div id="caption" class="overlay" aria-live="polite"></div>
   <div id="touch" aria-hidden="true">
     <div id="stickBase"></div><div id="stickKnob"></div>
     <div id="stickHint">drag left: walk &middot; drag right: look</div>
@@ -172,6 +181,13 @@
   <p style="color:var(--dim);font-size:13px">The game saves every two minutes, when you press Save (or <kbd>F5</kbd>),
   and when you leave the page; <kbd>F9</kbd> loads the last save. Saves stay in this browser on this device. Built on the <a href="https://github.com/Preponderous-Software/strata">Strata</a> engine;
   <a href="https://github.com/Preponderous-Software/atman">source and sources</a>.</p>
+  <div class="settings" role="group" aria-label="Settings">
+    <div>Text size <span id="textSizes"><button data-text="0" aria-pressed="true">Normal</button>
+      <button data-text="1" aria-pressed="false">Large</button><button data-text="2" aria-pressed="false">Larger</button></span>
+      <span class="for-keys">(<kbd>F2</kbd>)</span></div>
+    <label><input type="checkbox" id="captionsBox"> Captions for the sounds that matter, such as your heartbeat
+      when afraid <span class="for-keys">(<kbd>F3</kbd>)</span></label>
+  </div>
   <div class="row"><button id="helpClose">Play</button></div>
 </div>
 
@@ -265,6 +281,12 @@
     }
     $('prompt').textContent = touchWords(s.prompt);
     $('msg').textContent = touchWords(s.message);
+    $('caption').textContent = s.caption;
+    ['text1', 'text2'].forEach(function (c, i) { document.body.classList.toggle(c, s.textSize === i + 1); });
+    Array.prototype.forEach.call(document.querySelectorAll('#textSizes button'), function (b) {
+      b.setAttribute('aria-pressed', String(Number(b.dataset.text) === s.textSize));
+    });
+    $('captionsBox').checked = s.captions;
     if (!s.naming && last.naming) $('nameInput').value = '';
     if (s.naming && !last.naming && touchMode) setTimeout(function () { $('nameInput').focus(); }, 50);
     last.naming = s.naming;
@@ -395,6 +417,12 @@
       if (document.pointerLockElement) document.exitPointerLock();
       $('help').style.display = 'block';
     });
+    // Settings: kept by the game in the save slot (settings.txt), so they come
+    // back with the save.
+    Array.prototype.forEach.call(document.querySelectorAll('#textSizes button'), function (b) {
+      b.addEventListener('click', function () { call.text(Number(b.dataset.text)); refresh(); });
+    });
+    $('captionsBox').addEventListener('change', function () { call.captions($('captionsBox').checked ? 1 : 0); refresh(); });
     $('helpClose').addEventListener('click', function () {
       $('help').style.display = 'none';
       try { localStorage.setItem('atman-seen-help', '1'); } catch (e) {}
@@ -436,6 +464,8 @@
         sound: api('atman_sound', null, ['number', 'number']),
         cover: api('atman_cover', null, ['number', 'number']),
         touch: api('atman_touch', null, ['number']),
+        text: api('atman_text', null, ['number']),
+        captions: api('atman_captions', null, ['number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };

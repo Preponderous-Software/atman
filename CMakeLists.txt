@@ -168,7 +168,7 @@ if(ATMAN_WEB)
   target_link_options(atman-web PRIVATE
     -sSTACK_SIZE=1MB
     -lidbfs.js
-    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_sound,_atman_cover,_atman_touch,_atman_save,_atman_restart,_atman_resize,_atman_status"
+    "-sEXPORTED_FUNCTIONS=_main,_atman_look,_atman_stick,_atman_press,_atman_name,_atman_captured,_atman_help,_atman_sound,_atman_cover,_atman_touch,_atman_text,_atman_captions,_atman_save,_atman_restart,_atman_resize,_atman_status"
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,UTF8ToString,FS,IDBFS,addRunDependency,removeRunDependency
     "--shell-file=${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
   set_property(TARGET atman-web APPEND PROPERTY LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html")
