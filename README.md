@@ -119,7 +119,7 @@ codex is open.
 
 Atman builds with CMake 3.24 or newer and a C++17 compiler. Strata, and the SDL3 it uses, are
 fetched and built along with it, at the commit `ATMAN_STRATA_REF` in `CMakeLists.txt` pins
-(Strata v0.4.0).
+(Strata v0.6.0).
 
 ```sh
 cmake -S . -B build
