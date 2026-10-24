@@ -130,7 +130,7 @@ function colourCount(png) {
   if (phone) {
     if (!(await page.locator('#panel').isVisible())) await fail('the HUD panel is not shown on a narrow page');
     const panel = await page.locator('#panel').innerText();
-    if (!/QUESTS/.test(panel)) await fail('the HUD panel does not show the quests: ' + panel);
+    if (!/CHORES/.test(panel)) await fail('the HUD panel does not show the chores: ' + panel);
     // Walk: hold the stick forward on the left half.
     const cdp = await context.newCDPSession(page);
     const sx = box.x + box.width * 0.2, sy = box.y + box.height * 0.6;

@@ -15,14 +15,18 @@ constexpr float kFovY = 70.0f;
 constexpr float kAway = 5000.0f;
 constexpr float kDistance = 1.0f;
 constexpr float kPlateAspect = static_cast<float>(codex::kPlateWidth) / codex::kPlateHeight;
+// The plate without its menu column: the page alone.
+constexpr float kPageAspect = static_cast<float>(codex::kPlateWidth - codex::kMenuWidth) / codex::kPlateHeight;
 // The plate's dark column, as the clear colour, so a window wider or taller
 // than the plate is framed in it.
 constexpr float kPanel[4] = {35 / 255.0f, 26 / 255.0f, 19 / 255.0f, 1.0f};
 
-// How tall the plate is drawn, in world units, to fit the window.
-float plateHeight(float aspect) {
-    const float visible = 2 * kDistance * std::tan(kFovY * 0.5f * 3.14159265f / 180);
-    return aspect >= kPlateAspect ? visible : visible * aspect / kPlateAspect;
+// How much of the world is in view from top to bottom, in world units.
+float visibleHeight() { return 2 * kDistance * std::tan(kFovY * 0.5f * 3.14159265f / 180); }
+
+// How tall a picture of this shape is drawn, in world units, to fit the window.
+float fitHeight(float aspect, float shape) {
+    return aspect >= shape ? visibleHeight() : visibleHeight() * aspect / shape;
 }
 
 }  // namespace
@@ -73,11 +77,32 @@ void CodexScreen::render(const World& w) {
     const float eye[3] = {0, kAway, 0}, target[3] = {0, kAway, -kDistance}, up[3] = {0, 1, 0};
     engine_.setCamera(strata::cameraLookAt(eye, target, up, kFovY, aspect, 0.05f, 10.0f));
 
+    // A window taller than it is wide (a phone held upright) shows the page
+    // alone across its width, with the menu above it: the whole plate would
+    // fit only at a size too small to read.
+    const bool upright = aspect < 1;
+    const float shape = upright ? kPageAspect : kPlateAspect;
+    const float h = fitHeight(aspect, shape), wq = h * shape;
+    const float pixelsPerUnit = static_cast<float>(height) / visibleHeight();
+    const int listed = static_cast<int>(codex::openEntries(w).size());
+
+    // Where the menu goes, how large its text is, and how far the quad is
+    // moved up or down from the middle of the window (world units).
+    float size = 0, x = 0, y = 0, offset = 0;
+    if (upright) {
+        size = std::clamp(std::floor(static_cast<float>(width) / 40), 8.0f, 24.0f);
+        x = std::round(static_cast<float>(width) * 0.05f);
+        y = size;
+        const float pagePixels = h * pixelsPerUnit;
+        const float menuBottom = y + static_cast<float>(listed + 2) * size * 1.6f;
+        const float pageTop = std::max(menuBottom + size, (static_cast<float>(height) - pagePixels) / 2);
+        offset = (static_cast<float>(height) / 2 - (pageTop + pagePixels / 2)) / pixelsPerUnit;
+    }
+
     // Upload the chosen plate the first time it is shown, and put it on the
     // quad. The quad is rebuilt when the window's shape or the plate changes.
-    const float h = plateHeight(aspect), wq = h * kPlateAspect;
     if (chosen_ >= 0 && chosen_ < static_cast<int>(textures_.size()) &&
-        (!mesh_ || meshEntry_ != chosen_ || meshAspect_ != aspect)) {
+        (!mesh_ || meshEntry_ != chosen_ || meshAspect_ != aspect || meshOffset_ != offset)) {
         uint32_t& tex = textures_[static_cast<size_t>(chosen_)];
         if (!tex) {
             const codex::Image img = codex::decodePlate(codex::kEntries[chosen_]);
@@ -86,10 +111,11 @@ void CodexScreen::render(const World& w) {
                                                  STRATA_TEXTURE_MIPMAPS | STRATA_TEXTURE_CLAMP_U | STRATA_TEXTURE_CLAMP_V);
         }
         if (mesh_) engine_.removeMesh(mesh_);
-        const float x0 = -wq / 2, x1 = wq / 2, y0 = kAway - h / 2, y1 = kAway + h / 2, z = -kDistance;
+        const float x0 = -wq / 2, x1 = wq / 2, y0 = kAway + offset - h / 2, y1 = kAway + offset + h / 2, z = -kDistance;
+        const float u0 = upright ? static_cast<float>(codex::kMenuWidth) / codex::kPlateWidth : 0;
         const float positions[] = {x0, y0, z, x1, y0, z, x1, y1, z, x0, y1, z};
         const float normals[] = {0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1};
-        const float uvs[] = {0, 1, 1, 1, 1, 0, 0, 0};
+        const float uvs[] = {u0, 1, 1, 1, 1, 0, u0, 0};
         const uint32_t indices[] = {0, 1, 2, 0, 2, 3};
         StrataTexturedMesh m{};
         m.mesh.positions = positions;
@@ -104,6 +130,7 @@ void CodexScreen::render(const World& w) {
         mesh_ = engine_.addTexturedMesh(m);
         meshEntry_ = chosen_;
         meshAspect_ = aspect;
+        meshOffset_ = offset;
     }
 
     StrataFrameDesc fd{};
@@ -111,14 +138,16 @@ void CodexScreen::render(const World& w) {
     for (int i = 0; i < 4; ++i) fd.clear_color[i] = kPanel[i];
     engine_.beginFrame(fd);
 
-    // The menu, in the plate's dark column, sized to fit it.
-    const float pixelsPerUnit = static_cast<float>(height) / (2 * kDistance * std::tan(kFovY * 0.5f * 3.14159265f / 180));
+    // Otherwise the menu goes in the plate's dark column, sized to fit it.
     const float plateLeft = static_cast<float>(width) / 2 - wq / 2 * pixelsPerUnit;
     const float platePixels = wq * pixelsPerUnit / codex::kPlateWidth;  // screen pixels per plate pixel
-    const float column = codex::kMenuWidth * platePixels;
-    const float size = std::clamp(std::floor((column - 64 * platePixels) / 24), 8.0f, 24.0f);
-    const float x = plateLeft + 32 * platePixels, line = size * 1.6f;
-    float y = static_cast<float>(height) / 2 - 450 * platePixels + 56 * platePixels;
+    if (!upright) {
+        const float column = codex::kMenuWidth * platePixels;
+        size = std::clamp(std::floor((column - 64 * platePixels) / 24), 8.0f, 24.0f);
+        x = plateLeft + 32 * platePixels;
+        y = static_cast<float>(height) / 2 - 450 * platePixels + 56 * platePixels;
+    }
+    const float line = size * 1.6f;
 
     std::vector<std::string> keep;
     std::vector<StrataText> texts;
@@ -141,7 +170,9 @@ void CodexScreen::render(const World& w) {
         add(y, std::string(i == chosen_ ? "> " : "  ") + codex::kEntries[i].menu, i == chosen_ ? ink : dim);
         y += line;
     }
-    const float bottom = static_cast<float>(height) / 2 + 450 * platePixels - 56 * platePixels;
+    // Upright, the keys go just under the page.
+    const float bottom = upright ? static_cast<float>(height) / 2 - offset * pixelsPerUnit + h * pixelsPerUnit / 2 + 3 * line
+                                 : static_cast<float>(height) / 2 + 450 * platePixels - 56 * platePixels;
     add(bottom - 2 * line, "Up/Down  choose", dim);
     add(bottom - line, "Tab  back to the valley", dim);
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();

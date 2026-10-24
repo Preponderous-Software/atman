@@ -278,7 +278,8 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     lines.push_back({"NEXT", true});
     lines.push_back({nextStep(w)});
     lines.push_back({""});
-    lines.push_back({"QUESTS", true});
+    // The day's chores. In the after-mode they earn nothing, so they are offered, not asked.
+    lines.push_back({w.after ? "CHORES  (as you like)" : "CHORES", true});
     for (int i = 0; i < kQuestCount; ++i)
         lines.push_back({std::string(w.questDone[i] ? "[x] " : "[ ] ") + questText(static_cast<QuestId>(i))});
     const std::vector<std::string> made = inventory(w);
