@@ -1,0 +1,97 @@
+{
+  "session": "s04",
+  "goal": "As a brand-new player, follow the NEXT line from the first afternoon (the potter's wheel, then dusk and the path to the ghat) until you sleep at home after both teachings. Describe exactly what happens after you sleep, what you took it to mean, and whether anything made you think the game had stopped or frozen; then read the codex pages that open when you wake, and answer the questions at the end.",
+  "build": {"version": null, "commit": "1100130"},
+  "seed": 4,
+  "durationSec": 1650,
+  "outcome": "partial",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "Dusk 'Walk back to the village along the path' step never completes; waypoint circles a lit house",
+      "detail": "After the sunset on the ghat steps the NEXT line became 'Walk back to the village along the path'. Following its distance/direction hint led me around a lit house near the well: the target was always 3-7 m 'to your right' or 'behind you', walking toward it hit the wall, once I faced a solid black surface that filled the screen and W did not advance ('5 m ahead' never shrank). Reaching the door made the distance vanish but the step did not complete, E did nothing, and I never saw the snake/rope scene. About 10 real minutes circling; I could not reach sleep. Expected: a visible path or a waypoint that is reachable and advances the step.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-pt --seed 4; F1; throw 3 pots at the wheel; C; B on a pot; walk to ghat steps; pt wait 60 until dusk; F; follow NEXT direction hints",
+      "screenshot": "shots/p22.png",
+      "tick": 10261
+    },
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "Stuck against a full-screen black surface on the dusk path",
+      "detail": "At about 6:51 pm game time, following '5 m ahead', the whole view went black (unlit geometry right in front of the camera); holding W and strafing did not move me forward and the distance stayed at 5 m. Had to turn 180 degrees to get out.",
+      "repro": "As above; at the lit house south of the ghat, follow the NEXT hint '5 m ahead'",
+      "screenshot": "shots/path9.png",
+      "tick": 8779
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "HUD text overlaps: caption, help, CHORES and NEXT print on top of each other at 640x360",
+      "detail": "At start the welcome caption ('Your house is beside you...') is drawn over the help panel and the CHORES list, unreadable. At dusk the 'light your lamp' caption is drawn on the NEXT line's second row. 'Step up to the wheel' overlaps the CHORES header. Expected captions in a clear band.",
+      "repro": "pt start ...; pt shot start",
+      "screenshot": "shots/overlap_start.png",
+      "tick": 0
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "NEXT line and wheel progress text clipped at the screen edges",
+      "detail": "'Throw pots at the potter's wheel (0 of' is cut at the right edge so the total never shows; while throwing, '...ng a water jar [##....] stay at the' is clipped on both sides; the MADE list runs off the bottom (third pot hidden).",
+      "repro": "Walk to the wheel, press 1",
+      "screenshot": "shots/throw_text_cut.png",
+      "tick": 1330
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Breaking a pot gives no visible feedback; pots hidden under the HUD",
+      "detail": "The pots stand low in view, under the HUD text. The first B press with the pot slightly off-centre did nothing with no hint to aim; the second worked, but the only sign was the NEXT line changing. The thrown pot is not visible from the wheel while throwing either.",
+      "repro": "After the clay lens step, face the pots, pt key b",
+      "screenshot": "shots/broke2.png",
+      "tick": 2913
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Codex shows internal wording: 'awaiting review' translation, 'see RESEARCH.md'",
+      "detail": "'The space in the pot' says 'Translation: Working translation for Atman from the Sanskrit, awaiting review' and every page ends 'Sources: [..] (see RESEARCH.md)', a file the player cannot see. The page title is also truncated in the left list ('The space in the pot').",
+      "repro": "Tab after breaking a pot; Down",
+      "screenshot": "shots/codex2.png",
+      "tick": 10307
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "'Other schools' codex page mentions the snake on the rope before the player meets it",
+      "detail": "The page is open after the pot step and its Advaita paragraph already says 'as the snake is put on the rope', which spoils the dusk scene a little. The page itself is fair and well sourced.",
+      "repro": "Tab; Down Down",
+      "screenshot": "shots/codex3.png",
+      "tick": 10325
+    },
+    {
+      "severity": "minor",
+      "category": "perf",
+      "title": "Waiting for sunset is slow in a driven session (about 6-7 fps)",
+      "detail": "pt wait 20 (20 game minutes) took 3 minutes of wall clock; waiting from 5:28 to dusk took about 8 real minutes. The sunset happened during a wait with no lasting on-screen sign beyond the NEXT line changing.",
+      "repro": "Stand on the ghat steps; pt wait 20",
+      "screenshot": "shots/sun3.png",
+      "tick": 7126
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 4,
+    "deaths": 0,
+    "secondsToObjective": {"Throw pots at the potter's wheel": 420.0, "Look at your pots through the clay lens": 380.0, "Break one of your pots": 460.0, "Wait on the ghat steps for the sunset": 1080.0},
+    "potsThrown": 3,
+    "codexPagesRead": 3,
+    "minutesStuckOnDuskPath": 10
+  },
+  "fun": 3,
+  "verdict": "The afternoon works: throwing and naming pots, then seeing them labelled 'clay' through the lens and breaking one, makes the idea land without a lecture, and the codex is beautiful, honest and fair to other schools. But I never got past the dusk 'walk back along the path' step: its waypoint circles a lit house and never completes, so I saw neither the snake/rope scene nor sleep. HUD text overlaps and clips badly at 640x360. secondsToObjective are wall-clock (no probe), inflated by a ~6 fps headless run."
+  ,
+  "answers": [
+    {"question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?", "answer": "A quiet village afternoon about seeing what things really are. The pots I threw and named (Ganga, Kashi, Lota) showed up as just 'clay' through the clay lens, and breaking one changed nothing about the clay: names and shapes are real enough to use, but what they are is one thing. I never reached the snake and rope scene (stuck on the dusk path), so I only know it from the codex: the fear of a snake that is really a rope, the error being put on top of what is there. I took it to be about the self: you think you are a separate thing, as the space in a pot seems separate, but it is the same as all space."},
+    {"question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.", "answer": "Not preachy: the pot scene shows rather than tells, and the codex pages give Sanskrit, transliteration and a translation with a short plain gloss. The 'Other schools' page was a good surprise: it gives the Vishishtadvaita and Dvaita readings of 'tat tvam asi' and says plainly that the game takes Advaita's reading, which felt honest. Confusing bits: one translation is marked 'working translation ... awaiting review', and the pages cite 'RESEARCH.md', which a player cannot see; and that page mentions the snake on the rope before I met it. I cannot judge accuracy of the Sanskrit myself."}
+  ]
+}

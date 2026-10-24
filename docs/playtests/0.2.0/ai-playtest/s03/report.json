@@ -1,0 +1,105 @@
+{
+  "session": "s03",
+  "goal": "The rope: do what the NEXT line asks until dusk, then walk the path from the village to the ghat, light the lamp (F) and look steadily at each snake until it turns out to be a rope; then sleep at home (E at the indigo door) and, in the morning, try V. Answer the questions at the end.",
+  "build": {"version": null, "commit": "1100130"},
+  "seed": 3,
+  "durationSec": 1663,
+  "outcome": "partial",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "V does nothing the morning after the rope, and nothing says why",
+      "detail": "After the dusk path (two snakes seen as ropes, Fear 0) I slept with E at the indigo door and woke at 22 March 6:30 am. Pressing V inside the house and again outside had no visible effect and no message. If V only works in an after-mode I had not reached, the screen never says what unlocks it. I expected V to step out and watch, or a line telling me it is not available yet.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-pt --seed 3; follow NEXT to dusk; walk the path, F, look at each snake; E at indigo door; pt key v; pt step 10; pt shot v2",
+      "screenshot": "shots/v2.png",
+      "tick": 9418
+    },
+    {
+      "severity": "minor",
+      "category": "bug",
+      "title": "Morning NEXT line says 'Wait on the ghat steps for the sunset'",
+      "detail": "Right after waking at 6:30 am the NEXT line was 'Wait on the ghat steps for the sunset, 35 m behind you'. That is the step from the previous afternoon, and it is odd at dawn. The chores were still unticked. I expected a morning objective, or the after-mode hint.",
+      "repro": "as above; after E at the indigo door, pt shot h9",
+      "screenshot": "shots/h9.png",
+      "tick": 9230
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "'Walk back to the village along the path' stalls at the village with no distance or direction",
+      "detail": "When I reached the houses at the end of the dusk path, the NEXT line lost its distance and direction but did not advance (7:00 pm). I had no cue about what completes it, so I went to the house on a guess.",
+      "repro": "after both ropes, walk the path to the village; pt wait 1; pt shot h4",
+      "screenshot": "shots/h4.png",
+      "tick": 9117
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Opening caption, help, NEXT and CHORES text draw over each other",
+      "detail": "At start the centred caption ('Your house is beside you, its door, the indigo one, faces the well. The NEXT line, top left, says what comes next.') is printed over the help panel and the CHORES list. It cannot be read, even after F1 hides the help. It stayed up for more than 5 game minutes until I walked off.",
+      "repro": "pt start ... --seed 3; pt shot start; pt key F1; pt shot nohelp",
+      "screenshot": "shots/overlap.png",
+      "tick": 0
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Wheel prompts are clipped at the screen edges and overlap the CHORES heading",
+      "detail": "While throwing, the progress prompt is wider than the 640px screen ('ng a water jar [#...] stay at the'). The 'wheel: 1 water jar 2 bowl 3 cup' line and 'Name your water jar' also sit on top of 'CHORES'. The NEXT line 'Throw pots at the potter's wheel (0 of' loses its total, so I never learned how many pots were wanted.",
+      "repro": "walk to the wheel; pt key 1; pt step 3; pt shot wheelclip",
+      "screenshot": "shots/wheelclip.png",
+      "tick": 1554
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Breaking a pot with B is hard to aim and silent on a miss",
+      "detail": "The pots sit low on a shelf beside the wheel. The HUD text covers about the left two thirds of the screen, and the clay lens darkens the scene. B on a miss gives no feedback. It took about 5 tries to break one. A target highlight or 'look at a pot' hint would help.",
+      "repro": "after throwing 3 pots and C: pt key b at various aims; pt shot aimhard",
+      "screenshot": "shots/aimhard.png",
+      "tick": 2504
+    },
+    {
+      "severity": "minor",
+      "category": "perf",
+      "title": "Waiting for sunset costs minutes of wall clock headless",
+      "detail": "'pt wait 20' (20 game minutes) took about 2.5 minutes of wall clock, and the sunset wait (5:19 to 6:29 pm) took about 8 minutes. One game minute per real second is also a long sit for a real player with nothing to do on the steps.",
+      "repro": "stand on the ghat steps at 5:19 pm; pt wait 20",
+      "screenshot": "shots/s1.png",
+      "tick": 7000
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Codex page titles truncated in the left list",
+      "detail": "'The rope and the sna', 'The space in the po' are cut off by the page panel. The verse pages themselves are excellent: Devanagari, IAST, English, and a sourced commentary.",
+      "repro": "pt key Tab; pt shot cx1",
+      "screenshot": "shots/cx1.png",
+      "tick": 7889
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "Snake on the dusk path partly hidden behind the HUD block",
+      "detail": "Positive overall: a steady look turned each snake into a coiled rope within about 3 game seconds, Fear dropped, and a codex page arrived. But the snakes lie low on the path, right where the NEXT/CHORES text is drawn, so lining up the crosshair meant looking through text.",
+      "repro": "at dusk, pt key f; aim at the coiled shape on the path; pt wait 3",
+      "screenshot": "shots/rope1.png",
+      "tick": 7889
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 5,
+    "deaths": 0,
+    "secondsToObjective": {"pots thrown (3)": 900, "pot broken": 1080, "dusk reached": 1260, "both snakes seen as rope": 1500, "slept at home": 1620},
+    "snakesResolvedToRope": 2,
+    "peakFear": 9,
+    "chores completed": 0
+  },
+  "fun": 3,
+  "verdict": "The snake-to-rope moment works: lamp light, rising Fear, a steady look, then a coiled rope and a beautifully sourced codex page. It is the best thing in the session, and the codex handles the different schools even-handedly. The HUD is the main obstacle: the start caption, the wheel prompts and NEXT/CHORES overlap or clip at 640x360 and cover what you need to aim at. The morning after the rope is a dead end: V does nothing, nothing explains why, and NEXT points back to the sunset. (secondsToObjective are wall-clock seconds; the game has no probe.)",
+  "answers": [
+    {"question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?", "answer": "An ordinary village afternoon used to show how we mistake names and appearances for what is real. The pots I threw and named turned out, through the clay lens, to be just clay: the name and shape are added on, and the clay is what is really there. The snake on the dusk path was my fear projected onto a rope in poor light. When I looked at it steadily with the lamp, the snake simply wasn't there and fear fell to zero. The codex ties this to the Self: the world of names is laid over one reality, as the snake is laid over the rope. I read it as being about seeing clearly rather than escaping the world, since the codex says the village and its chores are not that kind of error."},
+    {"question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.", "answer": "Nothing felt preachy; the teaching comes through actions, and the codex is opt-in. The 'Other schools' page was a welcome surprise. It gives Advaita, Vishishtadvaita and Dvaita readings of 'tat tvam asi', notes the grammar alone does not settle it, and says the game follows one school's reading, not 'what Hinduism says'. That felt fair. What confused me was mechanical, not doctrinal. I could not tell what V and the 'after-mode' were meant to show, because V did nothing in the morning. The rope-and-snake page notes its translation is a working one 'awaiting review', and I can't judge its accuracy myself."}
+  ]
+}

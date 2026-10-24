@@ -1,0 +1,209 @@
+{"t": 1792853126283, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-pt", "--seed", "4"]}
+{"t": 1792853137076, "cmd": "shot", "args": ["start"]}
+{"t": 1792853141864, "cmd": "note", "args": ["--shot", "overlap_start", "At start, help panel, CHORES list and a centred caption all overlap in the lower half at 640x360: 'Your house is beside you...' caption is unreadable under help text."]}
+{"t": 1792853141966, "cmd": "key", "args": ["F1"]}
+{"t": 1792853142999, "cmd": "shot", "args": ["nohelp"]}
+{"t": 1792853148135, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792853148336, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853169723, "cmd": "shot", "args": ["walk1"]}
+{"t": 1792853173093, "cmd": "look", "args": ["-200", "0"]}
+{"t": 1792853173264, "cmd": "shot", "args": ["look2"]}
+{"t": 1792853176554, "cmd": "step", "args": ["10"]}
+{"t": 1792853177870, "cmd": "shot", "args": ["look3"]}
+{"t": 1792853181330, "cmd": "hold", "args": ["w", "6"]}
+{"t": 1792853220338, "cmd": "step", "args": ["5"]}
+{"t": 1792853220935, "cmd": "shot", "args": ["walk2"]}
+{"t": 1792853224290, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1792853224429, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792853252281, "cmd": "step", "args": ["5"]}
+{"t": 1792853253053, "cmd": "shot", "args": ["walk3"]}
+{"t": 1792853256084, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1792853256253, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853277011, "cmd": "step", "args": ["5"]}
+{"t": 1792853277565, "cmd": "shot", "args": ["walk4"]}
+{"t": 1792853280965, "cmd": "look", "args": ["-100", "0"]}
+{"t": 1792853281127, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792853291001, "cmd": "step", "args": ["5"]}
+{"t": 1792853291485, "cmd": "shot", "args": ["walk5"]}
+{"t": 1792853295308, "cmd": "note", "args": ["--shot", "truncated_next", "NEXT line 'Throw pots at the potter's wheel (0 of' is cut off at the right edge at 640x360 - the count total never shows; 'Step up to the wheel' hint overlaps the CHORES header."]}
+{"t": 1792853295405, "cmd": "key", "args": ["1"]}
+{"t": 1792853296358, "cmd": "step", "args": ["30"]}
+{"t": 1792853299951, "cmd": "shot", "args": ["throw1"]}
+{"t": 1792853303441, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792853312801, "cmd": "step", "args": ["5"]}
+{"t": 1792853313397, "cmd": "shot", "args": ["walk6"]}
+{"t": 1792853317231, "cmd": "key", "args": ["1"]}
+{"t": 1792853318299, "cmd": "step", "args": ["30"]}
+{"t": 1792853322645, "cmd": "shot", "args": ["throw2"]}
+{"t": 1792853326152, "cmd": "wait", "args": ["6"]}
+{"t": 1792853368765, "cmd": "shot", "args": ["throw3"]}
+{"t": 1792853373177, "cmd": "note", "args": ["--shot", "throw_text_cut", "While throwing, the progress line '...ng a water jar [##...] stay at the' is clipped on BOTH left and right edges; the thrown pot itself is not visible in the default view at the wheel."]}
+{"t": 1792853373307, "cmd": "type", "args": ["Ganga"]}
+{"t": 1792853373491, "cmd": "key", "args": ["Return"]}
+{"t": 1792853374402, "cmd": "step", "args": ["20"]}
+{"t": 1792853376732, "cmd": "look", "args": ["0", "120"]}
+{"t": 1792853376984, "cmd": "step", "args": ["10"]}
+{"t": 1792853378668, "cmd": "shot", "args": ["named1"]}
+{"t": 1792853383797, "cmd": "key", "args": ["2"]}
+{"t": 1792853385122, "cmd": "wait", "args": ["7"]}
+{"t": 1792853461755, "cmd": "shot", "args": ["b1"]}
+{"t": 1792853461943, "cmd": "type", "args": ["Kashi"]}
+{"t": 1792853462218, "cmd": "key", "args": ["Return"]}
+{"t": 1792853464042, "cmd": "step", "args": ["20"]}
+{"t": 1792853467808, "cmd": "key", "args": ["3"]}
+{"t": 1792853469316, "cmd": "wait", "args": ["7"]}
+{"t": 1792853541296, "cmd": "type", "args": ["Lota"]}
+{"t": 1792853541583, "cmd": "key", "args": ["Return"]}
+{"t": 1792853543016, "cmd": "step", "args": ["20"]}
+{"t": 1792853546215, "cmd": "shot", "args": ["after3"]}
+{"t": 1792853552713, "cmd": "key", "args": ["c"]}
+{"t": 1792853554041, "cmd": "step", "args": ["30"]}
+{"t": 1792853558775, "cmd": "shot", "args": ["lens1"]}
+{"t": 1792853562388, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792853562676, "cmd": "step", "args": ["10"]}
+{"t": 1792853564591, "cmd": "shot", "args": ["right1"]}
+{"t": 1792853568067, "cmd": "look", "args": ["500", "0"]}
+{"t": 1792853568339, "cmd": "step", "args": ["10"]}
+{"t": 1792853570223, "cmd": "shot", "args": ["right2"]}
+{"t": 1792853573992, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1792853586415, "cmd": "look", "args": ["0", "60"]}
+{"t": 1792853586753, "cmd": "step", "args": ["5"]}
+{"t": 1792853587960, "cmd": "shot", "args": ["pots"]}
+{"t": 1792853591086, "cmd": "key", "args": ["b"]}
+{"t": 1792853592635, "cmd": "step", "args": ["60"]}
+{"t": 1792853604333, "cmd": "shot", "args": ["broke"]}
+{"t": 1792853608809, "cmd": "look", "args": ["40", "40"]}
+{"t": 1792853609105, "cmd": "step", "args": ["5"]}
+{"t": 1792853610442, "cmd": "shot", "args": ["aim"]}
+{"t": 1792853610594, "cmd": "key", "args": ["b"]}
+{"t": 1792853612428, "cmd": "step", "args": ["60"]}
+{"t": 1792853624783, "cmd": "shot", "args": ["broke2"]}
+{"t": 1792853630394, "cmd": "note", "args": ["--shot", "broke2", "Pressing B on a pot gave no visible feedback I could see (HUD covers the lower screen where the pots sit); only the NEXT line changing told me it worked. First B press when the pot was slightly off-centre did nothing, with no hint to aim."]}
+{"t": 1792853630534, "cmd": "key", "args": ["c"]}
+{"t": 1792853632384, "cmd": "look", "args": ["0", "-100"]}
+{"t": 1792853632786, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792853692045, "cmd": "step", "args": ["5"]}
+{"t": 1792853693240, "cmd": "shot", "args": ["ghat1"]}
+{"t": 1792853696609, "cmd": "look", "args": ["100", "0"]}
+{"t": 1792853696872, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792853723171, "cmd": "step", "args": ["5"]}
+{"t": 1792853724125, "cmd": "shot", "args": ["ghat2"]}
+{"t": 1792853727444, "cmd": "look", "args": ["200", "0"]}
+{"t": 1792853727679, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792853746834, "cmd": "step", "args": ["5"]}
+{"t": 1792853747754, "cmd": "shot", "args": ["ghat3"]}
+{"t": 1792853752544, "cmd": "wait", "args": ["20"]}
+{"t": 1792853932836, "cmd": "shot", "args": ["sun1"]}
+{"t": 1792853937477, "cmd": "wait", "args": ["25"]}
+{"t": 1792854118764, "cmd": "shot", "args": ["sun2"]}
+{"t": 1792854122868, "cmd": "wait", "args": ["15"]}
+{"t": 1792854250854, "cmd": "shot", "args": ["sun3"]}
+{"t": 1792854256510, "cmd": "note", "args": ["--shot", "sun3", "Dusk: the 'light your lamp' caption is printed on top of the NEXT line's second row ('35 m to your right'), both unreadable. The sunset passed while waiting 15 s with no visible moment captured in the shot; a 'pt wait 20' took 3 min wall clock (~6-7 fps)."]}
+{"t": 1792854256627, "cmd": "key", "args": ["f"]}
+{"t": 1792854256907, "cmd": "look", "args": ["300", "0"]}
+{"t": 1792854257028, "cmd": "step", "args": ["5"]}
+{"t": 1792854258571, "cmd": "shot", "args": ["path0"]}
+{"t": 1792854263078, "cmd": "look", "args": ["60", "0"]}
+{"t": 1792854263155, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1792854306527, "cmd": "step", "args": ["5"]}
+{"t": 1792854306637, "cmd": "shot", "args": ["path1"]}
+{"t": 1792854310757, "cmd": "look", "args": ["120", "0"]}
+{"t": 1792854310894, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792854339701, "cmd": "step", "args": ["5"]}
+{"t": 1792854340723, "cmd": "shot", "args": ["path2"]}
+{"t": 1792854344855, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1792854353184, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792854353297, "cmd": "step", "args": ["5"]}
+{"t": 1792854354496, "cmd": "shot", "args": ["path3"]}
+{"t": 1792854358286, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854373595, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792854373673, "cmd": "step", "args": ["5"]}
+{"t": 1792854374514, "cmd": "shot", "args": ["path4"]}
+{"t": 1792854378966, "cmd": "look", "args": ["350", "0"]}
+{"t": 1792854379059, "cmd": "step", "args": ["5"]}
+{"t": 1792854379167, "cmd": "shot", "args": ["path5"]}
+{"t": 1792854382782, "cmd": "look", "args": ["60", "0"]}
+{"t": 1792854382968, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792854411633, "cmd": "step", "args": ["5"]}
+{"t": 1792854412866, "cmd": "shot", "args": ["path6"]}
+{"t": 1792854416693, "cmd": "look", "args": ["80", "0"]}
+{"t": 1792854416878, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854456682, "cmd": "step", "args": ["5"]}
+{"t": 1792854459042, "cmd": "shot", "args": ["path7"]}
+{"t": 1792854463555, "cmd": "look", "args": ["450", "0"]}
+{"t": 1792854463814, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854487815, "cmd": "step", "args": ["5"]}
+{"t": 1792854488859, "cmd": "shot", "args": ["path8"]}
+{"t": 1792854493097, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1792854503436, "cmd": "hold", "args": ["d", "1.5"]}
+{"t": 1792854518799, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854543609, "cmd": "step", "args": ["5"]}
+{"t": 1792854544815, "cmd": "shot", "args": ["path9"]}
+{"t": 1792854549013, "cmd": "look", "args": ["900", "0"]}
+{"t": 1792854549126, "cmd": "step", "args": ["5"]}
+{"t": 1792854549254, "cmd": "shot", "args": ["turn180"]}
+{"t": 1792854555227, "cmd": "note", "args": ["--shot", "path9", "Dusk path: NEXT says 'Walk back to the village along the path 5 m ahead' but straight ahead is a solid black surface filling the whole screen; holding W does not advance and the 5 m never shrinks. Stuck against unlit geometry with no visible path."]}
+{"t": 1792854555440, "cmd": "look", "args": ["700", "0"]}
+{"t": 1792854555582, "cmd": "hold", "args": ["a", "2"]}
+{"t": 1792854569502, "cmd": "look", "args": ["0", "0"]}
+{"t": 1792854569591, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854581190, "cmd": "step", "args": ["5"]}
+{"t": 1792854581385, "cmd": "shot", "args": ["path10"]}
+{"t": 1792854586894, "cmd": "look", "args": ["650", "0"]}
+{"t": 1792854586981, "cmd": "step", "args": ["3"]}
+{"t": 1792854587164, "cmd": "shot", "args": ["p11"]}
+{"t": 1792854587808, "cmd": "hold", "args": ["Shift_L+w", "2"]}
+{"t": 1792854602637, "cmd": "step", "args": ["5"]}
+{"t": 1792854603453, "cmd": "shot", "args": ["p12"]}
+{"t": 1792854607478, "cmd": "hold", "args": ["Shift_L+w", "2"]}
+{"t": 1792854620047, "cmd": "look", "args": ["300", "0"]}
+{"t": 1792854620174, "cmd": "step", "args": ["3"]}
+{"t": 1792854620323, "cmd": "shot", "args": ["p13"]}
+{"t": 1792854625302, "cmd": "look", "args": ["400", "0"]}
+{"t": 1792854625395, "cmd": "step", "args": ["3"]}
+{"t": 1792854625510, "cmd": "shot", "args": ["p14"]}
+{"t": 1792854626131, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854639775, "cmd": "step", "args": ["3"]}
+{"t": 1792854640651, "cmd": "shot", "args": ["p15"]}
+{"t": 1792854646025, "cmd": "look", "args": ["40", "0"]}
+{"t": 1792854646108, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792854662838, "cmd": "step", "args": ["3"]}
+{"t": 1792854662982, "cmd": "shot", "args": ["p16"]}
+{"t": 1792854668330, "cmd": "look", "args": ["450", "0"]}
+{"t": 1792854668443, "cmd": "step", "args": ["3"]}
+{"t": 1792854668558, "cmd": "shot", "args": ["p17"]}
+{"t": 1792854669075, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792854678798, "cmd": "step", "args": ["3"]}
+{"t": 1792854679795, "cmd": "shot", "args": ["p18"]}
+{"t": 1792854685625, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1792854691207, "cmd": "look", "args": ["-450", "0"]}
+{"t": 1792854691303, "cmd": "wait", "args": ["3"]}
+{"t": 1792854709234, "cmd": "shot", "args": ["p19"]}
+{"t": 1792854714215, "cmd": "look", "args": ["-60", "-40"]}
+{"t": 1792854714288, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792854731549, "cmd": "step", "args": ["3"]}
+{"t": 1792854731640, "cmd": "shot", "args": ["p20"]}
+{"t": 1792854737121, "cmd": "look", "args": ["650", "0"]}
+{"t": 1792854737220, "cmd": "step", "args": ["3"]}
+{"t": 1792854737336, "cmd": "shot", "args": ["p21"]}
+{"t": 1792854742089, "cmd": "look", "args": ["60", "0"]}
+{"t": 1792854742161, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854752712, "cmd": "key", "args": ["e"]}
+{"t": 1792854753560, "cmd": "step", "args": ["30"]}
+{"t": 1792854756378, "cmd": "shot", "args": ["p22"]}
+{"t": 1792854763395, "cmd": "note", "args": ["--shot", "p22", "Path waypoint loops: after dusk, the 'Walk back to the village along the path' target always sits 3-7 m 'to your right' / 'behind you' of a lit house; walking toward it bumps the wall, reaching the door makes the distance vanish but the step never completes (E does nothing). ~12 real minutes circling; never saw the snake/rope moment."]}
+{"t": 1792854763499, "cmd": "key", "args": ["Tab"]}
+{"t": 1792854763740, "cmd": "step", "args": ["20"]}
+{"t": 1792854763856, "cmd": "shot", "args": ["codex1"]}
+{"t": 1792854768114, "cmd": "key", "args": ["Down"]}
+{"t": 1792854768236, "cmd": "step", "args": ["10"]}
+{"t": 1792854768353, "cmd": "shot", "args": ["codex2"]}
+{"t": 1792854768533, "cmd": "key", "args": ["Down"]}
+{"t": 1792854768678, "cmd": "step", "args": ["10"]}
+{"t": 1792854768781, "cmd": "shot", "args": ["codex3"]}
+{"t": 1792854774713, "cmd": "note", "args": ["--shot", "codex2", "Codex 'The space in the pot' credits 'Working translation for Atman from the Sanskrit, awaiting review' and every page ends 'Sources: [..] (see RESEARCH.md)' - internal/dev wording visible to players. Page title 'The space in the pot' is truncated in the left list."]}
+{"t": 1792854774824, "cmd": "note", "args": ["--shot", "codex3", "Codex 'Other schools' (available before dusk path completed) is balanced and fair: gives Advaita, Vishishtadvaita and Dvaita readings of tat tvam asi and states the game takes Advaita's reading. It already mentions 'the snake is put on the rope' before the player meets that scene."]}
+{"t": 1792854774920, "cmd": "key", "args": ["Tab"]}
+{"t": 1792854775042, "cmd": "stop", "args": []}
+{"t": 1792854806725, "cmd": "report", "args": []}
+{"t": 1792854935933, "cmd": "stop", "args": []}

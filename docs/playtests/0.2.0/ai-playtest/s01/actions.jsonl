@@ -1,0 +1,239 @@
+{"t": 1792853127189, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-pt", "--seed", "1"]}
+{"t": 1792853136341, "cmd": "shot", "args": ["start"]}
+{"t": 1792853141531, "cmd": "note", "args": ["--shot", "overlap_start", "At start, the HUD (stats, NEXT, CHORES), the help block and a centred orange message all render on top of each other at 640x360; the centred message ('Your house is beside you... the potter... the NEXT ... comes next') is unreadable."]}
+{"t": 1792853141620, "cmd": "key", "args": ["F1"]}
+{"t": 1792853142567, "cmd": "wait", "args": ["1"]}
+{"t": 1792853149218, "cmd": "shot", "args": ["nohelp"]}
+{"t": 1792853155191, "cmd": "wait", "args": ["6"]}
+{"t": 1792853195607, "cmd": "shot", "args": ["w1"]}
+{"t": 1792853200042, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792853200205, "cmd": "shot", "args": ["l1"]}
+{"t": 1792853204356, "cmd": "step", "args": ["5"]}
+{"t": 1792853205046, "cmd": "shot", "args": ["l2"]}
+{"t": 1792853208700, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1792853208863, "cmd": "step", "args": ["3"]}
+{"t": 1792853209362, "cmd": "shot", "args": ["l3"]}
+{"t": 1792853213744, "cmd": "look", "args": ["80", "0"]}
+{"t": 1792853213941, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792853227726, "cmd": "shot", "args": ["m1"]}
+{"t": 1792853231479, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792853231653, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792853247461, "cmd": "shot", "args": ["m2"]}
+{"t": 1792853251146, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792853251371, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853274029, "cmd": "shot", "args": ["m3"]}
+{"t": 1792853277794, "cmd": "hold", "args": ["d", "1.5"]}
+{"t": 1792853288826, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853309250, "cmd": "shot", "args": ["m4"]}
+{"t": 1792853312952, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1792853313130, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792853335101, "cmd": "shot", "args": ["m5"]}
+{"t": 1792853338452, "cmd": "look", "args": ["-120", "0"]}
+{"t": 1792853338645, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792853356630, "cmd": "shot", "args": ["m6"]}
+{"t": 1792853359746, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853383157, "cmd": "shot", "args": ["m7"]}
+{"t": 1792853387137, "cmd": "look", "args": ["-100", "60"]}
+{"t": 1792853387471, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1792853397325, "cmd": "shot", "args": ["m8"]}
+{"t": 1792853401491, "cmd": "key", "args": ["1"]}
+{"t": 1792853403112, "cmd": "step", "args": ["10"]}
+{"t": 1792853405107, "cmd": "shot", "args": ["p1"]}
+{"t": 1792853409189, "cmd": "hold", "args": ["w", "0.7"]}
+{"t": 1792853418380, "cmd": "shot", "args": ["p2"]}
+{"t": 1792853422073, "cmd": "key", "args": ["1"]}
+{"t": 1792853423878, "cmd": "step", "args": ["10"]}
+{"t": 1792853425982, "cmd": "shot", "args": ["p3"]}
+{"t": 1792853430129, "cmd": "note", "args": ["--shot", "throwing_cut", "While throwing a pot, the progress line ('...ng a water jar [#....] stay at the ...') is clipped on both the left and right edges at 640x360 and overlaps the CHORES header."]}
+{"t": 1792853430312, "cmd": "wait", "args": ["3"]}
+{"t": 1792853465255, "cmd": "shot", "args": ["p4"]}
+{"t": 1792853468741, "cmd": "type", "args": ["Ganga"]}
+{"t": 1792853468982, "cmd": "key", "args": ["Return"]}
+{"t": 1792853470511, "cmd": "step", "args": ["10"]}
+{"t": 1792853472337, "cmd": "shot", "args": ["p5"]}
+{"t": 1792853476045, "cmd": "key", "args": ["2"]}
+{"t": 1792853477614, "cmd": "wait", "args": ["3.5"]}
+{"t": 1792853514073, "cmd": "shot", "args": ["p6"]}
+{"t": 1792853517668, "cmd": "type", "args": ["Annam"]}
+{"t": 1792853517986, "cmd": "key", "args": ["Return"]}
+{"t": 1792853519740, "cmd": "step", "args": ["5"]}
+{"t": 1792853520816, "cmd": "key", "args": ["3"]}
+{"t": 1792853522587, "cmd": "wait", "args": ["3.5"]}
+{"t": 1792853556338, "cmd": "type", "args": ["Chai"]}
+{"t": 1792853556588, "cmd": "key", "args": ["Return"]}
+{"t": 1792853558056, "cmd": "step", "args": ["10"]}
+{"t": 1792853559806, "cmd": "shot", "args": ["p7"]}
+{"t": 1792853563996, "cmd": "key", "args": ["c"]}
+{"t": 1792853565488, "cmd": "step", "args": ["10"]}
+{"t": 1792853566956, "cmd": "shot", "args": ["c1"]}
+{"t": 1792853570711, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853571445, "cmd": "step", "args": ["10"]}
+{"t": 1792853572057, "cmd": "shot", "args": ["codex1"]}
+{"t": 1792853575669, "cmd": "key", "args": ["Down"]}
+{"t": 1792853576206, "cmd": "step", "args": ["10"]}
+{"t": 1792853576927, "cmd": "shot", "args": ["codex2"]}
+{"t": 1792853583021, "cmd": "note", "args": ["--shot", "codex2", "Codex 'Other schools' page (unlocked right after the first clay-lens look) is fair and balanced (Advaita / Vishishtadvaita / Dvaita, with the note that Atman teaches one school's reading), but its Advaita line already names 'the snake is put on the rope' before the player reaches the dusk path, spoiling that reveal. Text is also very small at 640x360. Both pages end with 'see RESEARCH.md', a repo file a player cannot open."]}
+{"t": 1792853583246, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853584738, "cmd": "step", "args": ["5"]}
+{"t": 1792853585896, "cmd": "key", "args": ["b"]}
+{"t": 1792853587670, "cmd": "step", "args": ["10"]}
+{"t": 1792853589591, "cmd": "shot", "args": ["b1"]}
+{"t": 1792853593247, "cmd": "look", "args": ["400", "0"]}
+{"t": 1792853593557, "cmd": "step", "args": ["3"]}
+{"t": 1792853594291, "cmd": "shot", "args": ["b2"]}
+{"t": 1792853598084, "cmd": "look", "args": ["150", "150"]}
+{"t": 1792853598373, "cmd": "step", "args": ["3"]}
+{"t": 1792853599079, "cmd": "shot", "args": ["b3"]}
+{"t": 1792853603716, "cmd": "look", "args": ["80", "-40"]}
+{"t": 1792853604016, "cmd": "hold", "args": ["w", "1.2"]}
+{"t": 1792853619805, "cmd": "shot", "args": ["b4"]}
+{"t": 1792853623652, "cmd": "key", "args": ["b"]}
+{"t": 1792853625257, "cmd": "step", "args": ["20"]}
+{"t": 1792853629255, "cmd": "shot", "args": ["b5"]}
+{"t": 1792853632926, "cmd": "look", "args": ["0", "200"]}
+{"t": 1792853633260, "cmd": "step", "args": ["3"]}
+{"t": 1792853633938, "cmd": "shot", "args": ["b6"]}
+{"t": 1792853637822, "cmd": "look", "args": ["70", "0"]}
+{"t": 1792853638185, "cmd": "step", "args": ["3"]}
+{"t": 1792853638889, "cmd": "key", "args": ["b"]}
+{"t": 1792853640653, "cmd": "step", "args": ["20"]}
+{"t": 1792853644946, "cmd": "shot", "args": ["b7"]}
+{"t": 1792853650032, "cmd": "look", "args": ["200", "0"]}
+{"t": 1792853650374, "cmd": "step", "args": ["3"]}
+{"t": 1792853651133, "cmd": "shot", "args": ["b8"]}
+{"t": 1792853654730, "cmd": "key", "args": ["b"]}
+{"t": 1792853656147, "cmd": "step", "args": ["20"]}
+{"t": 1792853659819, "cmd": "shot", "args": ["b9"]}
+{"t": 1792853664522, "cmd": "key", "args": ["c"]}
+{"t": 1792853666348, "cmd": "step", "args": ["3"]}
+{"t": 1792853667055, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1792853677317, "cmd": "look", "args": ["0", "-150"]}
+{"t": 1792853677598, "cmd": "step", "args": ["3"]}
+{"t": 1792853678305, "cmd": "shot", "args": ["b10"]}
+{"t": 1792853682718, "cmd": "hold", "args": ["w", "0.8"]}
+{"t": 1792853692423, "cmd": "shot", "args": ["b11"]}
+{"t": 1792853696661, "cmd": "key", "args": ["b"]}
+{"t": 1792853698344, "cmd": "step", "args": ["20"]}
+{"t": 1792853702922, "cmd": "shot", "args": ["b12"]}
+{"t": 1792853707163, "cmd": "hold", "args": ["s", "2"]}
+{"t": 1792853725445, "cmd": "look", "args": ["0", "-60"]}
+{"t": 1792853725681, "cmd": "step", "args": ["3"]}
+{"t": 1792853726184, "cmd": "shot", "args": ["b13"]}
+{"t": 1792853731088, "cmd": "key", "args": ["b"]}
+{"t": 1792853732567, "cmd": "step", "args": ["20"]}
+{"t": 1792853736005, "cmd": "shot", "args": ["b14"]}
+{"t": 1792853740881, "cmd": "hold", "args": ["w", "2.2"]}
+{"t": 1792853763693, "cmd": "shot", "args": ["b15"]}
+{"t": 1792853767668, "cmd": "look", "args": ["40", "250"]}
+{"t": 1792853767926, "cmd": "step", "args": ["3"]}
+{"t": 1792853768428, "cmd": "shot", "args": ["b16"]}
+{"t": 1792853771619, "cmd": "look", "args": ["30", "-20"]}
+{"t": 1792853771827, "cmd": "step", "args": ["3"]}
+{"t": 1792853772388, "cmd": "key", "args": ["b"]}
+{"t": 1792853773672, "cmd": "step", "args": ["20"]}
+{"t": 1792853777131, "cmd": "shot", "args": ["b17"]}
+{"t": 1792853784236, "cmd": "note", "args": ["--shot", "b17", "Breaking a pot (B) took ~10 attempts (about 6 real minutes): B silently does nothing unless the crosshair is exactly on one of your pots from close range. The NEXT hint '4 m ahead' points at the bench but there is no 'press B' prompt or highlight when a pot is targetable, and near the bench the 'Step up to the wheel to throw a pot' line replaces the distance hint, which is misleading. Expected: a targeting highlight or 'B break <name>' prompt when a pot is in reach."]}
+{"t": 1792853784364, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853784822, "cmd": "step", "args": ["5"]}
+{"t": 1792853785135, "cmd": "shot", "args": ["codex3"]}
+{"t": 1792853787905, "cmd": "key", "args": ["Up"]}
+{"t": 1792853788405, "cmd": "step", "args": ["5"]}
+{"t": 1792853788740, "cmd": "shot", "args": ["codex4"]}
+{"t": 1792853794521, "cmd": "note", "args": ["--shot", "codex4", "Codex 'The space in the pot' (Gaudapada 3.3-3.4): translation credit reads 'Working translation for Atman from the Sanskrit, awaiting review' (a placeholder visible to players), and the page name is clipped in the codex sidebar ('The space in the pot' runs into the page). Opening the codex after the 'new page' toast selects 'Other schools' rather than the new page."]}
+{"t": 1792853794643, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853795981, "cmd": "step", "args": ["3"]}
+{"t": 1792853796619, "cmd": "look", "args": ["0", "-150"]}
+{"t": 1792853796944, "cmd": "step", "args": ["3"]}
+{"t": 1792853797609, "cmd": "shot", "args": ["g1"]}
+{"t": 1792853801129, "cmd": "look", "args": ["0", "-100"]}
+{"t": 1792853801440, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792853840509, "cmd": "shot", "args": ["g2"]}
+{"t": 1792853843485, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792853870387, "cmd": "shot", "args": ["g3"]}
+{"t": 1792853874151, "cmd": "wait", "args": ["20"]}
+{"t": 1792854087113, "cmd": "shot", "args": ["g4"]}
+{"t": 1792854094678, "cmd": "note", "args": ["--shot", "g4", "Perf: on this shared machine 'pt wait 20' (20 s of game time on the ghat steps) took ~4.5 real minutes; waiting for sunset is long and the NEXT line gives no indication of how long the wait is (5:30 -> 5:50 pm and still waiting)."]}
+{"t": 1792854094817, "cmd": "wait", "args": ["30"]}
+{"t": 1792854332796, "cmd": "shot", "args": ["g5"]}
+{"t": 1792854340645, "cmd": "key", "args": ["f"]}
+{"t": 1792854340826, "cmd": "look", "args": ["1000", "0"]}
+{"t": 1792854340927, "cmd": "step", "args": ["3"]}
+{"t": 1792854342099, "cmd": "shot", "args": ["d1"]}
+{"t": 1792854345344, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792854373141, "cmd": "shot", "args": ["d2"]}
+{"t": 1792854376777, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792854376857, "cmd": "hold", "args": ["Shift_L+w", "6"]}
+{"t": 1792854424271, "cmd": "shot", "args": ["d3"]}
+{"t": 1792854429736, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854466509, "cmd": "shot", "args": ["d4"]}
+{"t": 1792854470831, "cmd": "wait", "args": ["2"]}
+{"t": 1792854487887, "cmd": "shot", "args": ["d5"]}
+{"t": 1792854494791, "cmd": "note", "args": ["--shot", "d5", "Arrived in the village at 6:33 pm by walking straight toward the '35 m ahead' marker (lamp lit, hurrying), but the NEXT line stays 'Walk back to the village along the path' with no distance or direction, and no snake/rope moment happened. Fear rose to 6/10 mid-way then fell to 0. A player who cuts across the grass instead of following the path seems to skip the dusk-path beat with no way to tell what is still expected."]}
+{"t": 1792854495008, "cmd": "look", "args": ["1000", "0"]}
+{"t": 1792854495203, "cmd": "step", "args": ["3"]}
+{"t": 1792854495341, "cmd": "shot", "args": ["d6"]}
+{"t": 1792854499588, "cmd": "key", "args": ["F2"]}
+{"t": 1792854500548, "cmd": "step", "args": ["5"]}
+{"t": 1792854501410, "cmd": "shot", "args": ["d7"]}
+{"t": 1792854505100, "cmd": "key", "args": ["F2"]}
+{"t": 1792854506027, "cmd": "step", "args": ["5"]}
+{"t": 1792854506252, "cmd": "shot", "args": ["d8"]}
+{"t": 1792854511327, "cmd": "key", "args": ["F2"]}
+{"t": 1792854512307, "cmd": "step", "args": ["5"]}
+{"t": 1792854513344, "cmd": "shot", "args": ["d9"]}
+{"t": 1792854521226, "cmd": "note", "args": ["--shot", "d9", "F2 text size cycles normal -> large -> larger -> normal; there is no size smaller than 'normal', which at 640x360 already covers the left half of the view and clips the NEXT line at the right edge. Large and larger make the HUD cover most of the screen and cut the NEXT text mid-word."]}
+{"t": 1792854521475, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854545137, "cmd": "shot", "args": ["h1"]}
+{"t": 1792854549939, "cmd": "look", "args": ["1000", "0"]}
+{"t": 1792854550045, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854571351, "cmd": "shot", "args": ["h2"]}
+{"t": 1792854575381, "cmd": "look", "args": ["500", "0"]}
+{"t": 1792854575541, "cmd": "hold", "args": ["Shift_L+w", "2.5"]}
+{"t": 1792854599271, "cmd": "shot", "args": ["h3"]}
+{"t": 1792854603707, "cmd": "hold", "args": ["d", "1.5"]}
+{"t": 1792854618089, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792854633075, "cmd": "shot", "args": ["h4"]}
+{"t": 1792854638187, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1792854647190, "cmd": "look", "args": ["300", "0"]}
+{"t": 1792854647270, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792854658533, "cmd": "shot", "args": ["h5"]}
+{"t": 1792854663907, "cmd": "key", "args": ["e"]}
+{"t": 1792854664094, "cmd": "step", "args": ["20"]}
+{"t": 1792854667310, "cmd": "shot", "args": ["h6"]}
+{"t": 1792854673476, "cmd": "look", "args": ["900", "0"]}
+{"t": 1792854673618, "cmd": "step", "args": ["3"]}
+{"t": 1792854673772, "cmd": "shot", "args": ["r1"]}
+{"t": 1792854678386, "cmd": "wait", "args": ["5"]}
+{"t": 1792854706845, "cmd": "shot", "args": ["r2"]}
+{"t": 1792854712933, "cmd": "look", "args": ["-130", "0"]}
+{"t": 1792854713016, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792854730805, "cmd": "shot", "args": ["r3"]}
+{"t": 1792854735300, "cmd": "look", "args": ["1000", "0"]}
+{"t": 1792854735389, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854746449, "cmd": "shot", "args": ["r4"]}
+{"t": 1792854751515, "cmd": "hold", "args": ["a", "1"]}
+{"t": 1792854756524, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792854768028, "cmd": "look", "args": ["500", "0"]}
+{"t": 1792854768112, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854781426, "cmd": "shot", "args": ["r5"]}
+{"t": 1792854787702, "cmd": "note", "args": ["--shot", "r5", "Blocked: the 'Walk back to the village along the path' waypoint (6:33-7:06 pm) can never be reached. From every side it reads 3-7 m away ('ahead, to the right', 'behind you', 'to your right') and approaching it walks me into a house wall; the objective never completes, so I could not reach the snake/rope, home or sleep. Looks like the target point sits inside or behind a house's collider."]}
+{"t": 1792854787785, "cmd": "key", "args": ["v"]}
+{"t": 1792854787897, "cmd": "step", "args": ["10"]}
+{"t": 1792854789328, "cmd": "shot", "args": ["v1"]}
+{"t": 1792854793771, "cmd": "hold", "args": ["s", "1.5"]}
+{"t": 1792854804115, "cmd": "hold", "args": ["d", "3"]}
+{"t": 1792854821919, "cmd": "shot", "args": ["r6"]}
+{"t": 1792854825543, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854836974, "cmd": "shot", "args": ["r7"]}
+{"t": 1792854841754, "cmd": "key", "args": ["e"]}
+{"t": 1792854842492, "cmd": "wait", "args": ["2"]}
+{"t": 1792854853432, "cmd": "shot", "args": ["s1"]}
+{"t": 1792854858372, "cmd": "note", "args": ["--shot", "s1", "Sleeping at home (E at the house wall at 7:13 pm, prompt 'E sleep until morning') worked and I woke 22 March 6:32 am, but the NEXT line reset to 'Wait on the ghat steps for the sunset ... 35 m behind you' - so the morning still asks for yesterday's sunset beat, and the snake/rope moment was never offered. Also the 'Walk back ... along the path' waypoint was never marked as done even though I was beside my own house."]}
+{"t": 1792854858452, "cmd": "key", "args": ["v"]}
+{"t": 1792854859253, "cmd": "step", "args": ["10"]}
+{"t": 1792854860194, "cmd": "shot", "args": ["v2"]}
+{"t": 1792854864127, "cmd": "note", "args": ["--shot", "v2", "Pressed V the next morning (22 March 6:32 am): nothing happens and there is no feedback (no 'not yet' message). Expected since the after-mode was never reached, but a silent key is confusing for a player who reads V in the help."]}
+{"t": 1792854864201, "cmd": "stop", "args": []}
+{"t": 1792854894096, "cmd": "report", "args": []}
+{"t": 1792854909953, "cmd": "report", "args": []}
+{"t": 1792854935805, "cmd": "stop", "args": []}
