@@ -142,7 +142,17 @@ std::string nextStep(const World& w) {
         return "Throw pots at the potter's wheel (" + std::to_string(w.potsMade) + " of " + std::to_string(kPotsForLens) + ")";
     if (!w.codex[static_cast<int>(CodexId::ClayAndPots)]) return "Look at your pots through the clay lens (C)";
     if (!w.codex[static_cast<int>(CodexId::PotSpace)]) return "Break one of your pots (B)";
-    if (!w.fearRetired) return isDusk(w) ? "Walk back to the village along the path" : "Wait on the ghat steps for the sunset";
+    if (!w.fearRetired) {
+        int seen = 0;
+        for (const Coil& c : w.coils) seen += c.seenThrough ? 1 : 0;
+        if (!isDusk(w)) return seen ? "A snake is still on the path; it comes back at dusk" : "Wait on the ghat steps for the sunset";
+        // Near a snake (fear rising), say what to do about it.
+        if (w.fear > 0.2f) return w.lampLit ? "Hold the lamp to it and look at it steadily" : "Light your lamp (F) and look at it";
+        if (seen)
+            return "Find the other snakes on the path (" + std::to_string(seen) + " of " + std::to_string(V::kCoilCount) +
+                   " seen)";
+        return "Walk back to the village along the path";
+    }
     return isDusk(w) ? "Go home and sleep (E at your door)" : "Live the day; sleep at home after dark";
 }
 
@@ -161,7 +171,17 @@ bool nextPlace(const World& w, Vec2& at) {
         at = {(V::kGhat.x0 + V::kGhat.x1) / 2, 0.0f};
         return true;
     }
-    // At dusk, home along the path (the snakes on it are not given away).
+    if (!w.fearRetired) {  // at dusk, the nearest snake still on the path
+        int nearest = -1;
+        for (int i = 0; i < V::kCoilCount; ++i)
+            if (!w.coils[i].seenThrough &&
+                (nearest < 0 || distance(w.player, V::kCoils[i]) < distance(w.player, V::kCoils[nearest])))
+                nearest = i;
+        if (nearest >= 0) {
+            at = V::kCoils[nearest];
+            return true;
+        }
+    }
     if (!isDusk(w)) return false;
     at = yourDoorstep();
     return true;

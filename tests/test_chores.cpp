@@ -172,6 +172,25 @@ int main() {
         atMinute(19 * 60);
         CHECK(isDusk(w));
         CHECK(nextStep(w) == "Walk back to the village along the path");
+        // The bearing points along the path at the nearest snake, and NEXT
+        // says what to do once one is near and how many are left.
+        Vec2 at;
+        CHECK(nextPlace(w, at));
+        bool aCoil = false;
+        for (const Vec2& c : V::kCoils) aCoil = aCoil || (c.x == at.x && c.z == at.z);
+        CHECK(aCoil);
+        w.fear = 0.5f;
+        CHECK(nextStep(w) == "Light your lamp (F) and look at it");
+        w.lampLit = true;
+        CHECK(nextStep(w) == "Hold the lamp to it and look at it steadily");
+        w.fear = 0;
+        w.coils[0].seenThrough = true;
+        CHECK(nextStep(w) == "Find the other snakes on the path (1 of 3 seen)");
+        atMinute(24 * 60 + 9 * 60);  // the next morning
+        CHECK(nextStep(w) == "A snake is still on the path; it comes back at dusk");
+        atMinute(19 * 60);
+        w.coils[0].seenThrough = false;
+        w.lampLit = false;
         w.codex[static_cast<int>(CodexId::RopeAndSnake)] = true;
         w.fearRetired = true;
         CHECK(firstTeachingsDone(w) && !teachingsDone(w));
