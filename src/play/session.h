@@ -5,6 +5,7 @@
 // (app/web_main.cpp) from the browser's.
 #pragma once
 
+#include <array>
 #include <functional>
 #include <string>
 
@@ -102,7 +103,8 @@ private:
     void noticeChanges();  // tells the player of a new codex page or the after-mode beginning
     void adopt(const World& w);  // takes a loaded or new world as the one being played
 
-    void listen(double dt);  // the sounds of this frame's change, and of the place
+    void listen(double dt);
+    void openCodex();  // the sounds of this frame's change, and of the place
 
     strata::Engine& engine_;
     SessionOptions options_;
@@ -131,6 +133,8 @@ private:
     std::string message_;
     double messageUntil_ = 0;
     int village_ = 1;
+    bool hudShown_ = true;
+    std::array<bool, kCodexCount> codexRead_{};  // the pages open when the codex was last opened
     std::string homeSlot_;  // the slot the game was started with: village 1, and the settings
     int textSize_ = 0;
     bool captions_ = false;

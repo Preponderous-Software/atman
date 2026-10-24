@@ -84,6 +84,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
 // The HUD's text size: 1 is 16-pixel text, as at first; the player chooses
 // 1, 1.25 or 1.5 (F2).
 void setTextScale(float scale);
+// Whether the canvas shows the HUD's left column (H hides it, to see the
+// valley; the prompt, messages and names of places stay).
+void setHudShown(bool shown);
 
 // `text` split at its newlines, and each line wrapped at word boundaries to
 // at most `columns` characters (a longer word gets a line of its own).

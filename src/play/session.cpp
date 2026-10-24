@@ -6,6 +6,8 @@
 #include <fstream>
 
 #include "save/save.h"
+#include "codex/codex.h"
+#include "sim/clay.h"
 #include "sim/days.h"
 
 namespace atman::play {
@@ -16,7 +18,7 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
-constexpr int kF2 = 59, kF3 = 60, kF5 = 62, kF6 = 63, kF9 = 66, kM = 16;
+constexpr int kF2 = 59, kF3 = 60, kF5 = 62, kF6 = 63, kF9 = 66, kM = 16, kH = 11;
 constexpr float kTextScales[Session::kTextSizes] = {1.0f, 1.25f, 1.5f};
 constexpr const char* kTextSizeNames[Session::kTextSizes] = {"normal", "large", "larger"};
 constexpr float kStride = 0.7f;  // metres a step
@@ -85,6 +87,7 @@ void Session::adopt(const World& w) {
     pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
     fourthSeen_ = w_.codex[static_cast<int>(CodexId::Fourth)];
     daySeen_ = w_.day;
+    codexRead_ = w_.codex;  // a loaded game's pages are not new
     if (pages_.isOpen()) pages_.close();
 }
 
@@ -232,6 +235,19 @@ void Session::name(const std::string& text) {
     typing_.clear();
 }
 
+// Tab: the codex opens on a page that has opened since it was last read, if
+// there is one, rather than on the page read last.
+void Session::openCodex() {
+    int fresh = -1;
+    for (int i : codex::openEntries(w_)) {
+        const codex::Entry& e = codex::kEntries[i];
+        if (!e.always && !codexRead_[static_cast<size_t>(e.unlock)]) fresh = i;
+    }
+    if (fresh >= 0) pages_.show(w_, fresh);
+    else pages_.open(w_);
+    codexRead_ = w_.codex;
+}
+
 void Session::onKeyDown(int scancode, bool repeat) {
     if (pages_.isOpen()) {
         // Reading the codex: the valley waits.
@@ -280,8 +296,14 @@ void Session::onKeyDown(int scancode, bool repeat) {
     }
     if (repeat) return;
     if (scancode == kM) setMuted(!sound_.muted());  // after naming: an m in a name is a letter
-    else if (scancode == kTab) pages_.open(w_);
-    else if (scancode == kV && (w_.after || options_.autopilot)) {
+    else if (scancode == kH) {
+        hudShown_ = !hudShown_;
+        setHudShown(hudShown_);
+        say(hudShown_ ? "HUD shown (H)" : "HUD hidden (H shows it)", 3);
+    } else if (scancode == kTab) openCodex();
+    else if (scancode == kV && !(w_.after || options_.autopilot))
+        say("Stepping out of the body to watch comes later, once the teachings are done.");
+    else if (scancode == kV) {
         watching_ = !watching_;
         following_ = false;
         if (watching_) cam_ = cameraAtEyes(w_);
@@ -292,8 +314,14 @@ void Session::onKeyDown(int scancode, bool repeat) {
     } else if (watching_) return;  // the body's keys belong to the autopilot
     else if (scancode == kE) once_.use = true;
     else if (scancode == kF) once_.toggleLamp = true;
-    else if (scancode == kB) once_.breakPot = true;
-    else if (scancode == kC) once_.toggleLens = true;
+    else if (scancode == kB) {
+        once_.breakPot = true;
+        if (w_.potsMade > 0 && lookedAtPot(w_) < 0) say("Look straight at one of your pots, close by, to break it (B).", 4);
+    } else if (scancode == kC) {
+        once_.toggleLens = true;
+        if (!lensAvailable(w_))
+            say("The clay lens comes once you have made " + std::to_string(kPotsForLens) + " pots at the wheel.", 4);
+    }
     else if (scancode >= kOne && scancode <= kFour) once_.throwForm = scancode - kOne;
 }
 
