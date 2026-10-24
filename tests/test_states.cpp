@@ -8,6 +8,7 @@
 #include "check.h"
 #include "sim/autopilot.h"
 #include "sim/chores.h"
+#include "sim/days.h"
 #include "sim/world.h"
 
 using namespace atman;
@@ -128,6 +129,28 @@ int main() {
         }
         CHECK(a.codex[static_cast<int>(CodexId::Fourth)] && a.after);
         CHECK(fingerprint(a) == fingerprint(b));
+    }
+
+    // The after-mode's days: ordinary on its first, a lamp night on its
+    // second, egrets on its third; after that a mix that follows from the
+    // seed and the day, and nothing before the after-mode.
+    {
+        World d = newWorld(1);
+        d.day = 2;
+        CHECK(dayKind(d) == DayKind::Ordinary);  // not in the after-mode
+        d.after = true;
+        d.day = 1;
+        CHECK(dayKind(d) == DayKind::Ordinary);
+        d.day = 2;
+        CHECK(dayKind(d) == DayKind::LampNight);
+        d.day = 3;
+        CHECK(dayKind(d) == DayKind::Egrets);
+        int kinds[3] = {};
+        for (d.day = 4; d.day < 404; ++d.day) ++kinds[static_cast<int>(dayKind(d))];
+        CHECK(kinds[0] > kinds[1] && kinds[0] > kinds[2]);  // most days are ordinary
+        CHECK(kinds[1] > 50 && kinds[2] > 50);
+        World e = d;
+        CHECK(dayKind(e) == dayKind(d));
     }
 
     TEST_MAIN_END();

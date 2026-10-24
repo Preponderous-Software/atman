@@ -7,6 +7,7 @@
 
 #include "sim/chores.h"
 #include "sim/clay.h"
+#include "sim/days.h"
 #include "sim/valley.h"
 
 namespace atman::play {
@@ -147,6 +148,86 @@ void drawDoorLamps(strata::Engine& engine, float night) {
     engine.submitPoints(flames.data(), flames.size());
 }
 
+// The lamp night: small clay lamps along four of the ghat's steps, and more
+// floating down the river from its foot, from just after sunset until dawn.
+bool lampNight(const World& w) {
+    const int minute = static_cast<int>(skyMinutes(w)) % 1440;
+    return dayKind(w) == DayKind::LampNight && (minute >= kLampsLitMinute || minute < kDawnMinute);
+}
+
+std::vector<Vec3> ghatLamps(const World& w) {
+    std::vector<Vec3> out;
+    const V::Ghat& g = V::kGhat;
+    for (int i = 1; i < g.steps; i += 2) {
+        const float x = g.x0 + g.stepDepth() * (static_cast<float>(i) + 0.8f);
+        for (float z = -6.0f; z <= 6.01f; z += 1.5f) out.push_back({x, g.stepHeight(i) + 0.06f, z});
+    }
+    // Floating lamps: each is set on the water at the foot of the steps and
+    // drifts downstream (south) and out, then the next is set in its place.
+    const float minutes = static_cast<float>(skyMinutes(w) - std::floor(skyMinutes(w) / 1440) * 1440);
+    const float since = minutes >= kLampsLitMinute ? minutes - kLampsLitMinute : minutes + 1440 - kLampsLitMinute;
+    constexpr int kFloating = 14;
+    constexpr float kCycle = 70;  // game minutes from the steps to out of sight
+    for (int k = 0; k < kFloating; ++k) {
+        const float t = since - static_cast<float>(k) * kCycle / kFloating;
+        if (t < 0) continue;
+        const float age = std::fmod(t, kCycle);
+        const float x = g.x1 + 0.5f + 0.09f * age + 0.3f * std::sin(age * 0.21f + static_cast<float>(k));
+        const float z = -3.0f + static_cast<float>(k % 5) * 1.5f + 0.9f * age;
+        if (x < V::kRiverEast - 1.0f) out.push_back({x, V::kWaterY + 0.05f, z});
+    }
+    return out;
+}
+
+void drawGhatLamps(strata::Engine& engine, const std::vector<Vec3>& lamps, float flicker) {
+    std::vector<StrataPoint> flames;
+    for (size_t i = 0; i < lamps.size(); ++i) {
+        StrataPoint p{};
+        p.position[0] = lamps[i].x;
+        p.position[1] = lamps[i].y;
+        p.position[2] = lamps[i].z;
+        p.size_pixels = 4.0f;
+        p.world_diameter = 0.16f;
+        p.color[0] = 1.0f;
+        p.color[1] = 0.72f;
+        p.color[2] = 0.3f;
+        p.color[3] = 0.75f + 0.2f * std::sin(flicker * 7.3f + static_cast<float>(i) * 1.7f);
+        p.flags = STRATA_POINT_SOFT;
+        flames.push_back(p);
+    }
+    engine.submitPoints(flames.data(), flames.size());
+}
+
+// The egrets' morning: a flock of nine in a loose V crossing the valley from
+// the south-east to the north-west, high over the river and the village.
+void drawEgrets(strata::Engine& engine, const World& w) {
+    if (dayKind(w) != DayKind::Egrets) return;
+    const float minute = static_cast<float>(std::fmod(skyMinutes(w), 1440.0));
+    if (minute < kEgretsFromMinute || minute > kEgretsToMinute) return;
+    const float p = (minute - kEgretsFromMinute) / static_cast<float>(kEgretsToMinute - kEgretsFromMinute);
+    const Vec3 from{60.0f, 9.0f, 70.0f}, to{-50.0f, 11.0f, -70.0f};
+    const Vec3 lead{from.x + (to.x - from.x) * p, from.y + (to.y - from.y) * p + 1.5f * std::sin(p * kPi), from.z + (to.z - from.z) * p};
+    // Back along the flight, and to either side.
+    const float len = std::sqrt((to.x - from.x) * (to.x - from.x) + (to.z - from.z) * (to.z - from.z));
+    const float bx = -(to.x - from.x) / len, bz = -(to.z - from.z) / len;
+    std::vector<StrataPoint> birds;
+    for (int i = 0; i < 9; ++i) {
+        const int row = (i + 1) / 2;
+        const float side = i == 0 ? 0.0f : (i % 2 ? 1.0f : -1.0f);
+        StrataPoint b{};
+        b.position[0] = lead.x + bx * 1.6f * static_cast<float>(row) - bz * side * 1.4f * static_cast<float>(row);
+        b.position[1] = lead.y - 0.2f * static_cast<float>(row);
+        b.position[2] = lead.z + bz * 1.6f * static_cast<float>(row) + bx * side * 1.4f * static_cast<float>(row);
+        const float flap = 0.5f + 0.5f * std::sin(minute * 40.0f + static_cast<float>(i) * 0.9f);
+        b.size_pixels = 3.0f;
+        b.world_diameter = 0.6f + 0.35f * flap;  // an egret's wings span about a metre
+        b.color[0] = b.color[1] = b.color[2] = 0.97f;
+        b.color[3] = 1.0f;
+        birds.push_back(b);
+    }
+    engine.submitPoints(birds.data(), birds.size());
+}
+
 // A place the HUD names when the player is near it and can see it.
 struct Place {
     const char* name;
@@ -249,6 +330,9 @@ void setLights(strata::Engine& engine, const World& w, float sunElevation) {
         for (const V::House& h : V::kHouses) add(doorLamp(h), kDoorLampRange, kLampColor, kDoorLampIntensity * night);
         add({8.0f, 40.0f, 0.0f}, 120.0f, {0.55f, 0.65f, 1.0f}, kNightFill * night);
     }
+    // The lamp night's steps glow.
+    if (lampNight(w))
+        for (float z : {-4.5f, 0.0f, 4.5f}) add({V::kGhat.x0 + 4.0f, 0.6f, z}, 7.0f, kLampColor, 1.2f);
     engine.setPointLights(lights.empty() ? nullptr : lights.data(), static_cast<uint32_t>(lights.size()));
 }
 
@@ -385,6 +469,8 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!deep) {
         drawMotes(engine, w);
         drawDoorLamps(engine, nightness(elevation));
+        if (lampNight(w)) drawGhatLamps(engine, ghatLamps(w), static_cast<float>(w.tick) / kTickRate);
+        drawEgrets(engine, w);
     }
     const float dark = darkness(w);
     if (dark > 0) drawDarkness(engine, view.eye, view.yaw, view.pitch, dark, width, height);

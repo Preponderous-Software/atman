@@ -132,6 +132,7 @@ struct TourStop {
     const char* codexPage = nullptr;  // a codex entry's id
     bool use = false;
     int pilotSeconds = 0;             // the autopilot lives this long, watched from outside
+    int jumpDay = -1, jumpMinute = 0;  // skip ahead to this day and minute, standing at (x, z)
     const char* shot = nullptr;       // screenshot file name
 
     constexpr TourStop to(float px, float pz) const { TourStop s = *this; s.walk = true; s.x = px; s.z = pz; return s; }
@@ -148,6 +149,9 @@ struct TourStop {
     constexpr TourStop useHere() const { TourStop s = *this; s.use = true; return s; }
     constexpr TourStop watch(int seconds) const { TourStop s = *this; s.pilotSeconds = seconds; return s; }
     constexpr TourStop shoot(const char* name) const { TourStop s = *this; s.shot = name; return s; }
+    constexpr TourStop jumpTo(int day, int minute, float px, float pz) const {
+        TourStop s = *this; s.jumpDay = day; s.jumpMinute = minute; s.x = px; s.z = pz; return s;
+    }
 };
 
 constexpr TourStop kStop{};
@@ -159,7 +163,8 @@ constexpr TourStop kStop{};
 // and look at each one closely until it is a rope. Then read the codex, go
 // home and sleep: dream the valley with its sun going backwards, sleep
 // deeply, and in the after-mode's morning read the two new pages, then step
-// out and watch the avatar set off on its chores.
+// out and watch the avatar set off on its chores. Last, jump to the second
+// day's lamp night at the ghat and the third morning's egrets.
 const TourStop kTour[] = {
     kStop.look(0.9f, -0.03f).shoot("01-your-door"),
     kStop.to(-1.0f, 4.5f).look(0.75f, -0.22f).shoot("02-well"),
@@ -199,6 +204,9 @@ const TourStop kTour[] = {
     kStop.codex("the-dream").shoot("24-codex-dream"),
     kStop.codex("the-fourth").shoot("25-codex-fourth"),
     kStop.watch(26).shoot("26-watching"),
+    // The after-mode's later days, which the tour does not live through.
+    kStop.jumpTo(2, 18 * 60 + 58, 23.4f, 1.0f).look(kPi / 2 + 0.3f, -0.1f).wait(1).shoot("27-lamp-night"),
+    kStop.jumpTo(3, 6 * 60 + 45, 24.0f, 0.0f).look(2.82f, 0.2f).shoot("28-egrets"),
 };
 
 // Waits are given as seconds, or as -1 "until 6:00 pm" and -2 "until 7:20 pm".
@@ -227,6 +235,13 @@ int runTour(strata::Engine& engine, const Args& args) {
             if (!args.framesDir.empty()) engine.saveScreenshotPng(args.framesDir + "/" + stop.shot + ".png");
             pages.close();
             continue;
+        }
+        if (stop.jumpDay >= 0) {
+            const int64_t minute = static_cast<int64_t>(stop.jumpDay) * 1440 + stop.jumpMinute;
+            w.tick = static_cast<int64_t>((minute - kStartMinute) / kGameMinutesPerSecond) * kTickRate;
+            w.day = stop.jumpDay;
+            w.player.x = stop.x;
+            w.player.z = stop.z;
         }
         if (stop.lamp && !w.lampLit) {
             Input in;
@@ -324,7 +339,7 @@ int runTour(strata::Engine& engine, const Args& args) {
         std::fprintf(stderr, "atman: the tour ended with codex pages still closed\n");
         return 1;
     }
-    if (!w.after || w.day != 1) {
+    if (!w.after || w.day < 1) {
         std::fprintf(stderr, "atman: the tour did not sleep into the after-mode\n");
         return 1;
     }
