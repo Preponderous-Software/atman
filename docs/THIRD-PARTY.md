@@ -3,8 +3,8 @@
 Atman is MIT-licensed (see `LICENSE`). The downloadable builds link in the
 Strata engine and, through it, the components below, and the game's own
 copies of stb_image and miniaudio; every licence here is permissive. Strata
-is fetched at the commit `ATMAN_STRATA_REF` in `CMakeLists.txt` pins (v0.4.0,
-`2e03be8`), and the Strata sections below are Strata's own licence and
+is fetched at the commit `ATMAN_STRATA_REF` in `CMakeLists.txt` pins (just after v0.5.0,
+`7f0c23e`), and the Strata sections below are Strata's own licence and
 third-party notices at that commit.
 
 ## In the game itself
