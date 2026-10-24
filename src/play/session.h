@@ -67,6 +67,8 @@ public:
     void setCompactHud(bool on) { compact_ = on; }
     // The part of the canvas the page covers with its HUD (canvas pixels from the top left).
     void setCover(float right, float bottom) { cover_ = {right, bottom}; }
+    // Whether the codex names its keys (a touch screen has the page's buttons instead).
+    void setKeyHints(bool on) { pages_.setKeyHints(on); }
 
     const World& world() const { return w_; }
     bool captured() const { return captured_; }

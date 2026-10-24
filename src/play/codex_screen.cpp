@@ -173,8 +173,10 @@ void CodexScreen::render(const World& w) {
     // Upright, the keys go just under the page.
     const float bottom = upright ? static_cast<float>(height) / 2 - offset * pixelsPerUnit + h * pixelsPerUnit / 2 + 3 * line
                                  : static_cast<float>(height) / 2 + 450 * platePixels - 56 * platePixels;
-    add(bottom - 2 * line, "Up/Down  choose", dim);
-    add(bottom - line, "Tab  back to the valley", dim);
+    if (keys_) {
+        add(bottom - 2 * line, "Up/Down  choose", dim);
+        add(bottom - line, "Tab  back to the valley", dim);
+    }
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     engine_.submitText(texts.data(), texts.size());
     engine_.endFrame();

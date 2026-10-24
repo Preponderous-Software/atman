@@ -42,7 +42,7 @@ only frees the mouse. On a touch screen:
 
 - drag on the left half to walk (all the way out to hurry), and on the right half to look;
 - **Use** does what is here (fill, give, dig, drink, eat, sleep); **Lamp**, **Break** and **Lens**
-  do what they say, and **Keys** shows the keyboard controls on the canvas;
+  do what they say;
 - at the wheel, tap a form to throw it, then type its name in the box;
 - **Codex** along the top opens the codex (the arrows choose a page), and in the after-mode
   **Watch** steps out of the body and back in;

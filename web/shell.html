@@ -127,7 +127,6 @@
     <button class="body" data-key="9" title="The lamp (F)">Lamp</button>
     <button class="body" data-key="5" title="Break the pot you look at (B)">Break</button>
     <button class="body" id="lensBtn" data-key="6" title="The clay lens (C)" hidden>Lens</button>
-    <button data-key="58" title="The controls on the canvas">Keys</button>
   </div>
   <div id="wheel" role="group" aria-label="Throw at the wheel">
     <button data-key="30">Water jar</button><button data-key="31">Bowl</button>
@@ -163,9 +162,10 @@
   </ul>
   <ul class="for-touch">
     <li>Drag on the left half to walk (all the way out to hurry); drag on the right half to look.</li>
-    <li><b>Use</b> does what is here; <b>Lamp</b>, <b>Break</b> and <b>Lens</b> do what they say. At the wheel, tap a
-      form to throw it, then name it.</li>
-    <li><b>Codex</b> along the top shows the verses so far; <b>Sound</b> turns the sound on or off.</li>
+    <li><b>Use</b> does what is here; <b>Lamp</b>, <b>Break</b> and <b>Lens</b> do what they say (<b>Lens</b> appears
+      after three pots). At the wheel, tap a form to throw it, then name it.</li>
+    <li><b>Codex</b> along the top shows the verses so far; <b>Sound</b> turns the sound on or off. In the
+      after-mode, <b>Watch</b> steps out of the body and back in.</li>
   </ul>
   <p style="color:var(--dim);font-size:13px">The game saves every two minutes, when you press Save (or <kbd>F5</kbd>),
   and when you leave the page; <kbd>F9</kbd> loads the last save. Saves stay in this browser on this device. Built on the <a href="https://github.com/Preponderous-Software/strata">Strata</a> engine;
@@ -192,6 +192,7 @@
   function setTouch(on) {
     touchMode = on;
     document.body.classList.toggle('touch', on);
+    if (ready) call.touch(on ? 1 : 0);
     if (on && document.pointerLockElement) document.exitPointerLock();
   }
 
@@ -432,6 +433,7 @@
         help: api('atman_help', null, ['number']),
         sound: api('atman_sound', null, ['number', 'number']),
         cover: api('atman_cover', null, ['number', 'number']),
+        touch: api('atman_touch', null, ['number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };

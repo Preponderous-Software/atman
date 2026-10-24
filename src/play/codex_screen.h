@@ -29,6 +29,9 @@ public:
     void move(const World& w, int step);
     // Opens on a given entry (an index into codex::kEntries), for the tour.
     void show(const World& w, int entry);
+    // Whether the keys are named under the list (off on a touch screen,
+    // where the page has buttons for them).
+    void setKeyHints(bool on) { keys_ = on; }
 
     // Draws one frame (not presented).
     void render(const World& w);
@@ -38,6 +41,7 @@ private:
 
     strata::Engine& engine_;
     bool open_ = false;
+    bool keys_ = true;
     int chosen_ = -1;  // index into codex::kEntries
     uint32_t mesh_ = 0;
     int meshEntry_ = -1;  // what the quad shows, and the window shape it was built for
