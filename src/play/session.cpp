@@ -87,6 +87,7 @@ void Session::adopt(const World& w) {
     pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
     fourthSeen_ = w_.codex[static_cast<int>(CodexId::Fourth)];
     daySeen_ = w_.day;
+    sleepSeen_ = w_.sleep;
     codexRead_ = w_.codex;  // a loaded game's pages are not new
     if (pages_.isOpen()) pages_.close();
 }
@@ -109,6 +110,10 @@ void Session::noticeChanges() {
             "Live the day as it comes, or step back and watch it lived (V).",
             kAfterSeconds);
     fourthSeen_ = fourth;
+    // The dream is named as it begins, once: nothing in it says so, and
+    // without a word it reads as a broken clock (the AI playtests of 0.2.0).
+    if (w_.sleep == Sleep::Dream && sleepSeen_ != Sleep::Dream) say("You sleep, and dream.", 6);
+    sleepSeen_ = w_.sleep;
     // A lamp night is told of in its morning, so the player can be at the ghat for it.
     if (w_.day != daySeen_ && dayKind(w_) == DayKind::LampNight && !watching_)
         say("This evening the village sets lamps on the ghat steps, and floats more on the river.", 10);
@@ -305,8 +310,8 @@ void Session::onKeyDown(int scancode, bool repeat) {
         say("Stepping out of the body to watch comes later, once the teachings are done.");
     else if (scancode == kV) {
         watching_ = !watching_;
-        following_ = false;
-        if (watching_) cam_ = cameraAtEyes(w_);
+        following_ = watching_;  // step out to just behind the body, so it is seen at once
+        if (watching_) cam_ = cameraBehind(w_);
         else {
             yaw_ = w_.player.yaw;  // step back in, looking where the body looks
             pitch_ = w_.player.pitch;
