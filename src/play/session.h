@@ -69,6 +69,16 @@ public:
     void setCover(float right, float bottom) { cover_ = {right, bottom}; }
     // Whether the codex names its keys (a touch screen has the page's buttons instead).
     void setKeyHints(bool on) { pages_.setKeyHints(on); }
+    // The HUD's text size, 0 (as at first) to kTextSizes - 1 (F2), and
+    // captions for the sounds that matter (F3). Both are kept in the slot's
+    // settings file, so they outlast a new game. `announce` says so on screen.
+    static constexpr int kTextSizes = 3;
+    void setTextSize(int size, bool announce = true);
+    void setCaptions(bool on, bool announce = true);
+    int textSize() const { return textSize_; }
+    bool captions() const { return captions_; }
+    // The sounds that matter, in words, while captions are on (or the sound is off).
+    const std::string& caption() const { return caption_; }
 
     const World& world() const { return w_; }
     bool captured() const { return captured_; }
@@ -114,6 +124,11 @@ private:
     bool fourthSeen_ = false;  // whether waking from the deep sleep has been announced
     std::string message_;
     double messageUntil_ = 0;
+    int textSize_ = 0;
+    bool captions_ = false;
+    std::string caption_;
+
+    void writeSettings();
 };
 
 }  // namespace atman::play

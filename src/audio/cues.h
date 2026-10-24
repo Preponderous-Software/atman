@@ -6,6 +6,7 @@
 // these into samples, and the tests can check them without either.
 #pragma once
 
+#include <string>
 #include <vector>
 
 #include "sim/world.h"
@@ -46,6 +47,12 @@ enum class Cue : int {
 // `listener` is where the ears are (the eyes, or the free camera while
 // watching); `stepsPerSecond` is how fast the body is walking, 0 standing.
 Ambience ambience(const World& w, Vec3 listener, float stepsPerSecond);
+
+// The sounds that tell the player something, in words, for captions: the
+// heartbeat while afraid, the wheel while a pot is thrown, the river alone in
+// deep sleep. (The after-mode's tanpura plays for good, so it is not
+// captioned; its first morning says the teachings are done.) Empty when none of them plays.
+std::string captions(const World& w, const Ambience& a);
 
 // The one-off sounds for the change from `before` to `after` (one frame).
 std::vector<Cue> cues(const World& before, const World& after);

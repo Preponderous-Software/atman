@@ -126,6 +126,19 @@ int main() {
         const Ambience deep = ambience(w, {-8, 1.6f, 15}, 1.0f);
         CHECK(deep.river > 0.5f);
         CHECK(deep.wind == 0 && deep.birds == 0 && deep.crickets == 0 && deep.steps == 0 && deep.drone == 0);
+
+        // Captions name what the sounds tell: the river in deep sleep, a
+        // heartbeat while afraid, the wheel; and nothing for the ordinary day.
+        CHECK(captions(w, deep) == "(the river)");
+        w.sleep = Sleep::Awake;
+        w.sleptTick = -1;
+        Ambience afraid;
+        afraid.heart = 0.8f;
+        afraid.wheel = 1;
+        CHECK(captions(w, afraid) == "(your heart pounding, the wheel turning)");
+        CHECK(captions(w, village).empty());
+        w.after = true;
+        CHECK(captions(w, ambience(w, {-8, 1.6f, 15}, 0)).empty());  // the tanpura is not captioned
     }
 
     // Every one-off sound is there, finite and neither silent nor clipping.

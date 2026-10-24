@@ -16,8 +16,10 @@ namespace V = atman::valley;
 namespace {
 
 constexpr float kFovY = 70.0f;
-constexpr float kTextSize = 16.0f;
-constexpr float kLine = 20.0f;
+// The HUD's text size and line height, at the player's text size (F2; see
+// setTextScale).
+float gTextSize = 16.0f;
+float gLine = 20.0f;
 constexpr float kMargin = 16.0f;
 constexpr float kLampRange = 16.0f;
 constexpr float kLampIntensity = 3.0f;
@@ -28,7 +30,6 @@ constexpr float kFlySpeed = 4.0f, kFlyFast = 12.0f;  // metres per second
 constexpr float kLabelRange = 16.0f;       // places are named within this many metres
 constexpr float kHouseLabelRange = 30.0f;
 constexpr float kLabelNear = 3.0f;  // houses, by their roofs, from further
-constexpr float kLabelGap = 3 * kTextSize;  // between the end of a HUD line and a name on its row
 constexpr float kDarkSeconds = 0.6f, kFadeSeconds = 2.4f;  // waking: dark, then the morning fades in
 constexpr float kDreamFadeSeconds = 4.0f;  // the dream goes out over its last seconds
 
@@ -79,7 +80,7 @@ void text(std::vector<StrataText>& out, std::vector<std::string>& keep, float x,
     StrataText t{};
     t.x = x;
     t.y = y;
-    t.pixel_size = kTextSize;
+    t.pixel_size = gTextSize;
     t.flags = STRATA_TEXT_SHADOW;
     for (int i = 0; i < 4; ++i) t.color[i] = color[i];
     out.push_back(t);
@@ -337,8 +338,37 @@ std::string prompt(const World& w, const std::string& typing) {
     return "";
 }
 
+void setTextScale(float scale) {
+    gTextSize = std::round(16.0f * scale);
+    gLine = std::round(20.0f * scale);
+}
+
+std::vector<std::string> wrapped(const std::string& text, size_t columns) {
+    std::vector<std::string> out;
+    for (size_t at = 0; at < text.size();) {
+        size_t end = text.find('\n', at);
+        if (end == std::string::npos) end = text.size();
+        std::string line;
+        for (size_t i = at; i < end;) {
+            size_t space = text.find(' ', i);
+            if (space == std::string::npos || space > end) space = end;
+            const std::string word = text.substr(i, space - i);
+            if (!line.empty() && line.size() + 1 + word.size() > columns) {
+                out.push_back(line);
+                line.clear();
+            }
+            line += (line.empty() ? "" : " ") + word;
+            i = space + 1;
+        }
+        out.push_back(line);
+        at = end + 1;
+    }
+    return out;
+}
+
 void render(strata::Engine& engine, const World& w, bool help, const std::string& typing,
-            const FreeCamera* watching, bool noText, const std::string& message, Cover cover) {
+            const FreeCamera* watching, bool noText, const std::string& message, Cover cover,
+            const std::string& caption) {
     const float elevation = setSky(engine, w);
     setLights(engine, w, elevation);
     int32_t width = 0, height = 0;
@@ -367,9 +397,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     float y = kMargin;
     std::vector<float> hudRight;  // where each HUD line ends, top to bottom
     for (const HudLine& l : hudLines(w, watching != nullptr)) {
-        hudRight.push_back(noText ? 0 : kMargin + kTextSize * static_cast<float>(l.text.size()));
+        hudRight.push_back(noText ? 0 : kMargin + gTextSize * static_cast<float>(l.text.size()));
         if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
-        y += kLine;
+        y += gLine;
     }
     const size_t hudTexts = texts.size();
     // Deep sleep has nothing to show: only a dim point that slowly breathes,
@@ -378,7 +408,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (w.sleep == Sleep::Deep) {
         const float breath = 0.5f - 0.5f * std::cos(sleptSeconds(w) * 2 * kPi / 5.0f);
         const float dim[4] = {ink[0], ink[1], ink[2], 0.08f + 0.22f * breath};
-        text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize / 2, static_cast<float>(height) / 2 - gTextSize / 2,
              ".", dim);
     }
     // The names of places nearby, fading out with distance.
@@ -390,15 +420,16 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
         if (d < kLabelNear || d > place.range || !inSight(view.eye, place) || !toScreen(camera, place.at, width, height, sx, sy)) continue;
         const float fade[4] = {ink[0], ink[1], ink[2], clampf((place.range - d) / 4.0f, 0.0f, 0.85f)};
         const std::string name = place.name;
-        const float wide = kTextSize * static_cast<float>(name.size());
+        const float wide = gTextSize * static_cast<float>(name.size());
         float left = clampf(sx - wide / 2, kMargin, static_cast<float>(width) - kMargin - wide);  // all on screen
         // Clear of the HUD's words on the lines the label's row would cross,
         // and far enough after them not to read as their next word: moved
         // right while it still starts left of its place, otherwise not shown.
+        const float gap = 3 * gTextSize;  // three characters
         float clear = 0;
         for (size_t i = 0; i < hudRight.size(); ++i) {
-            const float top = kMargin + kLine * static_cast<float>(i);
-            if (sy + kTextSize > top && sy < top + kTextSize && hudRight[i] > 0) clear = std::max(clear, hudRight[i] + kLabelGap);
+            const float top = kMargin + gLine * static_cast<float>(i);
+            if (sy + gTextSize > top && sy < top + gTextSize && hudRight[i] > 0) clear = std::max(clear, hudRight[i] + gap);
         }
         bool covered = clear > sx || clear + wide > static_cast<float>(width) - kMargin;
         left = std::max(left, clear);
@@ -409,33 +440,51 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     const size_t labelsEnd = texts.size();
     // The crosshair, and what can be done here just below it (not while watching).
     if (!watching && w.sleep != Sleep::Deep)
-        text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize / 2, static_cast<float>(height) / 2 - gTextSize / 2,
              "+", ink);
     const std::string here = watching ? std::string() : prompt(w, typing);
     if (!here.empty())
-        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
-             static_cast<float>(height) / 2 + 2 * kLine, here, ink);
-    // The message, one centred line per '\n', under the prompt: higher up it
-    // would cross the HUD's lines in a window 720 pixels tall.
-    float my = static_cast<float>(height) / 2 + 4 * kLine;
-    for (size_t at = 0; at < message.size();) {
-        size_t end = message.find('\n', at);
-        if (end == std::string::npos) end = message.size();
-        const std::string line = message.substr(at, end - at);
-        text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(line.size()), my, line, lamp);
-        my += kLine;
-        at = end + 1;
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * 0.5f * static_cast<float>(here.size()),
+             static_cast<float>(height) / 2 + 2 * gLine, here, ink);
+    // As many characters as fit across the window.
+    const auto columns = static_cast<size_t>(std::max(16.0f, (static_cast<float>(width) - 2 * kMargin) / gTextSize));
+    // The message, centred, under the prompt: higher up it would cross the
+    // HUD's lines in a window 720 pixels tall.
+    float my = static_cast<float>(height) / 2 + 4 * gLine;
+    for (const std::string& line : wrapped(message, columns)) {
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * 0.5f * static_cast<float>(line.size()), my, line, lamp);
+        my += gLine;
     }
-    if (help) {
-        // Two lines, so they fit a window 1280 pixels wide.
-        const std::string first = watching ? "W A S D fly   Shift faster   Mouse look"
-                                           : std::string("W A S D walk   Shift hurry   Mouse look   E use   F lamp") +
-                                                 (lensAvailable(w) ? "   C clay lens" : "");
-        const std::string second = watching ? "V step back in   Tab codex   M sound   F1 hide help"
-                                            : std::string(w.after ? "V watch   " : "") +
-                                                  "Tab codex   F5 save   F9 load   M sound   Esc free the mouse   F1 hide help";
-        text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize - kLine, first, ink);
-        text(texts, keep, kMargin, static_cast<float>(height) - kMargin - kTextSize, second, ink);
+    // The controls, packed into as few lines as the window's width allows,
+    // along the bottom; the captions just above them.
+    float bottom = static_cast<float>(height) - kMargin - gTextSize;
+    if (help && w.sleep != Sleep::Deep) {
+        std::vector<std::string> items;
+        if (watching) items = {"W A S D fly", "Shift faster", "Mouse look", "V step back in"};
+        else {
+            items = {"W A S D walk", "Shift hurry", "Mouse look", "E use", "F lamp"};
+            if (lensAvailable(w)) items.push_back("C clay lens");
+            if (w.after) items.push_back("V watch");
+        }
+        for (const char* item : {"Tab codex", "F5 save", "F9 load", "M sound", "F2 text size", "F3 captions"})
+            items.push_back(item);
+        if (!watching) items.push_back("Esc free the mouse");
+        items.push_back("F1 hide help");
+        std::vector<std::string> lines(1);
+        for (const std::string& item : items) {
+            if (!lines.back().empty() && lines.back().size() + 3 + item.size() > columns) lines.emplace_back();
+            lines.back() += (lines.back().empty() ? "" : "   ") + item;
+        }
+        for (size_t i = lines.size(); i-- > 0;) {
+            text(texts, keep, kMargin, bottom, lines[i], ink);
+            bottom -= gLine;
+        }
+    }
+    const float dim[4] = {ink[0], ink[1], ink[2], 0.8f};
+    for (const std::string& line : wrapped(caption, columns)) {
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * 0.5f * static_cast<float>(line.size()), bottom - gLine,
+             line, dim);
+        bottom -= gLine;
     }
     for (size_t i = 0; i < texts.size(); ++i) texts[i].utf8 = keep[i].c_str();
     // A narrow page shows the HUD itself, but the names of places stay on the canvas.

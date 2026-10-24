@@ -66,6 +66,16 @@ Ambience ambience(const World& w, Vec3 listener, float stepsPerSecond) {
     return a;
 }
 
+std::string captions(const World& w, const Ambience& a) {
+    std::vector<const char*> heard;
+    if (w.sleep == Sleep::Deep) heard.push_back("the river");
+    if (a.heart > 0.1f) heard.push_back("your heart pounding");
+    if (a.wheel > 0) heard.push_back("the wheel turning");
+    std::string out;
+    for (const char* h : heard) out += (out.empty() ? "(" : ", ") + std::string(h);
+    return out.empty() ? out : out + ")";
+}
+
 std::vector<Cue> cues(const World& before, const World& after) {
     std::vector<Cue> out;
     if (after.day > before.day) out.push_back(Cue::Wake);
