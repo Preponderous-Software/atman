@@ -371,18 +371,21 @@ int runGame(strata::Engine& engine, const Args& args) {
     o.seed = args.seed;
     o.autopilot = args.autopilot;
     o.speed = args.speed;
-    // Watching the autopilot never touches the player's save.
-    if (!args.autopilot) o.slot = args.slot.empty() ? defaultSlot() : args.slot;
+    // Watching the autopilot never touches the player's save, and neither does
+    // a test harness driving the game (Strata's STRATA_DRIVE).
+    const bool driven = engine.driven();
+    if (!args.autopilot && !driven) o.slot = args.slot.empty() ? defaultSlot() : args.slot;
     o.fresh = args.fresh;
+    // A driven run is silent: its clock may be stepped, and synthesised sound
+    // would drift against it.
+    o.sound = !driven;
+    if (driven) std::puts("atman: driven by a test harness; this game does not save and is silent");
     play::Session session(engine, o);
-    using Clock = std::chrono::steady_clock;
-    auto last = Clock::now();
     while (session.running()) {
         StrataEvent e;
         while (engine.pollEvent(e)) session.handle(e);
-        const auto now = Clock::now();
-        session.frame(std::chrono::duration<double>(now - last).count());
-        last = now;
+        // The engine's frame clock: measured, or a harness's fixed step.
+        session.frame(engine.frameSeconds());
         engine.present();
     }
     session.save(nullptr);

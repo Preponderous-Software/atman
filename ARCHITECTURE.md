@@ -149,6 +149,12 @@ quit, and loads on F9. What is only on screen is not saved: the codex page, the 
 half-typed name. The desktop slot is `%APPDATA%\Atman\default` or `~/.local/share/atman/default`; the
 browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md)).
 
+Two kinds of run never touch the slot: `--autopilot`, and a run a test harness drives through
+Strata's drive channel (`STRATA_DRIVE`, Strata `docs/DRIVE.md`; playtester's `atman-strata`
+profile). A driven run has no slot, so it neither loads nor saves, and it is silent, because its
+clock may be stepped by the harness (`engine.frameSeconds()`) and synthesised sound would drift
+against it.
+
 ## Testing
 
 | Test | What it proves |

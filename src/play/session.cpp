@@ -175,7 +175,7 @@ void Session::onKeyDown(int scancode, bool repeat) {
         return;
     }
     if (scancode == kF5 && !repeat) {
-        if (options_.slot.empty()) say("This game does not save (it was started with --autopilot).");
+        if (options_.slot.empty()) say("This game does not save (the autopilot, or a test harness, is playing).");
         else save("Saved.");
         return;
     }

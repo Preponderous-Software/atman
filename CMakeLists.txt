@@ -115,14 +115,14 @@ if(ATMAN_BUILD_TESTS)
 endif()
 
 # ---------------------------------------------------------------- the game on Strata
-# Strata is fetched at ATMAN_STRATA_REF (v0.4.0), or taken from a local
+# Strata is fetched at ATMAN_STRATA_REF (after v0.5.0: the ABI 1.12 drive channel), or taken from a local
 # checkout with -DFETCHCONTENT_SOURCE_DIR_STRATA=<path>. The desktop game
 # (ATMAN_WITH_STRATA) and the browser game (ATMAN_WEB) share everything but
 # their main().
 if(ATMAN_WITH_STRATA OR ATMAN_WEB)
   cmake_minimum_required(VERSION 3.24)
   include(FetchContent)
-  set(ATMAN_STRATA_REF "2e03be8e78ef23a8449bdeaa25f279dcf9700a7f" CACHE STRING "Strata git ref (a full commit SHA)")
+  set(ATMAN_STRATA_REF "7f0c23ea7c80b4d7494742d14adee4f94e050b26" CACHE STRING "Strata git ref (a full commit SHA)")
   set(STRATA_BUILD_TESTS OFF CACHE BOOL "" FORCE)
   set(STRATA_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
   set(STRATA_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
