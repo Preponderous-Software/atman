@@ -146,6 +146,46 @@ std::string nextStep(const World& w) {
     return isDusk(w) ? "Go home and sleep (E at your door)" : "Live the day; sleep at home after dark";
 }
 
+bool nextPlace(const World& w, Vec2& at) {
+    if (w.sleep != Sleep::Awake || (w.after && teachingsDone(w))) return false;
+    if (w.potsMade < kPotsForLens) {
+        at = V::kWheel;
+        return true;
+    }
+    if (!w.codex[static_cast<int>(CodexId::ClayAndPots)]) return false;  // the lens works anywhere
+    if (!w.codex[static_cast<int>(CodexId::PotSpace)]) {
+        at = {(V::kBoard.x0 + V::kBoard.x1) / 2, (V::kBoard.z0 + V::kBoard.z1) / 2};
+        return true;
+    }
+    if (!w.fearRetired && !isDusk(w)) {
+        at = {(V::kGhat.x0 + V::kGhat.x1) / 2, 0.0f};
+        return true;
+    }
+    // At dusk, home along the path (the snakes on it are not given away).
+    if (!isDusk(w)) return false;
+    at = yourDoorstep();
+    return true;
+}
+
+std::string bearingText(const World& w, Vec2 at) {
+    const float d = distance(w.player, at);
+    if (d < 3.0f) return "";
+    // The angle from where the player looks to the place, + to the right.
+    float a = detAtan2(at.x - w.player.x, -(at.z - w.player.z)) - w.player.yaw;
+    while (a > kPi) a -= 2 * kPi;
+    while (a < -kPi) a += 2 * kPi;
+    const float deg = std::fabs(a) * 180.0f / kPi;
+    const char* side = a > 0 ? "right" : "left";
+    std::string where;
+    if (deg < 20) where = "ahead";
+    else if (deg < 70) where = std::string("ahead, to the ") + side;
+    else if (deg < 110) where = std::string("to your ") + side;
+    else if (deg < 160) where = std::string("behind you, to the ") + side;
+    else where = "behind you";
+    const int metres = d < 10 ? static_cast<int>(d + 0.5f) : static_cast<int>(d / 5 + 0.5f) * 5;
+    return std::to_string(metres) + " m " + where;
+}
+
 void choresTick(World& w, const Input& in) {
     if (!in.use) return;
     switch (usable(w)) {

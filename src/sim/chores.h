@@ -42,6 +42,15 @@ bool teachingsDone(const World& w);
 // touch screen.
 std::string nextStep(const World& w);
 
+// Where the next step is done, when it is done in one place: the wheel, the
+// drying board, the ghat, or your door (at dusk, whether the path's snakes
+// are met yet or not; they are not given away). False when there is
+// no one place (the clay lens, a dream, the after-mode).
+bool nextPlace(const World& w, Vec2& at);
+// Which way that place is, in words, from where the player stands and looks:
+// "30 m ahead, to the right". Empty when it is within a few metres.
+std::string bearingText(const World& w, Vec2 at);
+
 // Where to stand to sleep: just outside your door.
 Vec2 yourDoorstep();
 
