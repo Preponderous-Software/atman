@@ -1,0 +1,103 @@
+{
+  "session": "s02",
+  "goal": "As a brand-new player, follow the NEXT line from the first afternoon (the potter's wheel, then dusk and the path from the ghat back to the village) until you sleep at home after both teachings. Describe exactly what happens after you sleep, what you took it to mean, and whether anything made you think the game had stopped or frozen; then read the codex pages that open when you wake, and answer the questions at the end.",
+  "build": {
+    "version": null,
+    "commit": "dae6fe4"
+  },
+  "seed": 4,
+  "durationSec": 2421,
+  "outcome": "achieved",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "After sleep, the dream (clock running backwards) has no dream cue; reads as a frozen game or clock bug",
+      "detail": "Pressed E 'sleep until morning' at my door at 7:12 pm on 21 March. The screen went black for a moment, then faded back in to the same spot, in daylight, lamp out, NEXT 'Nothing here seems strange', and the clock ran BACKWARDS at about 6 game-minutes per second: 6:08, 6:02, 5:50, 5:26, 4:56, 2:56, 1:49 pm. Hunger/thirst/tiredness stayed fixed. I could walk, but nothing on screen said I was asleep or dreaming, how long it lasts, or what to do. On this loaded machine it lasted ~6 minutes of wall clock (about 95 game-seconds); I seriously considered it a bug (clock underflow) or a soft-lock. Then it was suddenly 22 March 6:46 am with 'Nothing more is asked of you'. Only afterwards, reading the new codex page 'The dream' (Brhadaranyaka 4.3.9-14: 'there are no chariots... he projects them'), did it click that the backwards afternoon was the dream and the NEXT line was a dream-logic joke. Expected: some small in-world signal (a caption like 'You are dreaming', a tint, a 'The dream' codex toast at the start rather than only on waking), and ideally the deep-sleep part made visible, so the player is not left wondering if the game hung.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-pt --seed 4; finish pots + snake/rope path; walk right up against the indigo door; pt key e; pt step 10; pt shot a; pt step 300; pt shot b; pt step 1200; pt shot c  (clock decreasing, NEXT 'Nothing here seems strange'); pt step 3600; pt shot d (22 March 6:46 am)",
+      "screenshot": "shots/sleep_rewind.png",
+      "tick": 9750
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Snake path: after the first rope, NEXT still says 'Hold the lamp to it' with no count of snakes left",
+      "detail": "Holding the lit lamp on the coiled snake turned it into a rope and a codex toast appeared, but the NEXT line kept saying 'Hold the lamp to it and look at it steadily - 7 m ahead'. There turned out to be three snakes along the path; the second gave no codex toast. A count ('1 of 3') like the pots have would make it clear. Also pitch from mouse-look is low-sensitivity, so centring the snake took several tries while Fear climbed to 9/10.",
+      "repro": "after sunset at the ghat: pt key f; turn to the path; walk; pt look onto the snake and pt wait 4; pt shot",
+      "screenshot": "shots/rope_next_stale.png",
+      "tick": 7627
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Ghat sunset wait is long with no indication of how long",
+      "detail": "'Wait on the ghat steps for the sunset' took from 5:18 pm to about 6:20 pm (roughly 65 game-seconds) with nothing to do and no progress cue; on a loaded machine that was ~8 minutes of wall clock. Expected a progress hint or a shorter wait.",
+      "repro": "after breaking a pot, walk to the ghat steps; pt wait 20; pt wait 30; pt wait 15",
+      "screenshot": "shots/sunset_wait.png",
+      "tick": 4800
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Sleep prompt needs you pressed against the door; distance hint vanishes ~2 m earlier and E does nothing",
+      "detail": "The NEXT distance disappears when about 2 m from the house (implying 'you are there'), but pressing E there did nothing, with no prompt. Only after walking right into the indigo door did 'E sleep until morning' appear. Similarly, pots at the wheel were off-screen to the right and lower than the wheel; 'Break one of your pots (B)' needed finding them on a bench by turning around.",
+      "repro": "pt hold w until NEXT distance vanishes at the house; pt key e (nothing); pt hold w 1; prompt appears",
+      "screenshot": "shots/door_range.png",
+      "tick": 9732
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "HUD texts overlap: start caption over help block; wheel prompt wraps into the MADE list",
+      "detail": "At start, the orange caption 'The NEXT line, top left, says what comes next' is drawn on top of the white help block (W A S D walk / Shift hurry), both unreadable. At the wheel with the clay lens on, the right-aligned 'At the wheel: 1 water jar 2 bowl 3 cup 4 lamp' wraps onto the 'MADE (through the clay lens)' line and the codex toast sits over the pot list. The HUD in general covers the centre-left of a 640x360 view.",
+      "repro": "pt start ...; pt shot start. At the wheel: throw 3 pots, pt key c, turn toward the bench; pt shot",
+      "screenshot": "shots/overlap_help.png",
+      "tick": 0
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Codex page list clips titles ('The rope and the sna', 'The space in the pot')",
+      "detail": "The left-hand page list in the codex is too narrow for the titles; two are cut off at the panel edge.",
+      "repro": "pt key Tab; pt shot",
+      "screenshot": "shots/codex_trunc.png",
+      "tick": 11747
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "V 'step back and watch' changes only the label; the view looks identical",
+      "detail": "In the after-mode V toggled 'Living - step back and watch (V)' to 'Watching - step back in (V)', but standing against my house the camera view was unchanged, so nothing visible showed the difference.",
+      "repro": "after waking on 22 March: pt key v; pt step 60; pt shot",
+      "screenshot": "shots/watching_same.png",
+      "tick": 16104
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 7,
+    "deaths": 0,
+    "secondsToObjective": {
+      "Throw 3 pots at the wheel": 480.0,
+      "Clay lens + break a pot": 650.0,
+      "Sunset at the ghat": 1100.0,
+      "Snakes seen as rope (3)": 1340.0,
+      "Sleep at home": 1620.0,
+      "Wake on 22 March": 2350.0
+    },
+    "snakesOnPath": 3,
+    "wallSecondsInDreamBeforeWaking": 400,
+    "newCodexPagesOnWaking": 2
+  },
+  "fun": 3,
+  "verdict": "The arc works and the codex is excellent: Sanskrit, transliteration, a cited translation and a short gloss that keeps Advaita's distinctions (pratibhasika vs vyavaharika, and the 'Other schools' page) honest. The biggest risk is the sleep: the backwards-running afternoon is a lovely idea, but nothing tells the player they are dreaming, so it reads as a frozen game or a clock bug until the 'The dream' page explains it after waking. secondsToObjective are wall-clock seconds (no probe), inflated by a slow shared software renderer.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "An ordinary village day used as a lesson in seeing what is really there. The pots I named (rice, river, chai) were all 'clay' through the lens: the names and shapes are real enough to use, but the stuff is one thing, and breaking one doesn't destroy anything (the 'space in the pot' page: the space just rejoins space). The snake on the dusk path was fear produced by not seeing clearly; holding the lamp steady showed a rope that was always a rope, and the fear meter fell. Together they point at the Self/Brahman as the one reality under many names and appearances. The sleep then turned this on experience itself: the dream (an afternoon replayed backwards that 'seemed not strange') is something the dreamer makes, and waking, 'Nothing more is asked of you' plus 'The fourth' suggested the witness that is there through waking, dream and deep sleep."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Not preachy: the game never lectured in the world; the teaching sits in the optional codex, with verse, transliteration, a cited translation and a short gloss, and it was careful (the rope page says the village and chores are not that kind of error, 'they are real for living in'; 'Other schools' gives Visistadvaita and Dvaita readings of tat tvam asi fairly and says Atman takes one reading). Confusing: the dream. While in it nothing told me I was dreaming, so the backwards clock looked like a bug; only the 'The dream' page after waking explained it. 'Nothing more is asked of you' on waking was also a little abrupt; I wasn't sure if the game had ended. The Mandukya 'The fourth' translation (Hume) is dense and hard to read at 640x360. I can't judge Sanskrit accuracy; the Gaudapada translations are marked 'working translation, awaiting review'."
+    }
+  ]
+}

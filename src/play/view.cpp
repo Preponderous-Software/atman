@@ -64,15 +64,21 @@ float darkness(const World& w) {
     return dark;
 }
 
-// One black point big enough to cover the screen, just in front of the eye.
+constexpr bridge::Rgb kBlack{0, 0, 0}, kDreamHaze{0.55f, 0.45f, 0.85f};
+
+// One point big enough to cover the screen, just in front of the eye: black,
+// or a colour.
 void drawDarkness(strata::Engine& engine, Vec3 eye, float yaw, float pitch, float alpha, int32_t width,
-                  int32_t height) {
+                  int32_t height, bridge::Rgb colour = kBlack) {
     const Vec3 d = lookDirection(yaw, pitch);
     StrataPoint p{};
     p.position[0] = eye.x + d.x * 0.2f;
     p.position[1] = eye.y + d.y * 0.2f;
     p.position[2] = eye.z + d.z * 0.2f;
     p.size_pixels = 3.0f * static_cast<float>(width > height ? width : height);
+    p.color[0] = colour.r;
+    p.color[1] = colour.g;
+    p.color[2] = colour.b;
     p.color[3] = alpha;
     engine.submitPoints(&p, 1);
 }
@@ -487,6 +493,8 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     }
     const float dark = darkness(w);
     if (dark > 0) drawDarkness(engine, view.eye, view.yaw, view.pitch, dark, width, height);
+    // The dream is seen through a faint violet haze.
+    if (w.sleep == Sleep::Dream) drawDarkness(engine, view.eye, view.yaw, view.pitch, 0.16f, width, height, kDreamHaze);
 
     std::vector<StrataText> texts;
     std::vector<std::string> keep;

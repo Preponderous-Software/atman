@@ -99,7 +99,7 @@ codex is open.
 
 | The dream, at a quarter to six | Later in the dream: the sun back in the afternoon |
 |---|---|
-| ![The dream: the village at dusk light from your door; the HUD's NEXT reads "Nothing here seems strange" and the well is labelled "The potter's wheel"](docs/images/m6-dream.jpg) | ![Further on in the dream, by the well in bright afternoon sun at 2:38 pm by the HUD's clock; the well is still labelled "The potter's wheel" and a house "The shrine"](docs/images/m6-dream-sun.jpg) |
+| ![The dream, through a faint violet haze: the village in dusk light from your door; the HUD's NEXT reads "Nothing here seems strange" and the well is labelled "The potter's wheel"](docs/images/m6-dream.jpg) | ![Further on in the dream, by the well in bright afternoon sun at 2:38 pm by the HUD's clock; the well is still labelled "The potter's wheel" and a house "The shrine"](docs/images/m6-dream-sun.jpg) |
 
 | The codex: the dream | The codex: the fourth |
 |---|---|

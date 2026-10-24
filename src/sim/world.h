@@ -145,6 +145,9 @@ float sleptSeconds(const World& w);
 // True from dusk until dawn, when the light is dim enough to mistake a rope
 // (by the sky's minute, so never in the dream).
 bool isDusk(const World& w);
+// How far the lamp reaches for looking at a snake closely, in metres.
+constexpr float kLampReach = 3.5f;
+
 // True while coil i is seen as a snake.
 bool snakeVisible(const World& w, int i);
 // True while the fear meter is on the HUD.

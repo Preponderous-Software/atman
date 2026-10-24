@@ -182,6 +182,10 @@ int main() {
         w.fear = 0.5f;
         CHECK(nextStep(w) == "Light your lamp (F) and look at it");
         w.lampLit = true;
+        w.player.x = V::kCoils[0].x - 6;  // west of the first snake, out of the lamp's reach
+        w.player.z = V::kCoils[0].z;
+        CHECK(nextStep(w) == "Go closer with the lamp, then look at it steadily");
+        w.player.x = V::kCoils[0].x - 2;
         CHECK(nextStep(w) == "Hold the lamp to it and look at it steadily");
         w.fear = 0;
         w.coils[0].seenThrough = true;
@@ -215,7 +219,7 @@ int main() {
         CHECK(bearingText(w, at) == "20 m to your left");
         w.player.yaw = kPi;
         CHECK(bearingText(w, at) == "20 m behind you");
-        w.player.z = V::kWheel.z + 2;
+        w.player.z = V::kWheel.z + 1;
         CHECK(bearingText(w, at).empty());  // there already
         w.potsMade = kPotsForLens;
         CHECK(!nextPlace(w, at));  // the lens works anywhere

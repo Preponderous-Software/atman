@@ -1,5 +1,7 @@
 #include "sim/chores.h"
 
+#include <algorithm>
+
 #include "sim/clay.h"
 #include "sim/valley.h"
 
@@ -146,11 +148,18 @@ std::string nextStep(const World& w) {
         int seen = 0;
         for (const Coil& c : w.coils) seen += c.seenThrough ? 1 : 0;
         if (!isDusk(w)) return seen ? "A snake is still on the path; it comes back at dusk" : "Wait on the ghat steps for the sunset";
+        const std::string count =
+            seen ? " (" + std::to_string(seen) + " of " + std::to_string(V::kCoilCount) + " seen)" : std::string();
         // Near a snake (fear rising), say what to do about it.
-        if (w.fear > 0.2f) return w.lampLit ? "Hold the lamp to it and look at it steadily" : "Light your lamp (F) and look at it";
-        if (seen)
-            return "Find the other snakes on the path (" + std::to_string(seen) + " of " + std::to_string(V::kCoilCount) +
-                   " seen)";
+        if (w.fear > 0.2f) {
+            if (!w.lampLit) return "Light your lamp (F) and look at it" + count;
+            float nearest = 1e9f;
+            for (int i = 0; i < V::kCoilCount; ++i)
+                if (!w.coils[i].seenThrough) nearest = std::min(nearest, distance(w.player, V::kCoils[i]));
+            if (nearest > kLampReach) return "Go closer with the lamp, then look at it steadily" + count;
+            return "Hold the lamp to it and look at it steadily" + count;
+        }
+        if (seen) return "Find the other snakes on the path" + count;
         return "Walk back to the village along the path";
     }
     return isDusk(w) ? "Go home and sleep (E at your door)" : "Live the day; sleep at home after dark";
@@ -189,7 +198,7 @@ bool nextPlace(const World& w, Vec2& at) {
 
 std::string bearingText(const World& w, Vec2 at) {
     const float d = distance(w.player, at);
-    if (d < 3.0f) return "";
+    if (d < 1.5f) return "";
     // The angle from where the player looks to the place, + to the right.
     float a = detAtan2(at.x - w.player.x, -(at.z - w.player.z)) - w.player.yaw;
     while (a > kPi) a -= 2 * kPi;

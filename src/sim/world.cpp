@@ -26,7 +26,6 @@ constexpr float kTirednessPerMinute = 1.0f / (14 * 60);
 // its light for kGazeSeconds is enough to see what it is.
 constexpr float kFearRadius = 9.0f;
 constexpr float kBalkRadius = 1.4f;
-constexpr float kLampReach = 3.5f;
 constexpr float kGazeSeconds = 2.0f;
 constexpr float kFearRisePerSecond = 0.6f;
 constexpr float kFearFallPerSecond = 0.25f;

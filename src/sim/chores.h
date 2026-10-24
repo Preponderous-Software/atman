@@ -48,7 +48,7 @@ std::string nextStep(const World& w);
 // no one place (the clay lens, a dream, the after-mode).
 bool nextPlace(const World& w, Vec2& at);
 // Which way that place is, in words, from where the player stands and looks:
-// "30 m ahead, to the right". Empty when it is within a few metres.
+// "30 m ahead, to the right". Empty within a metre and a half.
 std::string bearingText(const World& w, Vec2 at);
 
 // Where to stand to sleep: just outside your door.
