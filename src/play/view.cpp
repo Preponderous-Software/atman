@@ -552,7 +552,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
             if (lensAvailable(w)) items.push_back("C clay lens");
             if (w.after) items.push_back("V watch");
         }
-        for (const char* item : {"Tab codex", "F5 save", "F9 load", "M sound", "F2 text size", "F3 captions"})
+        for (const char* item : {"Tab codex", "F5 save", "F9 load", "M sound", "F2 text size", "F3 captions", "F6 other village"})
             items.push_back(item);
         if (!watching) items.push_back("Esc free the mouse");
         items.push_back("F1 hide help");

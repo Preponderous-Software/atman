@@ -48,8 +48,9 @@ only frees the mouse. On a touch screen:
   **Watch** steps out of the body and back in;
 - **Sound** along the top turns the sound off or on (it says which), and the page remembers it;
 - **?** (How to play) has the settings: the text size (normal, large, larger; F2 on a keyboard) and
-  captions for the sounds that matter (F3). The game keeps them in the save slot, beside the save,
-  so they come back with it;
+  captions for the sounds that matter (F3), and which of your two villages to play (F6). The game
+  keeps them in the save slot, beside the save, so they come back with it;
+- **New** asks first, and offers to keep this village and play the other one instead;
 - **Save**, **New** and **?** (how to play) are along the top as well.
 
 ## Building

@@ -16,7 +16,7 @@ namespace {
 constexpr int kW = 26, kA = 4, kS = 22, kD = 7, kE = 8, kF = 9, kB = 5, kC = 6, kV = 25, kOne = 30, kFour = 33,
               kEnter = 40, kKeypadEnter = 88, kBackspace = 42, kTab = 43, kUp = 82, kDown = 81, kLShift = 225,
               kRShift = 229, kEscape = 41, kF1 = 58;
-constexpr int kF2 = 59, kF3 = 60, kF5 = 62, kF9 = 66, kM = 16;
+constexpr int kF2 = 59, kF3 = 60, kF5 = 62, kF6 = 63, kF9 = 66, kM = 16;
 constexpr float kTextScales[Session::kTextSizes] = {1.0f, 1.25f, 1.5f};
 constexpr const char* kTextSizeNames[Session::kTextSizes] = {"normal", "large", "larger"};
 constexpr float kStride = 0.7f;  // metres a step
@@ -44,6 +44,7 @@ std::string settingsPath(const std::string& slot) { return slot + "/settings.txt
 Session::Session(strata::Engine& engine, const SessionOptions& options)
     : engine_(engine), options_(options), w_(newWorld(options.seed)), scene_(engine), pages_(engine) {
     if (options_.sound) sound_.start();
+    homeSlot_ = options_.slot;
     if (!options_.slot.empty()) {
         std::ifstream f(settingsPath(options_.slot));
         std::string key;
@@ -51,6 +52,10 @@ Session::Session(strata::Engine& engine, const SessionOptions& options)
         while (f >> key >> value) {
             if (key == "text") setTextSize(value, false);
             else if (key == "captions") setCaptions(value != 0, false);
+            else if (key == "village" && value == 2) {  // the game was left in the second village
+                options_.slot = homeSlot_ + "-2";
+                village_ = 2;
+            }
         }
     }
     watching_ = following_ = options_.autopilot;
@@ -151,11 +156,29 @@ void Session::setCaptions(bool on, bool announce) {
     }
 }
 
+void Session::setVillage(int village) {
+    if (homeSlot_.empty() || village == village_ || village < 1 || village > 2) return;
+    save(nullptr);  // the village being left keeps its day
+    village_ = village;
+    options_.slot = village == 1 ? homeSlot_ : homeSlot_ + "-2";
+    writeSettings();
+    watching_ = following_ = false;
+    World next;
+    if (hasSave(options_.slot) && loadSave(options_.slot, next).ok) {
+        adopt(next);
+        say(village == 1 ? "Your first village (F6 for the second)" : "Your second village (F6 for the first)");
+    } else {
+        adopt(newWorld(options_.seed));
+        say("A second village, new; your first keeps its day (F6 goes back).\n" + std::string(kGreeting), kGreetingSeconds);
+    }
+}
+
 void Session::writeSettings() {
-    if (options_.slot.empty()) return;
+    if (homeSlot_.empty()) return;
     std::error_code ec;
-    std::filesystem::create_directories(options_.slot, ec);
-    std::ofstream(settingsPath(options_.slot)) << "text " << textSize_ << "\ncaptions " << (captions_ ? 1 : 0) << "\n";
+    std::filesystem::create_directories(homeSlot_, ec);
+    std::ofstream(settingsPath(homeSlot_)) << "text " << textSize_ << "\ncaptions " << (captions_ ? 1 : 0) << "\nvillage "
+                                           << village_ << "\n";
     if (options_.afterSave) options_.afterSave();  // the browser keeps the file in IndexedDB
 }
 
@@ -234,6 +257,10 @@ void Session::onKeyDown(int scancode, bool repeat) {
     }
     if (scancode == kF3 && !repeat) {
         setCaptions(!captions_);
+        return;
+    }
+    if (scancode == kF6 && !repeat) {
+        setVillage(3 - village_);
         return;
     }
     if (scancode == kF5 && !repeat) {

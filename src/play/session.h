@@ -79,6 +79,11 @@ public:
     bool captions() const { return captions_; }
     // The sounds that matter, in words, while captions are on (or the sound is off).
     const std::string& caption() const { return caption_; }
+    // Two villages, each its own save: 1 in the slot the game was started
+    // with, 2 in the slot beside it ("<slot>-2"). Switching (F6) saves the
+    // village being left, then loads the other, or starts it new.
+    int village() const { return village_; }
+    void setVillage(int village);
 
     const World& world() const { return w_; }
     bool captured() const { return captured_; }
@@ -125,6 +130,8 @@ private:
     int32_t daySeen_ = 0;      // the day whose morning has been announced
     std::string message_;
     double messageUntil_ = 0;
+    int village_ = 1;
+    std::string homeSlot_;  // the slot the game was started with: village 1, and the settings
     int textSize_ = 0;
     bool captions_ = false;
     std::string caption_;

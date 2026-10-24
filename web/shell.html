@@ -185,6 +185,9 @@
     <div>Text size <span id="textSizes"><button data-text="0" aria-pressed="true">Normal</button>
       <button data-text="1" aria-pressed="false">Large</button><button data-text="2" aria-pressed="false">Larger</button></span>
       <span class="for-keys">(<kbd>F2</kbd>)</span></div>
+    <div>Village <span id="villages"><button data-village="1" aria-pressed="true">First</button>
+      <button data-village="2" aria-pressed="false">Second</button></span>
+      <span class="for-keys">(<kbd>F6</kbd>)</span></div>
     <label><input type="checkbox" id="captionsBox"> Captions for the sounds that matter, such as your heartbeat
       when afraid <span class="for-keys">(<kbd>F3</kbd>)</span></label>
   </div>
@@ -194,7 +197,9 @@
 <div id="confirmNew" class="dialog" role="dialog" aria-labelledby="newTitle">
   <h2 id="newTitle">Start again?</h2>
   <p>This goes back to 4:30 on the first afternoon. Your day here is replaced the next time the game saves.</p>
-  <div class="row"><button id="newYes">Start again</button><button id="newNo">Keep playing</button></div>
+  <p>Or keep this village as it is and play your other one; the game keeps two.</p>
+  <div class="row"><button id="newYes">Start again</button><button id="newOther">Play the other village</button>
+    <button id="newNo">Keep playing</button></div>
 </div>
 
 <script>
@@ -287,6 +292,10 @@
       b.setAttribute('aria-pressed', String(Number(b.dataset.text) === s.textSize));
     });
     $('captionsBox').checked = s.captions;
+    Array.prototype.forEach.call(document.querySelectorAll('#villages button'), function (b) {
+      b.setAttribute('aria-pressed', String(Number(b.dataset.village) === s.village));
+    });
+    window.atmanVillage = s.village;
     if (!s.naming && last.naming) $('nameInput').value = '';
     if (s.naming && !last.naming && touchMode) setTimeout(function () { $('nameInput').focus(); }, 50);
     last.naming = s.naming;
@@ -294,12 +303,14 @@
   }
 
   // On a touch screen the game's words name the buttons, not the keys:
-  // "E  dig clay" is "Use: dig clay", "(C)" is "(Lens)".
+  // "E  dig clay" is "Use: dig clay", "(C)" is "(Lens)", and the function
+  // keys' hints, which have no button, are left out.
   var buttonFor = { E: 'Use', F: 'Lamp', B: 'Break', C: 'Lens', V: 'Watch', Tab: 'Codex' };
   function touchWords(text) {
     if (!touchMode || !text) return text;
     return text.replace(/^([EFB])  /, function (m, k) { return buttonFor[k] + ': '; })
-               .replace(/\((E|F|B|C|V|Tab)\b/g, function (m, k) { return '(' + buttonFor[k]; });
+               .replace(/\((E|F|B|C|V|Tab)\b/g, function (m, k) { return '(' + buttonFor[k]; })
+               .replace(/\s*\(F\d[^)]*\)/g, '');  // "(F2)", "(F6 goes back)": keys a touch screen lacks
   }
 
   // ---- mouse: the page owns the pointer lock
@@ -409,6 +420,9 @@
     $('newYes').addEventListener('click', function () {
       $('confirmNew').style.display = 'none'; call.restart(); refresh();
     });
+    $('newOther').addEventListener('click', function () {
+      $('confirmNew').style.display = 'none'; call.village(3 - (window.atmanVillage || 1)); refresh();
+    });
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') call.save();
     });
@@ -423,6 +437,9 @@
       b.addEventListener('click', function () { call.text(Number(b.dataset.text)); refresh(); });
     });
     $('captionsBox').addEventListener('change', function () { call.captions($('captionsBox').checked ? 1 : 0); refresh(); });
+    Array.prototype.forEach.call(document.querySelectorAll('#villages button'), function (b) {
+      b.addEventListener('click', function () { call.village(Number(b.dataset.village)); refresh(); });
+    });
     $('helpClose').addEventListener('click', function () {
       $('help').style.display = 'none';
       try { localStorage.setItem('atman-seen-help', '1'); } catch (e) {}
@@ -466,6 +483,7 @@
         touch: api('atman_touch', null, ['number']),
         text: api('atman_text', null, ['number']),
         captions: api('atman_captions', null, ['number']),
+        village: api('atman_village', null, ['number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };

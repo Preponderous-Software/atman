@@ -260,6 +260,16 @@ function colourCount(png) {
   if (await page.locator('#help').isVisible()) await fail('How to play came back after it was closed once');
   if (!back.muted) await fail('the sound came back on after a reload');
 
+  // The second village starts new, and the first keeps its day.
+  await page.evaluate(() => window.atman.village(2));
+  const second = await until((st) => st.village === 2, 10000);
+  console.log(`second village: at (${second.x}, ${second.z}) at ${second.clock}; "${second.message.split('\n')[0]}"`);
+  if (second.village !== 2 || second.tick > 30 * 10) await fail('the second village did not start new');
+  await page.evaluate(() => window.atman.village(1));
+  const first = await until((st) => st.village === 1, 10000);
+  if (Math.hypot(first.x - back.x, first.z - back.z) > 0.25 || first.tick < back.tick)
+    await fail('the first village did not keep its day');
+
   if (errors.length) await fail('page errors: ' + errors.join(' | '));
   console.log(`OK (${phone ? 'phone' : 'desktop'})`);
   await browser.close();

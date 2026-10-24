@@ -123,6 +123,10 @@ EMSCRIPTEN_KEEPALIVE void atman_text(int size) {
 EMSCRIPTEN_KEEPALIVE void atman_captions(int on) {
     if (g) g->session->setCaptions(on != 0);
 }
+// Which village to play, 1 or 2 (How to play's buttons, or F6).
+EMSCRIPTEN_KEEPALIVE void atman_village(int village) {
+    if (g) g->session->setVillage(village);
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }
@@ -159,6 +163,7 @@ EMSCRIPTEN_KEEPALIVE const char* atman_status() {
     jsonBool(o, "muted", s.muted());
     jsonBool(o, "captions", s.captions());
     o += ",\"textSize\":" + std::to_string(s.textSize());
+    o += ",\"village\":" + std::to_string(s.village());
     o += ",\"caption\":";
     jsonString(o, s.caption());
     o += ",\"codexOpen\":" + std::to_string(codex::openEntries(w).size());
