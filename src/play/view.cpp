@@ -380,8 +380,9 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!here.empty())
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize * 0.5f * static_cast<float>(here.size()),
              static_cast<float>(height) / 2 + 2 * kLine, here, ink);
-    // The message, one centred line per '\n'.
-    float my = static_cast<float>(height) * 0.3f;
+    // The message, one centred line per '\n', under the prompt: higher up it
+    // would cross the HUD's lines in a window 720 pixels tall.
+    float my = static_cast<float>(height) / 2 + 4 * kLine;
     for (size_t at = 0; at < message.size();) {
         size_t end = message.find('\n', at);
         if (end == std::string::npos) end = message.size();
