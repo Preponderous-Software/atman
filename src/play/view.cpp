@@ -1,5 +1,6 @@
 #include "play/view.h"
 
+#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <cstdio>
@@ -29,6 +30,7 @@ constexpr float kHouseLabelRange = 30.0f;
 constexpr float kLabelNear = 3.0f;  // houses, by their roofs, from further
 constexpr float kLabelGap = 3 * kTextSize;  // between the end of a HUD line and a name on its row
 constexpr float kDarkSeconds = 0.6f, kFadeSeconds = 2.4f;  // waking: dark, then the morning fades in
+constexpr float kDreamFadeSeconds = 4.0f;  // the dream goes out over its last seconds
 
 StrataCamera lookFrom(Vec3 eye, float yaw, float pitch, float aspect) {
     const Vec3 d = lookDirection(yaw, pitch);
@@ -44,6 +46,18 @@ float wakeDarkness(const World& w) {
     const float s = static_cast<float>(w.tick - w.wokeTick) / kTickRate;
     if (s < kDarkSeconds) return 1;
     return clampf(1.0f - (s - kDarkSeconds) / kFadeSeconds, 0.0f, 1.0f);
+}
+
+// Waking's dark, the dream going out over its last seconds, and deep sleep,
+// which is all dark.
+float darkness(const World& w) {
+    float dark = wakeDarkness(w);
+    if (w.sleep == Sleep::Deep) return 1;
+    if (w.sleep == Sleep::Dream) {
+        const float left = static_cast<float>(kDreamSeconds) - sleptSeconds(w);
+        dark = std::max(dark, clampf(1.0f - left / kDreamFadeSeconds, 0.0f, 1.0f));
+    }
+    return dark;
 }
 
 // One black point big enough to cover the screen, just in front of the eye.
@@ -140,7 +154,7 @@ struct Place {
     const Box2* own = nullptr;  // a house's own walls do not hide its name
 };
 
-std::vector<Place> places() {
+std::vector<Place> places(const World& w) {
     std::vector<Place> out;
     for (const V::House& h : V::kHouses) {
         const Box2& f = h.footprint;
@@ -151,6 +165,13 @@ std::vector<Place> places() {
     out.push_back({"The potter's wheel", {V::kWheel.x, V::groundHeight(V::kWheel.x, V::kWheel.z) + 1.6f, V::kWheel.z}, kLabelRange});
     out.push_back({"Clay bank", {V::kClayBank.x, V::groundHeight(V::kClayBank.x, V::kClayBank.z) + 1.4f, V::kClayBank.z}, kLabelRange});
     out.push_back({"The ghat", {V::kGhat.x0 + 1.0f, V::kGhat.top + 1.8f, 0.0f}, kLabelRange});
+    // In the dream each place has the next one's name, and nothing about that
+    // seems strange (CONCEPT.md, chapter 4: the potter is also your mother).
+    if (w.sleep == Sleep::Dream) {
+        const char* first = out.front().name;
+        for (size_t i = 0; i + 1 < out.size(); ++i) out[i].name = out[i + 1].name;
+        out.back().name = first;
+    }
     return out;
 }
 
@@ -194,7 +215,7 @@ void setLighting(strata::Engine& engine, bool lightweight) {
 
 float setSky(strata::Engine& engine, const World& w) {
     const StrataSolarPosition sun =
-        strata::solarPosition(kFirstMidnightUtc + gameMinutes(w) * 60.0, kLatitude, kLongitude);
+        strata::solarPosition(kFirstMidnightUtc + skyMinutes(w) * 60.0, kLatitude, kLongitude);
     engine.setSunDirection(sun.to_sun);
     return sun.elevation_degrees;
 }
@@ -267,6 +288,7 @@ std::string bar(float value, int width) {
 
 std::vector<HudLine> hudLines(const World& w, bool watching) {
     std::vector<HudLine> lines;
+    if (w.sleep == Sleep::Deep) return lines;  // no day, no body, nothing to do
     lines.push_back({std::to_string(21 + w.day) + " March  " + clockText(w), true});
     lines.push_back({"Thirst    " + bar(w.needs.thirst, 10)});
     lines.push_back({"Hunger    " + bar(w.needs.hunger, 10)});
@@ -297,6 +319,7 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
 }
 
 std::string prompt(const World& w, const std::string& typing) {
+    if (w.sleep != Sleep::Awake) return "";  // in the dream nothing is there to be done
     if (w.naming >= 0)
         return "Name your " + lower(formShape(w.pots[w.naming].form).name) + ": " + typing + "_   (Enter)";
     if (w.throwing.active)
@@ -328,9 +351,12 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     StrataFrameDesc fd{};
     fd.clear_flags = STRATA_CLEAR_COLOR | STRATA_CLEAR_DEPTH | STRATA_CLEAR_SKY;
     engine.beginFrame(fd);
-    drawMotes(engine, w);
-    drawDoorLamps(engine, nightness(elevation));
-    const float dark = wakeDarkness(w);
+    const bool deep = w.sleep == Sleep::Deep;  // no objects at all
+    if (!deep) {
+        drawMotes(engine, w);
+        drawDoorLamps(engine, nightness(elevation));
+    }
+    const float dark = darkness(w);
     if (dark > 0) drawDarkness(engine, view.eye, view.yaw, view.pitch, dark, width, height);
 
     std::vector<StrataText> texts;
@@ -346,8 +372,17 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
         y += kLine;
     }
     const size_t hudTexts = texts.size();
+    // Deep sleep has nothing to show: only a dim point that slowly breathes,
+    // so that the dark does not look like the game has stopped. (Drawn with
+    // the names of places, so a narrow page shows it too.)
+    if (w.sleep == Sleep::Deep) {
+        const float breath = 0.5f - 0.5f * std::cos(sleptSeconds(w) * 2 * kPi / 5.0f);
+        const float dim[4] = {ink[0], ink[1], ink[2], 0.08f + 0.22f * breath};
+        text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
+             ".", dim);
+    }
     // The names of places nearby, fading out with distance.
-    for (const Place& place : places()) {
+    for (const Place& place : deep ? std::vector<Place>{} : places(w)) {
         const float dx = place.at.x - view.eye.x, dz = place.at.z - view.eye.z;
         const float d = std::sqrt(dx * dx + dz * dz);
         float sx = 0, sy = 0;
@@ -373,7 +408,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     }
     const size_t labelsEnd = texts.size();
     // The crosshair, and what can be done here just below it (not while watching).
-    if (!watching)
+    if (!watching && w.sleep != Sleep::Deep)
         text(texts, keep, static_cast<float>(width) / 2 - kTextSize / 2, static_cast<float>(height) / 2 - kTextSize / 2,
              "+", ink);
     const std::string here = watching ? std::string() : prompt(w, typing);

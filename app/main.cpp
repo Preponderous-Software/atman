@@ -157,8 +157,9 @@ constexpr TourStop kStop{};
 // path to the ghat, then sit on the steps while the sun goes down. At night,
 // walk back up the path: see the first snake in the dark, then light the lamp
 // and look at each one closely until it is a rope. Then read the codex, go
-// home and sleep, and in the after-mode's morning step out and watch the
-// avatar set off on its chores.
+// home and sleep: dream the valley with its sun going backwards, sleep
+// deeply, and in the after-mode's morning read the two new pages, then step
+// out and watch the avatar set off on its chores.
 const TourStop kTour[] = {
     kStop.look(0.9f, -0.03f).shoot("01-your-door"),
     kStop.to(-1.0f, 4.5f).look(0.75f, -0.22f).shoot("02-well"),
@@ -191,8 +192,13 @@ const TourStop kTour[] = {
     kStop.codex("pot-space").shoot("18-codex-pot-space"),
     kStop.codex("other-schools").shoot("19-other-schools"),
     kStop.to(-8.0f, 7.0f).look(kPi, 0.0f).useHere(),
-    kStop.look(-0.35f, 0.02f).wait(4).shoot("20-morning"),
-    kStop.watch(26).shoot("21-watching"),
+    kStop.look(0.9f, -0.03f).wait(3).shoot("20-dream"),
+    kStop.to(-1.0f, 4.5f).look(1.2f, 0.05f).wait(25).shoot("21-dream-sun"),
+    kStop.look(1.2f, 0.05f).wait(45).shoot("22-deep-sleep"),
+    kStop.look(-0.35f, 0.02f).wait(10).shoot("23-morning"),
+    kStop.codex("the-dream").shoot("24-codex-dream"),
+    kStop.codex("the-fourth").shoot("25-codex-fourth"),
+    kStop.watch(26).shoot("26-watching"),
 };
 
 // Waits are given as seconds, or as -1 "until 6:00 pm" and -2 "until 7:20 pm".

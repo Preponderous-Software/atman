@@ -27,8 +27,8 @@ Bracketed IDs refer to sources in [RESEARCH.md](RESEARCH.md). Chapters are descr
 
 Each of these is deferred, not rejected:
 
-- Chapters 3 to 5 (sheaths, three states, salt) and the witness camera.
-- Dream and deep-sleep renderings of the valley.
+- Chapters 3 and 5 (sheaths, salt). Three States was added after the MVP: the dream and the deep
+  sleep, with the fourth's codex page; the witness view is the after-mode's watching (V).
 - The full after-mode with the HUD dissolved.
 - Narration, music and Sanskrit pronunciation audio.
 - Scholar and teacher sign-off. This is required before a build is published, not before the MVP is

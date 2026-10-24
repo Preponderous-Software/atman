@@ -143,6 +143,7 @@ EMSCRIPTEN_KEEPALIVE const char* atman_status() {
     jsonBool(o, "help", s.help());
     jsonBool(o, "watching", s.watching());
     jsonBool(o, "after", w.after);
+    jsonBool(o, "deep", w.sleep == Sleep::Deep);
     jsonBool(o, "codex", s.codexOpen());
     jsonBool(o, "naming", w.naming >= 0);
     jsonBool(o, "atWheel", atWheel(w) && w.naming < 0 && !w.throwing.active);

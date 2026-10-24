@@ -1,6 +1,7 @@
-// The autopilot plays the whole MVP from a new game: the chores, three named
-// pots, the clay lens, a broken pot, the snakes at dusk, sleep, and the
-// after-mode's first morning with its chores done again by noon. It ends on
+// The autopilot plays the whole game from a new game: the chores, three named
+// pots, the clay lens, a broken pot, the snakes at dusk, sleep, the dream and
+// the deep sleep, and the after-mode's first morning with its chores done
+// again by noon. It ends on
 // the pinned fingerprint on every compiler. Routes go around what is solid.
 #include <cinttypes>
 #include <cstdio>
@@ -35,12 +36,14 @@ int main() {
     // The playthrough.
     World w = newWorld(1);
     Autopilot pilot;
-    bool sawDusk = false, slept = false;
+    bool sawDusk = false, slept = false, dreamed = false, sleptDeeply = false;
     int64_t limit = 3LL * 24 * 60 * 60 * kTickRate;  // three game days at most
     for (int64_t t = 0; t < limit && !playthroughDone(w); ++t) {
         const int dayBefore = w.day;
         tick(w, pilot.next(w));
         if (isDusk(w) && w.day == 0) sawDusk = true;
+        if (w.sleep == Sleep::Dream) dreamed = true;
+        if (w.sleep == Sleep::Deep) sleptDeeply = true;
         if (w.day != dayBefore) {
             slept = true;
             // By the first night every teaching was done, and nothing else was rewarded.
@@ -51,7 +54,7 @@ int main() {
         }
     }
     CHECK(playthroughDone(w));
-    CHECK(sawDusk && slept);
+    CHECK(sawDusk && slept && dreamed && sleptDeeply);
     CHECK(w.day == 1 && w.after);
     CHECK(w.standing == 2);  // the after-mode's chores earned nothing
     CHECK(!w.clayLens && w.fearRetired);

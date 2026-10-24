@@ -50,6 +50,8 @@
     display: none; font-size: 15px; font-weight: 600; }
   body.compact #prompt { display: block; }
   body.watching #cross, body.codex #cross, body.codex #prompt, body.codex #panel { display: none !important; }
+  /* Deep sleep: nothing on the screen but the canvas's own dim point. */
+  body.deep #cross, body.deep #prompt, body.deep #panel, body.deep #pad, body.deep #wheel { display: none !important; }
   #touch { position: absolute; inset: 0; z-index: 1; display: none; touch-action: none; }
   body.touch #touch { display: block; }
   body.codex #touch { display: none; }
@@ -244,7 +246,7 @@
     $('soundBtn').setAttribute('aria-pressed', s.muted ? 'false' : 'true');
     $('watchBtn').textContent = s.watching ? 'Step back in' : 'Watch';
     $('lensBtn').hidden = !s.lens;
-    ['watching', 'codex', 'naming', 'atWheel'].forEach(function (k) { document.body.classList.toggle(k, s[k]); });
+    ['watching', 'codex', 'naming', 'atWheel', 'deep'].forEach(function (k) { document.body.classList.toggle(k, s[k]); });
     var showClick = !touchMode && !s.captured && !dialogOpen();
     $('clickToPlay').style.display = showClick ? 'flex' : 'none';
     var key = JSON.stringify(s.hud);

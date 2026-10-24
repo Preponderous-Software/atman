@@ -1,0 +1,33 @@
+{
+  "id": "the-dream",
+  "menu": "The dream",
+  "unlock": "Dream",
+  "title": "The dream",
+  "source": "Bṛhadāraṇyaka Upaniṣad 4.3.9–4.3.10, 4.3.14",
+  "cites": [
+    "P2"
+  ],
+  "devanagari": [
+    "स यत्र प्रस्वपित्यस्य लोकस्य सर्वावतो मात्रामपादाय स्वयं विहत्य स्वयं निर्माय",
+    "स्वेन भासा स्वेन ज्योतिषा प्रस्वपिति । अत्रायं पुरुषः स्वयंज्योतिर्भवति ॥ ४.३.९ ॥",
+    "न तत्र रथा न रथयोगा न पन्थानो भवन्ति । अथ रथान्रथयोगान्पथः सृजते । … स हि कर्ता ॥ ४.३.१० ॥",
+    "आराममस्य पश्यन्ति न तं पश्यति कश्चन ॥ ४.३.१४ ॥"
+  ],
+  "iast": [
+    "sa yatra prasvapity asya lokasya sarvāvato mātrām apādāya svayaṃ vihatya svayaṃ nirmāya",
+    "svena bhāsā svena jyotiṣā prasvapiti | atrāyaṃ puruṣaḥ svayaṃjyotir bhavati",
+    "na tatra rathā na rathayogā na panthāno bhavanti | atha rathān rathayogān pathaḥ sṛjate | … sa hi kartā",
+    "ārāmam asya paśyanti na taṃ paśyati kaś cana"
+  ],
+  "english": [
+    "“When one goes to sleep, he takes along the material of this all-containing world, himself tears it apart, himself builds it up, and dreams by his own brightness, by his own light. Then this person becomes self-illuminated.",
+    "“There are no chariots there, no spans, no roads. But he projects from himself chariots, spans, roads. … For he is a creator.”",
+    "“People see his pleasure-ground; Him no one sees at all.”"
+  ],
+  "translator": "Robert Ernest Hume, The Thirteen Principal Upanishads (Oxford University Press, 1921); his Sanskrit glosses left out",
+  "edition": "Sanskrit: Bṛhadāraṇyaka Upaniṣad, Kāṇva recension, Sansknet project input, as on GRETIL",
+  "notes": [
+    "Yājñavalkya is answering King Janaka: what is a person's light? In a dream there is no sun and no lamp, yet roads, a river and people are seen. The dreamer makes all of it and is the light it is seen by, and is never one of the things in it. [P2] [C1]",
+    "Gauḍapāda goes further and likens the waking world itself to a dream. Śaṅkara still holds the waking village real for living in (vyāvahārika); the dream is the clearer case of a world that depends on its seer. [C2] [C1]"
+  ]
+}

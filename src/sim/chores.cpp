@@ -29,7 +29,8 @@ int64_t nextMorning(const World& w) {
     return static_cast<int64_t>((wake - kStartMinute) / kGameMinutesPerSecond) * kTickRate;
 }
 
-void sleep(World& w) {
+// Out of the door at kWakeMinute the next morning.
+void wake(World& w) {
     w.tick = nextMorning(w);
     ++w.day;
     w.wokeTick = w.tick;
@@ -43,7 +44,28 @@ void sleep(World& w) {
     w.player.z = step.z;
     w.player.yaw = 0;  // out of the door, north toward the well
     w.player.pitch = 0;
+    w.sleep = Sleep::Awake;
+    w.sleptTick = -1;
     if (teachingsDone(w)) w.after = true;
+}
+
+void sleep(World& w) {
+    if (!firstTeachingsDone(w) || w.codex[static_cast<int>(CodexId::Fourth)]) {
+        wake(w);
+        return;
+    }
+    // The first night after the rope and the clay: the dream, at the same
+    // doorstep, as if it were the same evening.
+    w.sleep = Sleep::Dream;
+    w.sleptTick = w.tick;
+    w.wokeTick = w.tick;  // it opens out of the dark, as a morning does
+    w.lampLit = false;
+    w.carry = Carry::Nothing;
+    const Vec2 step = yourDoorstep();
+    w.player.x = step.x;
+    w.player.z = step.z;
+    w.player.yaw = 0;
+    w.player.pitch = 0;
 }
 
 void done(World& w, QuestId q) {
@@ -60,14 +82,32 @@ Vec2 yourDoorstep() {
     return {h.door.x, h.door.z - 1.0f};  // the door is on the north wall
 }
 
+bool firstTeachingsDone(const World& w) {
+    for (CodexId c : {CodexId::RopeAndSnake, CodexId::ClayAndPots, CodexId::PotSpace})
+        if (!w.codex[static_cast<int>(c)]) return false;
+    return w.fearRetired;
+}
+
 bool teachingsDone(const World& w) {
     for (bool c : w.codex)
         if (!c) return false;
     return w.fearRetired;
 }
 
+void sleepTick(World& w) {
+    const float s = sleptSeconds(w);
+    if (w.sleep == Sleep::Dream && s >= static_cast<float>(kDreamSeconds)) {
+        w.sleep = Sleep::Deep;  // the dream goes, and nothing comes in its place
+        w.sleptTick = w.tick;
+    } else if (w.sleep == Sleep::Deep && s >= static_cast<float>(kDeepSleepSeconds)) {
+        w.codex[static_cast<int>(CodexId::Dream)] = true;
+        w.codex[static_cast<int>(CodexId::Fourth)] = true;
+        wake(w);
+    }
+}
+
 Use usable(const World& w) {
-    if (w.naming >= 0 || w.throwing.active) return Use::None;
+    if (w.sleep != Sleep::Awake || w.naming >= 0 || w.throwing.active) return Use::None;
     const bool carryingNothing = w.carry == Carry::Nothing;
     if (carryingNothing && atRiver(w) && !w.questDone[static_cast<int>(QuestId::CarryWater)]) return Use::FillJar;
     if (w.carry == Carry::Water && atDoor(w, V::PotterHouse)) return Use::GiveWater;
@@ -95,7 +135,9 @@ const char* useText(Use u) {
 }
 
 std::string nextStep(const World& w) {
-    if (w.after) return "Nothing more is asked of you";
+    if (w.sleep == Sleep::Dream) return "Nothing here seems strange";
+    if (w.sleep == Sleep::Deep) return "";
+    if (w.after && teachingsDone(w)) return "Nothing more is asked of you";
     if (w.potsMade < kPotsForLens)
         return "Throw pots at the potter's wheel (" + std::to_string(w.potsMade) + " of " + std::to_string(kPotsForLens) + ")";
     if (!w.codex[static_cast<int>(CodexId::ClayAndPots)]) return "Look at your pots through the clay lens (C)";

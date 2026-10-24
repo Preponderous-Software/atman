@@ -1,8 +1,8 @@
 // The prologue's chores and the night: water from the ghat to the potter's
 // door, clay from the bank to the wheel, each earning standing (until the
 // after-mode, when they earn nothing); the well and a meal at home; and sleep
-// at your door, which brings 6:30 the next morning, a new day's chores, and,
-// after both teachings, the after-mode.
+// at your door, which brings 6:30 the next morning and a new day's chores,
+// or, the first night after both teachings, the dream (test_states.cpp).
 #include <cmath>
 
 #include "check.h"
@@ -174,12 +174,12 @@ int main() {
         CHECK(nextStep(w) == "Walk back to the village along the path");
         w.codex[static_cast<int>(CodexId::RopeAndSnake)] = true;
         w.fearRetired = true;
-        CHECK(teachingsDone(w));
+        CHECK(firstTeachingsDone(w) && !teachingsDone(w));
         CHECK(nextStep(w).find("Go home and sleep") == 0);
         moveTo(w, yourDoorstep());
         use(w);
-        CHECK(w.after);
-        CHECK(nextStep(w) == "Nothing more is asked of you");
+        CHECK(w.sleep == Sleep::Dream && !w.after);  // the rest is in test_states.cpp
+        CHECK(nextStep(w) == "Nothing here seems strange");
     }
 
     TEST_MAIN_END();

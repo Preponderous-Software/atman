@@ -42,11 +42,15 @@ float around(float minute, float peak, float width) {
 
 Ambience ambience(const World& w, Vec3 listener, float stepsPerSecond) {
     Ambience a;
+    if (w.sleep == Sleep::Deep) {
+        a.river = 0.6f;  // no valley and no body: only the river, from nowhere in particular
+        return a;
+    }
     // The river: full at the water's edge, half at 8 m, faint across the village.
     const float toWater = listener.x < V::kRiverWest ? V::kRiverWest - listener.x : 0.0f;
     a.river = 1.0f / (1.0f + (toWater / 8.0f) * (toWater / 8.0f));
     a.wind = clampf(0.25f + V::groundHeight(listener.x, listener.z) / 14.0f + (listener.y - 2.0f) / 40.0f, 0.0f, 1.0f);
-    const float minute = static_cast<float>(static_cast<int>(gameMinutes(w)) % 1440);
+    const float minute = static_cast<float>(static_cast<int>(skyMinutes(w)) % 1440);  // the dream's own evening
     if (isDusk(w)) {
         a.crickets = 1;
     } else {
@@ -70,7 +74,8 @@ std::vector<Cue> cues(const World& before, const World& after) {
     if (done(after) > done(before)) out.push_back(Cue::ChoreDone);
     if (after.needs.thirst < 0.01f && before.needs.thirst >= 0.01f) out.push_back(Cue::Drink);
     if (after.needs.hunger < 0.01f && before.needs.hunger >= 0.01f && after.day == before.day) out.push_back(Cue::Eat);
-    if (after.lampLit != before.lampLit && after.day == before.day) out.push_back(after.lampLit ? Cue::LampOn : Cue::LampOff);
+    if (after.lampLit != before.lampLit && after.day == before.day && after.sleep == before.sleep)
+        out.push_back(after.lampLit ? Cue::LampOn : Cue::LampOff);
     if (after.potsMade > before.potsMade) out.push_back(Cue::PotMade);
     if (broken(after) > broken(before)) out.push_back(Cue::PotBroken);
     if (after.clayLens != before.clayLens) out.push_back(Cue::Lens);

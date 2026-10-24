@@ -111,7 +111,7 @@ private:
     double pending_ = 0;
     double clock_ = 0, lastSave_ = 0;  // seconds of play, for the autosave
     int pagesSeen_ = 0;     // codex pages the player has been told of
-    bool afterSeen_ = false;  // whether the after-mode has been announced
+    bool fourthSeen_ = false;  // whether waking from the deep sleep has been announced
     std::string message_;
     double messageUntil_ = 0;
 };

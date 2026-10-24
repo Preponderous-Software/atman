@@ -11,6 +11,7 @@
 #include "check.h"
 #include "save/save.h"
 #include "sim/autopilot.h"
+#include "sim/chores.h"
 #include "sim/world.h"
 
 using namespace atman;
@@ -86,6 +87,46 @@ int main(int argc, char** argv) {
         other[8] = 99;  // a version this game does not know
         CHECK(!decodeSave(other, w, &why));
         CHECK(why.find("different version") != std::string::npos);
+    }
+
+    // Saves from 0.1.x (format 1) still load, and the game goes on from them.
+    // The fixtures were written by the 0.1.2 rules: one with three pots
+    // thrown on the first afternoon, one at the end of the old playthrough,
+    // in the after-mode before chapter 3 existed.
+    {
+        World mid;
+        std::string why;
+        CHECK(decodeSave(readAll(ATMAN_FIXTURES "/v1-three-pots.save"), mid, &why));
+        CHECK(mid.potsMade == 3 && mid.sleep == Sleep::Awake && mid.sleptTick == -1);
+        CHECK(!mid.codex[static_cast<int>(CodexId::Dream)] && !mid.codex[static_cast<int>(CodexId::Fourth)]);
+        CHECK(fingerprint(mid) == fingerprint(played(mid.tick)));  // just as the rules have it now
+
+        World after;
+        CHECK(decodeSave(readAll(ATMAN_FIXTURES "/v1-after-mode.save"), after, &why));
+        CHECK(after.after && after.day == 1);
+        CHECK(!after.codex[static_cast<int>(CodexId::Fourth)]);
+        // Its player has not had chapter 3: the next night brings the dream.
+        Autopilot pilot;
+        const int64_t limit = after.tick + 24 * 60 * minute;
+        bool dreamed = false;
+        while (after.tick < limit && !after.codex[static_cast<int>(CodexId::Fourth)]) {
+            tick(after, pilot.next(after));
+            dreamed = dreamed || after.sleep == Sleep::Dream;
+        }
+        CHECK(dreamed);
+        CHECK(after.codex[static_cast<int>(CodexId::Fourth)] && after.after);
+    }
+
+    // A dream and a deep sleep round-trip too.
+    {
+        World w = newWorld(1);
+        Autopilot pilot;
+        while (w.sleep != Sleep::Dream && w.tick < 2000 * minute) tick(w, pilot.next(w));
+        CHECK(w.sleep == Sleep::Dream);
+        CHECK(roundTrips(w));
+        while (w.sleep != Sleep::Deep && w.tick < 2000 * minute) tick(w, pilot.next(w));
+        CHECK(w.sleep == Sleep::Deep);
+        CHECK(roundTrips(w));
     }
 
     // A checksummed save of an impossible world is still refused.

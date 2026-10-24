@@ -24,7 +24,9 @@
 
 namespace atman {
 
-constexpr uint32_t kSaveVersion = 1;
+// 1: the MVP. 2: chapter 3, the dream's and the fourth's codex pages and the
+// sleep's state. Every older version still loads (see decodeSave).
+constexpr uint32_t kSaveVersion = 2;
 
 // The World as save bytes, and back. decode returns false (with a reason)
 // on anything it does not accept.

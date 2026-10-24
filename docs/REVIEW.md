@@ -20,7 +20,7 @@ What is asked:
    3.3–3.4) against the Sanskrit, with the word-by-word glosses below. These are the main thing to
    review. Say whether each English sentence is a fair translation, and suggest wording where it
    is not.
-2. Glance at the two passages quoted from **Hume's 1921 translation**. They are a published,
+2. Glance at the four passages quoted from **Hume's 1921 translation**. They are a published,
    public-domain translation, so only the fit is in question: is the excerpt cut in a sensible
    place, and does it say what the page needs?
 3. Read the **notes** each page shows, and the **"Other schools"** page, for doctrinal fairness.
@@ -28,7 +28,7 @@ What is asked:
    the feedback as described in [How to send feedback](#how-to-send-feedback).
 
 How long it should take: about an hour for the two working translations with the glosses, and
-another half hour for the Hume excerpts, the notes and the questions. No knowledge of the game is
+about forty-five minutes for the Hume excerpts, the notes and the questions. No knowledge of the game is
 needed, and nothing needs to be installed; each page is also available as the image the game shows.
 
 The translations themselves have not been changed while this packet was written. Doubts found
@@ -48,6 +48,8 @@ the notes, then the translator, the edition and the source IDs (defined in
 | The rope and the snake | Gauḍapāda, Māṇḍūkya Kārikā 2.17–2.18 | **Working translation for Atman** | [rope-and-snake.png](../content/plates/rope-and-snake.png) |
 | Clay and its names | Chāndogya Upaniṣad 6.1.4 | Hume (1921), public domain | [clay-and-pots.png](../content/plates/clay-and-pots.png) |
 | The space in the pot | Gauḍapāda, Māṇḍūkya Kārikā 3.3–3.4 | **Working translation for Atman** | [pot-space.png](../content/plates/pot-space.png) |
+| The dream | Bṛhadāraṇyaka Upaniṣad 4.3.9–4.3.10, 4.3.14 | Hume (1921), public domain | [the-dream.png](../content/plates/the-dream.png) |
+| The fourth | Māṇḍūkya Upaniṣad 2 and 7 | Hume (1921), public domain | [the-fourth.png](../content/plates/the-fourth.png) |
 | Other schools: "that you are" | Chāndogya Upaniṣad 6.8.7 | Hume (1921), public domain | [other-schools.png](../content/plates/other-schools.png) |
 
 The Sanskrit of every page was checked against GRETIL on 2026-10-22; see the
@@ -142,7 +144,67 @@ English, as shown (**working translation, to be reviewed**):
   the pot was made and after it broke; only the pot changed. Gauḍapāda carries the example on
   through 3.9.
 
-### 4. Other schools: "that you are" (Hume 1921)
+### 4. The dream (Hume 1921)
+
+**Source:** Bṛhadāraṇyaka Upaniṣad 4.3.9–4.3.10, 4.3.14 [P2]
+
+**Shown in the game:** on waking from the deep sleep, the first night after the rope and the clay (chapter 3, added after this packet was first written).
+
+> स यत्र प्रस्वपित्यस्य लोकस्य सर्वावतो मात्रामपादाय स्वयं विहत्य स्वयं निर्माय\
+> स्वेन भासा स्वेन ज्योतिषा प्रस्वपिति । अत्रायं पुरुषः स्वयंज्योतिर्भवति ॥ ४.३.९ ॥\
+> न तत्र रथा न रथयोगा न पन्थानो भवन्ति । अथ रथान्रथयोगान्पथः सृजते । … स हि कर्ता ॥ ४.३.१० ॥\
+> आराममस्य पश्यन्ति न तं पश्यति कश्चन ॥ ४.३.१४ ॥
+
+> *sa yatra prasvapity asya lokasya sarvāvato mātrām apādāya svayaṃ vihatya svayaṃ nirmāya*\
+> *svena bhāsā svena jyotiṣā prasvapiti | atrāyaṃ puruṣaḥ svayaṃjyotir bhavati*\
+> *na tatra rathā na rathayogā na panthāno bhavanti | atha rathān rathayogān pathaḥ sṛjate | … sa hi kartā*\
+> *ārāmam asya paśyanti na taṃ paśyati kaś cana*
+
+English, as shown (**published translation, public domain; check the fit of the excerpt only**):
+
+> “When one goes to sleep, he takes along the material of this all-containing world, himself tears it apart, himself builds it up, and dreams by his own brightness, by his own light. Then this person becomes self-illuminated.
+
+> “There are no chariots there, no spans, no roads. But he projects from himself chariots, spans, roads. … For he is a creator.”
+
+> “People see his pleasure-ground; Him no one sees at all.”
+
+- **Translator, as shown:** Robert Ernest Hume, The Thirteen Principal Upanishads (Oxford University Press, 1921); his Sanskrit glosses left out
+- **Edition, as shown:** Sanskrit: Bṛhadāraṇyaka Upaniṣad, Kāṇva recension, Sansknet project input, as on GRETIL
+- **Note, as shown:** Yājñavalkya is answering King Janaka: what is a person's light? In a dream there is no sun and no lamp, yet roads, a river and people are seen. The dreamer makes all of it and is the light it is seen by, and is never one of the things in it. [P2] [C1]
+- **Note, as shown:** Gauḍapāda goes further and likens the waking world itself to a dream. Śaṅkara still holds the waking village real for living in (vyāvahārika); the dream is the clearer case of a world that depends on its seer. [C2] [C1]
+
+Hume's Sanskrit glosses in parentheses are left out, and 4.3.10 is cut with an ellipsis, as the page shows; see the [Codex texts table](../RESEARCH.md#codex-texts-2026-10-22-m4).
+
+### 5. The fourth (Hume 1921)
+
+**Source:** Māṇḍūkya Upaniṣad 2 and 7 [P3]
+
+**Shown in the game:** with the dream's page, on the same waking.
+
+> सर्वं ह्येतद्ब्रह्मायमात्मा ब्रह्म सोऽयमात्मा चतुष्पात् ॥ २ ॥\
+> नान्तःप्रज्ञं न बहिःप्रज्ञं नोभयतःप्रज्ञं न प्रज्ञानघनं न प्रज्ञं नाप्रज्ञम् ।\
+> अदृष्टमव्यवहार्यमग्राह्यमलक्षणमचिन्त्यमव्यपदेश्यम्\
+> एकात्मप्रत्ययसारं प्रपञ्चोपशमं शान्तं शिवमद्वैतं चतुर्थं मन्यन्ते । स आत्मा स विज्ञेयः ॥ ७ ॥
+
+> *sarvaṃ hy etad brahmāyam ātmā brahma so 'yam ātmā catuṣpāt*\
+> *nāntaḥprajñaṃ na bahiḥprajñaṃ nobhayataḥprajñaṃ na prajñānaghanaṃ na prajñaṃ nāprajñam*\
+> *adṛṣṭam avyavahāryam agrāhyam alakṣaṇam acintyam avyapadeśyam*\
+> *ekātmapratyayasāraṃ prapañcopaśamaṃ śāntaṃ śivam advaitaṃ caturthaṃ manyante | sa ātmā sa vijñeyaḥ*
+
+English, as shown (**published translation, public domain; check the fit of the excerpt only**):
+
+> “For truly, everything here is Brahma; this self is Brahma. This same self has four fourths.”
+
+> “Not inwardly cognitive, not outwardly cognitive, not both-wise cognitive, not a cognition-mass, not cognitive, not non-cognitive, unseen, with which there can be no dealing, ungraspable, having no distinctive mark, non-thinkable, that cannot be designated, the essence of the assurance of which is the state of being one with the Self, the cessation of development, tranquil, benign, without a second—[such] they think is the fourth. He is the Self. He should be discerned.”
+
+- **Translator, as shown:** Robert Ernest Hume, The Thirteen Principal Upanishads (Oxford University Press, 1921); his Sanskrit glosses left out
+- **Edition, as shown:** Sanskrit: Māṇḍūkya Upaniṣad, Sansknet project input, as on GRETIL
+- **Note, as shown:** Verses 3 to 5 name the first three fourths: the self waking, dreaming, and in deep sleep, where there is no desire and no dream. The fourth is not a fourth state that comes after them. It is what is there through all three, so the verse can only say what it is not. [P3] [C1]
+- **Note, as shown:** Stepping out of the body to watch the day lived (V) is a picture of the witness, the second bird on the tree that eats nothing and watches. A picture is not the knowing; the verses are the teaching. [P6]
+
+Hume's Sanskrit glosses in parentheses are left out, as the page says.
+
+### 6. Other schools: "that you are" (Hume 1921)
 
 **Source:** Chāndogya Upaniṣad 6.8.7 [P1]
 
@@ -329,6 +391,15 @@ Each question names the page it is about. A short answer is as useful as a long 
     or does it say more than Gauḍapāda does?
 18. The clay note says Śvetaketu "has come home proud of his learning". Is that a fair summary of
     the opening of Chāndogya 6.1?
+19. The dream note says "Gauḍapāda goes further and likens the waking world itself to a dream" and
+    that Śaṅkara "still holds the waking village real for living in (vyāvahārika)". Is that a fair
+    way to put the difference, or does it set Gauḍapāda and Śaṅkara further apart than they are?
+20. The fourth's second note calls stepping out of the body to watch (V) "a picture of the witness",
+    citing the two birds of Muṇḍaka 3.1.1 [P6]. Is the witness (*sākṣin*) the right word for what
+    Māṇḍūkya 7 calls the fourth, or does the page blur two ideas?
+21. Waking from the deep sleep the game says: "Waking, dream and deep sleep: you were there for all
+    three." Is "you" acceptable there, or does it suggest the individual (*jīva*) rather than the
+    Self?
 
 ## How to send feedback
 
