@@ -192,6 +192,7 @@
   function setTouch(on) {
     touchMode = on;
     document.body.classList.toggle('touch', on);
+    if (ready) call.touch(on ? 1 : 0);
     if (on && document.pointerLockElement) document.exitPointerLock();
   }
 
@@ -432,6 +433,7 @@
         help: api('atman_help', null, ['number']),
         sound: api('atman_sound', null, ['number', 'number']),
         cover: api('atman_cover', null, ['number', 'number']),
+        touch: api('atman_touch', null, ['number']),
         resize: api('atman_resize', null, ['number', 'number', 'number']),
         status: api('atman_status', 'string')
       };

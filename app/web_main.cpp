@@ -112,6 +112,10 @@ EMSCRIPTEN_KEEPALIVE void atman_sound(int on, int announce) {
 EMSCRIPTEN_KEEPALIVE void atman_cover(double right, double bottom) {
     if (g) g->session->setCover(static_cast<float>(right), static_cast<float>(bottom));
 }
+// A touch screen: the codex leaves its keys unnamed, as the page has buttons for them.
+EMSCRIPTEN_KEEPALIVE void atman_touch(int on) {
+    if (g) g->session->setKeyHints(on == 0);
+}
 EMSCRIPTEN_KEEPALIVE void atman_help(int on) {
     if (g) g->session->setHelp(on != 0);
 }
