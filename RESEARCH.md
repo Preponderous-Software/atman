@@ -177,7 +177,7 @@ Earlier checks in this session: Watts, *The Supreme Identity* (Faber and Faber, 
 | English for the Kārikā verses | No public-domain translation was checked | The codex uses a working translation made for Atman from the Sanskrit and says so on the plate. It needs a reviewer's check (§7, question 2). |
 | Rāmānuja on *tat tvam asi* | S12 | "That" and "thou" signify an underlying unity with different qualitative content; Brahman stands to selves as soul to body |
 | Madhva's *atat tvam asi* | S13 | Carrying the "a" over from the preceding word gives *atat tvam asi*, "you are not that" |
-| Hume's English for Bṛhadāraṇyaka 4.3.9–10, 4.3.14 and Māṇḍūkya 2 and 7 (chapter 3, after the MVP) | The same 1921 scan ([thirteenprincipa028442mbp](https://archive.org/details/thirteenprincipa028442mbp)) | Quoted word for word, except Hume's Sanskrit glosses in brackets, which are left out and said so; 4.3.10 is cut with an ellipsis, shown on the plate |
+| Hume's English for Bṛhadāraṇyaka 4.3.9–10, 4.3.14 and Māṇḍūkya 2 and 7 (chapter 3, after the MVP) | The same 1921 scan ([thirteenprincipa028442mbp](https://archive.org/details/thirteenprincipa028442mbp)) | Quoted word for word, except Hume's Sanskrit glosses in parentheses, which are left out and said so; 4.3.10 is cut with an ellipsis, shown on the plate |
 | Sanskrit of those verses | GRETIL's Bṛhadāraṇyaka Upaniṣad (Kāṇva) and Māṇḍūkya Upaniṣad with Śaṅkara's commentaries (Sansknet project input) | IAST as GRETIL gives it; Devanagari transliterated from it with indic-transliteration, consonant-final words joined to the next |
 
 Not yet checked against a physical copy: Olivelle (1998) for any passage, and Hume's page numbers.
