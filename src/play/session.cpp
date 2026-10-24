@@ -60,7 +60,7 @@ void Session::adopt(const World& w) {
     typing_.clear();
     pending_ = 0;
     pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
-    afterSeen_ = w_.after;
+    fourthSeen_ = w_.codex[static_cast<int>(CodexId::Fourth)];
     if (pages_.isOpen()) pages_.close();
 }
 
@@ -71,13 +71,17 @@ void Session::say(const std::string& text, double seconds) {
 
 void Session::noticeChanges() {
     const int pages = pagesOpen(w_);
-    if (pages > pagesSeen_ && !watching_) say("A new page in the codex (Tab)");
+    if (pages > pagesSeen_ && !watching_) say(pages - pagesSeen_ > 1 ? "New pages in the codex (Tab)" : "A new page in the codex (Tab)");
     pagesSeen_ = pages;
-    if (w_.after && !afterSeen_)
-        say("The teachings are done. Nothing more is asked of you.\n"
+    const bool fourth = w_.codex[static_cast<int>(CodexId::Fourth)];
+    if (fourth && !fourthSeen_)
+        // Waking from the deep sleep: the teachings are done, though a save
+        // from before chapter 3 may have been in the after-mode already.
+        say("Waking, dream and deep sleep: you were there for all three.\n"
+            "The teachings are done. Nothing more is asked of you.\n"
             "Live the day as it comes, or step back and watch it lived (V).",
             kAfterSeconds);
-    afterSeen_ = w_.after;
+    fourthSeen_ = fourth;
 }
 
 bool Session::save(const char* note) {
