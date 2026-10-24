@@ -1,5 +1,6 @@
 // The codex screen: the open entries listed in the plate's dark left column,
-// and the chosen entry's plate filling the screen. Plates are uploaded the
+// and the chosen entry's plate filling the screen (in a window taller than it
+// is wide, the page alone across its width, with the list above it). Plates are uploaded the
 // first time they are shown. While the screen is open the valley is not drawn
 // (the game pauses; see app/main.cpp).
 #pragma once
@@ -41,6 +42,7 @@ private:
     uint32_t mesh_ = 0;
     int meshEntry_ = -1;  // what the quad shows, and the window shape it was built for
     float meshAspect_ = 0;
+    float meshOffset_ = 0;
     std::array<uint32_t, 16> textures_{};
 };
 
