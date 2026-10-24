@@ -7,8 +7,8 @@ chores, sleep and the after-mode, and the autopilot with its pinned playthrough 
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
 the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
-(`content/`, `tools/plates/`, `src/codex/`) and its screen (`src/play/codex_screen.*`); and the
-saves (`src/save/`); the desktop app with its headless tour (`app/main.cpp`), and the browser game (`app/web_main.cpp`,
+(`content/`, `tools/plates/`, `src/codex/`) and its screen (`src/play/codex_screen.*`); the
+saves (`src/save/`); the sound (`src/audio/`); the desktop app with its headless tour (`app/main.cpp`), and the browser game (`app/web_main.cpp`,
 `web/`; see [docs/WEB.md](docs/WEB.md)), which share one game session (`src/play/session.*`). Everything else here is still the plan. The layout follows
 [Kindling](https://github.com/Preponderous-Software/kindling), the first game built this way, so
 the parts that worked there are reused here.
@@ -56,7 +56,9 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, and its smoke test |
 | `content/` | Codex entries (`codex/*.json`) and their plates (`plates/*.png`); later dialogue |
 | `tools/plates/` | Offline renderer and checker for verse plates, and the font (see [Text](#text)) |
-| `tests/` | Rules tests, a determinism fingerprint, a full autopilot playthrough |
+| `tools/check_docs.py`, `tools/play-atman.bat` | The docs check CI runs, and the Windows play script that installs the tools, builds and starts the game |
+| `third_party/` | stb_image and miniaudio, the game's own copies ([docs/THIRD-PARTY.md](docs/THIRD-PARTY.md)) |
+| `tests/` | Rules tests, a determinism fingerprint, a full autopilot playthrough, saves, codex, geometry and sound |
 
 ## Simulation core
 
@@ -151,7 +153,7 @@ browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md))
 
 | Test | What it proves |
 |---|---|
-| Rules tests | Each chapter's facts change only the way the rules say |
+| Rules tests | Each chapter's facts change only the way the rules say (`tests/test_movement.cpp`, `test_clock.cpp`, `test_rope.cpp`, `test_clay.cpp`, `test_chores.cpp`) |
 | Determinism | A fixed input sequence produces the pinned state fingerprint on every compiler |
 | Playthrough | The autopilot plays the MVP from a new game (chores, pots, lens, a broken pot, the snakes, sleep) into the after-mode's first noon, with standing earned only by the first day's chores, and lands on the pinned fingerprint on every compiler (`tests/test_autopilot.cpp`; `atman --headless --autopilot` in CI) |
 | No-reward check | Seeing through a snake, or breaking a pot, changes the thing itself and the codex record and nothing else: standing, quests and needs are untouched (`tests/test_rope.cpp`, `tests/test_clay.cpp`) |

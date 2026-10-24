@@ -143,8 +143,10 @@ simulation and its tests, with no engine.
 | [MVP.md](MVP.md) | The first playable slice, what "done" means for it, and the milestones |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Code layout, the simulation core, how each mechanic maps to Strata, text, saves, tests |
 | [RESEARCH.md](RESEARCH.md) | Sources: Upaniṣads, Śaṅkara and later Advaita, modern scholarship, Alan Watts and other modern teachers, related games, and a verification log |
+| [docs/WEB.md](docs/WEB.md) | The browser build: what differs from the desktop game, touch controls, saves in the browser, building it, CI and deployment |
 | [docs/RELEASING.md](docs/RELEASING.md) | Cutting a release: the version, playtest evidence and the Windows and Linux downloads |
 | [docs/playtests/](docs/playtests/) | Playtest notes for each release, and what was changed for them |
+| [docs/THIRD-PARTY.md](docs/THIRD-PARTY.md) | The licences of the third-party code in the game and its downloads, and of the plates' font |
 
 ## Approach to the teaching
 
