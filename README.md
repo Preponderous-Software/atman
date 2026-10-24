@@ -159,6 +159,7 @@ simulation and its tests, with no engine.
 | V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
 | M | Sound on or off |
 | F1 | Show or hide the controls |
+| H | Hide or show the HUD, to see the valley |
 | F2 | Text size: normal, large, larger |
 | F3 | Captions for the sounds that matter (a heartbeat when afraid, the wheel, the river in deep sleep); they also show while the sound is off |
 | F6 | Your other village: the game keeps two, each with its own save |

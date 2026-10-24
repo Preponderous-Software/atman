@@ -205,7 +205,7 @@ def layout(entry, scale):
             [c for n in entry.get("notes", []) for c in re.findall(r"\[([PCSMG]\d+)\]", n)]:
         if c not in cites:
             cites.append(c)
-    page.text("Sources: " + " ".join(f"[{c}]" for c in cites) + "  (see RESEARCH.md)", 19, MUTED, leading=1.25)
+    page.text("Sources: " + " ".join(f"[{c}]" for c in cites) + "  (listed in RESEARCH.md, github.com/Preponderous-Software/atman)", 19, MUTED, leading=1.25)
     return page
 
 

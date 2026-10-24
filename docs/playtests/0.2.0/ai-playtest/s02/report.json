@@ -1,0 +1,131 @@
+{
+  "session": "s02",
+  "goal": "Clay and pots: at the potter's wheel throw three pots (1-4) and name each one, use the clay lens (C) and look around with it, break a pot (B), then read what opened in the codex (Tab). Then carry on toward dusk as far as your time allows, and answer the questions at the end.",
+  "build": {
+    "version": null,
+    "commit": "1100130"
+  },
+  "seed": 2,
+  "durationSec": 1707,
+  "outcome": "achieved",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "HUD block sits in the middle of the screen and hides the pots, the wheel and the clay-lens effect",
+      "detail": "The stats, NEXT, wheel prompt, CHORES, codex toast and MADE list fill the left and centre of the 640x360 view from y=20 to the bottom edge. At the wheel and with the clay lens on, the pots ('3 m ahead') were always behind this text; I never got a clean look at a pot or at what the lens does to it. F1 only hides the help, there is no way to hide the HUD. Expected: a compact HUD (or a toggle) that keeps the centre of view clear, especially at the wheel.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-pt --seed 2; walk to the potter's wheel; throw pots 1,2,4; pt key c; look at the drying board",
+      "screenshot": "shots/hud_covers_pots.png",
+      "tick": 2411
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Overlapping and cut-off text: start screen, wheel menu option 4, NEXT '(0 of', MADE list",
+      "detail": "At start the help panel, HUD and a centred caption are drawn on top of each other and are unreadable. At the wheel 'Wheel: 1 water jar 2 bowl 3 cup' is drawn over the CHORES heading and runs off the right edge, so option 4 (lamp) is never visible; the NEXT line '(0 of ...' is cut at the right edge; the MADE list runs off the bottom (third pot name half visible); centred captions ('...ng a water jar [#....] stay at the...') overflow both edges. Larger text sizes (F2) make it worse.",
+      "repro": "pt start ...; pt shot start; walk to the wheel; pt shot",
+      "screenshot": "shots/wheel_prompt.png",
+      "tick": 1752
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "B does nothing, silently, unless the crosshair is exactly on a pot",
+      "detail": "Standing 1 m from the drying board with the NEXT line saying 'Break one of your pots (B)', pressing B did nothing and showed nothing (twice, once with lens on, once off). Only after aiming precisely did a 'B break the Annapurna' prompt appear. The break itself had little visual payoff: the pot just vanished from MADE and a codex toast appeared.",
+      "repro": "after throwing pots, stand at the drying board not aiming at a pot; pt key b; then aim at a pot (pt look 120 -15) and pt key b",
+      "screenshot": "shots/break_done.png",
+      "tick": 2738
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Codex shows development notes: 'Working translation ... awaiting review' and 'see RESEARCH.md'",
+      "detail": "'The space in the pot' and 'The rope and the snake' pages say 'Translation: Working translation for Atman from the Sanskrit, awaiting review', and every page ends 'Sources: [P1] [C1] ... (see RESEARCH.md)'. A player has no RESEARCH.md and the 'awaiting review' line makes the verse feel unfinished/untrusted. The page list also truncates 'The space in the pot' and 'The rope and the snake' at the panel edge.",
+      "repro": "break a pot; pt key Tab; pt key Down",
+      "screenshot": "shots/codex2.png",
+      "tick": 2882
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Dusk snake: no prompt telling the player to press E; walking is silently stalled",
+      "detail": "On the path back from the ghat Fear rose to full, the distance line stayed at '30 m ahead' while holding W, and nothing said what to do. I guessed E while looking at the coil and it became a rope, Fear fell and a codex page opened. A wonderful moment once found, but no visible 'E look closer / raise the lamp' hint (possibly hidden behind the HUD).",
+      "repro": "after sunset: pt key f; turn toward the village; pt hold w 4; look at the coil; pt key e",
+      "screenshot": "shots/rope_reveal.png",
+      "tick": 7523
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Codex opens on the last viewed page, not on the newly unlocked one",
+      "detail": "The 'A new page in the codex (Tab)' toast appears, but Tab opens on 'Other schools' (last viewed). The new 'The rope and the snake' page was inserted at the top of the list and needed Up x3. The toast also lingered on the HUD after I had already read the codex.",
+      "repro": "read the codex once; reveal the rope; pt key Tab",
+      "screenshot": "shots/codex_rope2.png",
+      "tick": 7561
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "'Wait on the ghat steps for the sunset' gives no sense of progress or confirmation",
+      "detail": "Once on the steps the distance line disappears but nothing confirms I am in the right spot or how long to wait; it took ~50 game-minutes (5:36 to 6:26 pm) of nothing changing on screen. On this loaded machine that was ~7 minutes of wall clock.",
+      "repro": "after breaking a pot walk to the ghat steps; pt wait 10 (repeat)",
+      "screenshot": "shots/sunset_wait.png",
+      "tick": null
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Village waypoint after the rope is hard to reach and seems to sit behind a house wall; objective did not advance on arrival",
+      "detail": "Steering by the text compass I circled ('15 m behind you', '6 m ahead', '5 m to your right') and ended against a house wall with the target '3 m to your right'. After backing off and strafing, the distance line vanished but 'Walk back to the village along the path' stayed as NEXT for 3+ game seconds. Expected: a reachable waypoint on the path and a visible next step once there.",
+      "repro": "after the rope: follow 'Walk back to the village along the path' using the distance line",
+      "screenshot": "shots/waypoint_wall.png",
+      "tick": 9227
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "HUD text unreadable against bright lamp-lit walls at night",
+      "detail": "White/orange HUD text has no backing panel or outline strong enough; against the orange lamp-lit house wall the stats and NEXT line nearly disappear.",
+      "repro": "at night with the lamp lit, face a house wall up close",
+      "screenshot": "shots/v6b.png",
+      "tick": 8978
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "Mouse-look turn amount per pixel felt inconsistent",
+      "detail": "pt look 150 sometimes turned a few degrees, pt look 400 sometimes turned well past 90 degrees; combined with the coarse text compass this made steering to waypoints a lot of trial and error. Might be harness-related.",
+      "repro": "pt look 150 0; pt step 3; pt shot; pt look 400 0; pt step 3; pt shot",
+      "screenshot": "shots/village4.png",
+      "tick": 8428
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 7,
+    "deaths": 0,
+    "secondsToObjective": {
+      "reach the wheel": 265.0,
+      "three pots thrown and named": 420.0,
+      "clay lens used": 434.0,
+      "pot broken": 559.0,
+      "codex read": 576.0,
+      "sunset on the ghat": 1240.0,
+      "rope revealed": 1348.0
+    },
+    "potsThrown": 3,
+    "potsBroken": 1,
+    "codexPagesUnlocked": 4
+  },
+  "fun": 3,
+  "verdict": "The clay-and-pots and rope-and-snake beats land: naming pots then seeing 'Ganga: clay' under the lens, and the coil turning into a rope under the lamp, teach the idea without a lecture, and the codex is careful and even-handed (Other schools page). What gets in the way is the HUD: it covers the centre of the screen where the pots and the wheel are, text overlaps and runs off the edges, and key moments (B needs exact aim, E on the snake) have no visible prompt. secondsToObjective are wall-clock seconds from pt start (no probe); the machine was loaded, so waits were slow.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "An ordinary afternoon in a river village used to show that the many things we name are one underlying reality seen under different names and forms. The pots I threw and named (Ganga, Annapurna, Diya) were, through the clay lens, just 'clay': the names and shapes are real enough to use but nothing other than the clay. Breaking a pot showed that the space inside was never separate from the space outside (the codex's 'space in the pot' page), i.e. the individual self is not separate from the Self. The rope and the snake: in the dark at dusk my fear rose because I saw a snake; looking closely with the lamp showed it was always a rope, and the fear went. It stands for mistaking the world/self for something it is not through ignorance, and knowledge (not doing anything to the rope) removing the error. The codex also made clear the village itself is not to be treated as a hallucination like the snake."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Not preachy: the teaching is shown through play and the codex is measured; the 'Other schools' page fairly sets Shankara's Advaita beside Ramanuja and Madhva and says outright that the game teaches one school's reading, not 'what Hinduism says', which I appreciated. Confusing bits were presentational: the codex lines 'Working translation for Atman from the Sanskrit, awaiting review' and 'see RESEARCH.md' read like unfinished dev notes and made me unsure whether to trust those translations; the Advaita summary mentions 'the snake is put on the rope' before the player has met the rope; and the clay lens effect itself was hidden behind the HUD, so the 'it is all clay' moment came more from the MADE list text ('Ganga: clay') than from seeing it. I could not judge the accuracy of the Sanskrit or translations myself."
+    }
+  ]
+}

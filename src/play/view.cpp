@@ -21,6 +21,8 @@ constexpr float kFovY = 70.0f;
 // setTextScale).
 float gTextSize = 16.0f;
 float gLine = 20.0f;
+bool gHudShown = true;
+float gTextScale = 1.0f;  // the player's choice (F2); a small window shrinks it further
 constexpr float kMargin = 16.0f;
 constexpr float kLampRange = 16.0f;
 constexpr float kLampIntensity = 3.0f;
@@ -424,15 +426,14 @@ std::string prompt(const World& w, const std::string& typing) {
         return "At the wheel:  1 water jar   2 bowl   3 cup   4 lamp";
     }
     const float wx = w.player.x - V::kWheel.x, wz = w.player.z - V::kWheel.z;
-    if (wx * wx + wz * wz < 5.0f * 5.0f && w.potsMade < valley::kBoardSlots) return "Step up to the wheel to throw a pot";
+    if (wx * wx + wz * wz < 5.0f * 5.0f && w.potsMade < kPotsForLens) return "Step up to the wheel to throw a pot";
     if (isDusk(w) && !w.lampLit) return "F  light your lamp";
     return "";
 }
 
-void setTextScale(float scale) {
-    gTextSize = std::round(16.0f * scale);
-    gLine = std::round(20.0f * scale);
-}
+void setHudShown(bool shown) { gHudShown = shown; }
+
+void setTextScale(float scale) { gTextScale = scale; }
 
 std::vector<std::string> wrapped(const std::string& text, size_t columns) {
     std::vector<std::string> out;
@@ -464,6 +465,11 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     setLights(engine, w, elevation);
     int32_t width = 0, height = 0;
     engine.drawableSize(width, height);
+    // The text at the player's size, three quarters of it in a window under
+    // 600 pixels tall, where the HUD would otherwise fill the view.
+    const float fit = height < 600 ? 0.75f : 1.0f;
+    gTextSize = std::round(16.0f * gTextScale * fit);
+    gLine = std::round(20.0f * gTextScale * fit);
     const float aspect = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
     const FreeCamera view = watching ? *watching : cameraAtEyes(w);
     const StrataCamera camera = lookFrom(view.eye, view.yaw, view.pitch, aspect);
@@ -489,7 +495,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     const float lamp[4] = {1.0f, 0.62f, 0.22f, 1.0f};
     float y = kMargin;
     std::vector<float> hudRight;  // where each HUD line ends, top to bottom
-    for (const HudLine& l : hudLines(w, watching != nullptr)) {
+    for (const HudLine& l : gHudShown ? hudLines(w, watching != nullptr) : std::vector<HudLine>{}) {
         hudRight.push_back(noText ? 0 : kMargin + gTextSize * static_cast<float>(l.text.size()));
         if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
         y += gLine;
@@ -535,19 +541,40 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!watching && w.sleep != Sleep::Deep)
         text(texts, keep, static_cast<float>(width) / 2 - gTextSize / 2, static_cast<float>(height) / 2 - gTextSize / 2,
              "+", ink);
-    const std::string here = watching ? std::string() : prompt(w, typing);
-    if (!here.empty())
-        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * 0.5f * static_cast<float>(here.size()),
-             static_cast<float>(height) / 2 + 2 * gLine, here, ink);
     // As many characters as fit across the window.
     const auto columns = static_cast<size_t>(std::max(16.0f, (static_cast<float>(width) - 2 * kMargin) / gTextSize));
-    // The message, centred, under the prompt: higher up it would cross the
-    // HUD's lines in a window 720 pixels tall.
-    float my = static_cast<float>(height) / 2 + 4 * gLine;
-    for (const std::string& line : wrapped(message, columns)) {
-        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * 0.5f * static_cast<float>(line.size()), my, line, lamp);
-        my += gLine;
-    }
+    // Centred lines of text from `row` down. Where they would cross the HUD's
+    // lines (a short window), they are centred in the space to the HUD's
+    // right instead, or, with no room there, start below the HUD. Returns the
+    // row after the last line.
+    float hudBottom = 0;
+    for (size_t i = 0; i < hudRight.size(); ++i)
+        if (hudRight[i] > 0) hudBottom = kMargin + gLine * static_cast<float>(i) + gLine;
+    auto centred = [&](const std::string& s, float row, const float* colour) {
+        float left = kMargin;
+        for (size_t i = 0; i < hudRight.size(); ++i) {
+            const float top = kMargin + gLine * static_cast<float>(i);
+            if (hudRight[i] > 0 && top < row + 4 * gLine && top + gTextSize > row) left = std::max(left, hudRight[i] + 2 * gTextSize);
+        }
+        const float right = static_cast<float>(width) - kMargin;
+        if (right - left < 16 * gTextSize) {  // no room beside the HUD: below it
+            left = kMargin;
+            row = std::max(row, hudBottom);
+        }
+        const auto cols = static_cast<size_t>(std::max(8.0f, (right - left) / gTextSize));
+        const float middle = left == kMargin ? static_cast<float>(width) / 2 : (left + right) / 2;
+        for (const std::string& line : wrapped(s, std::min(cols, columns))) {
+            text(texts, keep, middle - gTextSize * 0.5f * static_cast<float>(line.size()), row, line, colour);
+            row += gLine;
+        }
+        return row;
+    };
+    const std::string here = watching ? std::string() : prompt(w, typing);
+    float py = static_cast<float>(height) / 2 + 2 * gLine;
+    if (!here.empty()) py = centred(here, py, ink);
+    // The message, under the prompt: higher up it would cross the HUD's lines
+    // in a window 720 pixels tall.
+    if (!message.empty()) centred(message, std::max(static_cast<float>(height) / 2 + 4 * gLine, py + gLine), lamp);
     // The controls, packed into as few lines as the window's width allows,
     // along the bottom; the captions just above them.
     float bottom = static_cast<float>(height) - kMargin - gTextSize;
@@ -559,7 +586,7 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
             if (lensAvailable(w)) items.push_back("C clay lens");
             if (w.after) items.push_back("V watch");
         }
-        for (const char* item : {"Tab codex", "F5 save", "F9 load", "M sound", "F2 text size", "F3 captions", "F6 other village"})
+        for (const char* item : {"Tab codex", "H hide HUD", "F5 save", "F9 load", "M sound", "F2 text size", "F3 captions", "F6 other village"})
             items.push_back(item);
         if (!watching) items.push_back("Esc free the mouse");
         items.push_back("F1 hide help");

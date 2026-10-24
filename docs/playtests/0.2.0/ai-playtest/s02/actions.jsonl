@@ -1,0 +1,243 @@
+{"t": 1792853126058, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-pt", "--seed", "2"]}
+{"t": 1792853136870, "cmd": "shot", "args": ["start"]}
+{"t": 1792853141799, "cmd": "note", "args": ["--shot", "overlap_start", "At start, the HUD (stats, NEXT objective, CHORES) and the help panel and a centered caption all overlap: text is drawn on top of other text and is largely unreadable at 640x360."]}
+{"t": 1792853141928, "cmd": "key", "args": ["F1"]}
+{"t": 1792853142955, "cmd": "wait", "args": ["1"]}
+{"t": 1792853149577, "cmd": "shot", "args": ["nohelp"]}
+{"t": 1792853152800, "cmd": "key", "args": ["F2"]}
+{"t": 1792853153761, "cmd": "wait", "args": ["1"]}
+{"t": 1792853161135, "cmd": "shot", "args": ["f2"]}
+{"t": 1792853164130, "cmd": "key", "args": ["F2"]}
+{"t": 1792853165228, "cmd": "wait", "args": ["1"]}
+{"t": 1792853172287, "cmd": "shot", "args": ["f2b"]}
+{"t": 1792853175543, "cmd": "key", "args": ["F2"]}
+{"t": 1792853176522, "cmd": "wait", "args": ["1"]}
+{"t": 1792853183348, "cmd": "shot", "args": ["f2c"]}
+{"t": 1792853187753, "cmd": "look", "args": ["-100", "0"]}
+{"t": 1792853187950, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792853214204, "cmd": "shot", "args": ["walk1"]}
+{"t": 1792853217619, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1792853217839, "cmd": "shot", "args": ["turn2"]}
+{"t": 1792853220978, "cmd": "step", "args": ["5"]}
+{"t": 1792853221546, "cmd": "shot", "args": ["turn3"]}
+{"t": 1792853225251, "cmd": "look", "args": ["-120", "0"]}
+{"t": 1792853225419, "cmd": "step", "args": ["3"]}
+{"t": 1792853225828, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853248447, "cmd": "shot", "args": ["walk2"]}
+{"t": 1792853251833, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1792853288239, "cmd": "shot", "args": ["walk3"]}
+{"t": 1792853291591, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1792853291746, "cmd": "step", "args": ["3"]}
+{"t": 1792853292095, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792853328462, "cmd": "shot", "args": ["walk4"]}
+{"t": 1792853331493, "cmd": "look", "args": ["-250", "0"]}
+{"t": 1792853331667, "cmd": "step", "args": ["3"]}
+{"t": 1792853332080, "cmd": "shot", "args": ["turn5"]}
+{"t": 1792853335500, "cmd": "look", "args": ["-40", "0"]}
+{"t": 1792853335650, "cmd": "step", "args": ["2"]}
+{"t": 1792853335939, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792853356329, "cmd": "shot", "args": ["near"]}
+{"t": 1792853360145, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1792853360377, "cmd": "step", "args": ["2"]}
+{"t": 1792853360785, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792853372557, "cmd": "shot", "args": ["near2"]}
+{"t": 1792853376025, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792853394458, "cmd": "shot", "args": ["near3"]}
+{"t": 1792853398906, "cmd": "note", "args": ["--shot", "wheel_prompt", "At the wheel the prompt 'Wheel: 1 water jar 2 bowl 3 cup ...' is drawn over the CHORES heading and runs off the right edge: option 4 is never visible. NEXT line '(0 of ...' is also cut off at the right edge."]}
+{"t": 1792853399080, "cmd": "key", "args": ["1"]}
+{"t": 1792853400524, "cmd": "step", "args": ["10"]}
+{"t": 1792853402465, "cmd": "shot", "args": ["throw1"]}
+{"t": 1792853406356, "cmd": "wait", "args": ["3"]}
+{"t": 1792853442171, "cmd": "shot", "args": ["throw1b"]}
+{"t": 1792853445695, "cmd": "type", "args": ["Ganga"]}
+{"t": 1792853445955, "cmd": "step", "args": ["3"]}
+{"t": 1792853446811, "cmd": "shot", "args": ["name1"]}
+{"t": 1792853447064, "cmd": "key", "args": ["Return"]}
+{"t": 1792853448718, "cmd": "step", "args": ["5"]}
+{"t": 1792853449892, "cmd": "shot", "args": ["named1"]}
+{"t": 1792853454532, "cmd": "key", "args": ["2"]}
+{"t": 1792853456153, "cmd": "wait", "args": ["3"]}
+{"t": 1792853489664, "cmd": "shot", "args": ["throw2"]}
+{"t": 1792853489841, "cmd": "type", "args": ["Annapurna"]}
+{"t": 1792853490125, "cmd": "key", "args": ["Return"]}
+{"t": 1792853491717, "cmd": "step", "args": ["5"]}
+{"t": 1792853492612, "cmd": "key", "args": ["4"]}
+{"t": 1792853493959, "cmd": "wait", "args": ["3"]}
+{"t": 1792853526535, "cmd": "shot", "args": ["throw4"]}
+{"t": 1792853530110, "cmd": "type", "args": ["Diya"]}
+{"t": 1792853530333, "cmd": "key", "args": ["Return"]}
+{"t": 1792853531861, "cmd": "step", "args": ["5"]}
+{"t": 1792853532741, "cmd": "key", "args": ["F1"]}
+{"t": 1792853534103, "cmd": "step", "args": ["3"]}
+{"t": 1792853534748, "cmd": "shot", "args": ["help_at_wheel"]}
+{"t": 1792853534915, "cmd": "key", "args": ["F1"]}
+{"t": 1792853536319, "cmd": "step", "args": ["3"]}
+{"t": 1792853536914, "cmd": "shot", "args": ["named3"]}
+{"t": 1792853540720, "cmd": "look", "args": ["0", "120"]}
+{"t": 1792853540970, "cmd": "step", "args": ["3"]}
+{"t": 1792853541633, "cmd": "shot", "args": ["pots"]}
+{"t": 1792853545091, "cmd": "key", "args": ["c"]}
+{"t": 1792853546774, "cmd": "step", "args": ["10"]}
+{"t": 1792853548478, "cmd": "shot", "args": ["lens1"]}
+{"t": 1792853551825, "cmd": "look", "args": ["500", "-80"]}
+{"t": 1792853552069, "cmd": "step", "args": ["3"]}
+{"t": 1792853552699, "cmd": "shot", "args": ["lens2"]}
+{"t": 1792853556639, "cmd": "look", "args": ["150", "80"]}
+{"t": 1792853557004, "cmd": "step", "args": ["3"]}
+{"t": 1792853557713, "cmd": "shot", "args": ["lens3"]}
+{"t": 1792853561664, "cmd": "look", "args": ["80", "60"]}
+{"t": 1792853561963, "cmd": "step", "args": ["3"]}
+{"t": 1792853562697, "cmd": "shot", "args": ["lens4"]}
+{"t": 1792853567903, "cmd": "note", "args": ["--shot", "hud_covers_pots", "With the clay lens on, the pots ('3 m ahead') sit exactly behind the HUD block (NEXT, wheel prompt, CHORES, codex toast, MADE list) in the middle of the screen; I could never actually see a pot or what the clay lens does to it. There is no key to hide the HUD (F1 only hides the help)."]}
+{"t": 1792853568042, "cmd": "hold", "args": ["w", "1.2"]}
+{"t": 1792853582480, "cmd": "shot", "args": ["lens5"]}
+{"t": 1792853586729, "cmd": "key", "args": ["b"]}
+{"t": 1792853588679, "cmd": "step", "args": ["10"]}
+{"t": 1792853590677, "cmd": "shot", "args": ["break1"]}
+{"t": 1792853590895, "cmd": "wait", "args": ["2"]}
+{"t": 1792853615584, "cmd": "shot", "args": ["break2"]}
+{"t": 1792853620008, "cmd": "look", "args": ["0", "100"]}
+{"t": 1792853620308, "cmd": "step", "args": ["3"]}
+{"t": 1792853621090, "cmd": "shot", "args": ["down1"]}
+{"t": 1792853625325, "cmd": "look", "args": ["50", "-10"]}
+{"t": 1792853625590, "cmd": "step", "args": ["3"]}
+{"t": 1792853626336, "cmd": "shot", "args": ["aim1"]}
+{"t": 1792853630397, "cmd": "look", "args": ["40", "0"]}
+{"t": 1792853630695, "cmd": "step", "args": ["3"]}
+{"t": 1792853631478, "cmd": "shot", "args": ["aim2"]}
+{"t": 1792853631771, "cmd": "key", "args": ["b"]}
+{"t": 1792853633441, "cmd": "step", "args": ["20"]}
+{"t": 1792853637507, "cmd": "shot", "args": ["break3"]}
+{"t": 1792853642196, "cmd": "key", "args": ["c"]}
+{"t": 1792853644233, "cmd": "step", "args": ["5"]}
+{"t": 1792853645373, "cmd": "shot", "args": ["lensoff"]}
+{"t": 1792853645580, "cmd": "key", "args": ["b"]}
+{"t": 1792853647367, "cmd": "step", "args": ["20"]}
+{"t": 1792853651926, "cmd": "shot", "args": ["break4"]}
+{"t": 1792853656387, "cmd": "look", "args": ["120", "-15"]}
+{"t": 1792853656665, "cmd": "step", "args": ["3"]}
+{"t": 1792853657429, "cmd": "shot", "args": ["aim3"]}
+{"t": 1792853661299, "cmd": "key", "args": ["b"]}
+{"t": 1792853662952, "cmd": "step", "args": ["15"]}
+{"t": 1792853665956, "cmd": "shot", "args": ["break5"]}
+{"t": 1792853666243, "cmd": "wait", "args": ["2"]}
+{"t": 1792853688038, "cmd": "shot", "args": ["break6"]}
+{"t": 1792853693590, "cmd": "note", "args": ["--shot", "break_done", "B only works when the crosshair is right on a pot; pressing B with pots 1 m away but not centred did nothing and gave no message. Once aimed, a 'B break the Annapurna' prompt appeared and B broke it (it vanished from MADE). The break itself had little visible feedback beyond the list change and a new codex toast."]}
+{"t": 1792853693737, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853694407, "cmd": "step", "args": ["5"]}
+{"t": 1792853694760, "cmd": "shot", "args": ["codex1"]}
+{"t": 1792853699120, "cmd": "key", "args": ["Down"]}
+{"t": 1792853699776, "cmd": "step", "args": ["3"]}
+{"t": 1792853700108, "cmd": "shot", "args": ["codex2"]}
+{"t": 1792853700313, "cmd": "key", "args": ["Down"]}
+{"t": 1792853700887, "cmd": "step", "args": ["3"]}
+{"t": 1792853701213, "cmd": "shot", "args": ["codex3"]}
+{"t": 1792853710545, "cmd": "note", "args": ["--shot", "codex2", "Codex page 'The space in the pot' shows 'Translation: Working translation for Atman from the Sanskrit, awaiting review' and every page ends 'Sources: [..] (see RESEARCH.md)': development notes a player cannot follow (there is no RESEARCH.md in the game). The 'awaiting review' line undercuts trust in the verse. The left page list also truncates 'The space in the pot' to 'The space in the pot' cut at the panel edge."]}
+{"t": 1792853710715, "cmd": "note", "args": ["--shot", "codex3", "Good: 'Other schools' page presents Advaita, Vishishtadvaita and Dvaita readings of tat tvam asi side by side and says plainly 'Atman teaches Advaita. It is one school's reading, not what Hinduism says.' The Advaita line references 'as the snake is put on the rope' before the player has met the rope at dusk (mild forward reference)."]}
+{"t": 1792853715619, "cmd": "key", "args": ["Tab"]}
+{"t": 1792853716940, "cmd": "step", "args": ["3"]}
+{"t": 1792853717552, "cmd": "look", "args": ["0", "-100"]}
+{"t": 1792853717829, "cmd": "step", "args": ["3"]}
+{"t": 1792853718474, "cmd": "shot", "args": ["ghat0"]}
+{"t": 1792853722459, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792853760664, "cmd": "shot", "args": ["ghat1"]}
+{"t": 1792853764721, "cmd": "hold", "args": ["a", "3"]}
+{"t": 1792853791999, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792853832264, "cmd": "shot", "args": ["ghat2"]}
+{"t": 1792853835225, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792853835397, "cmd": "step", "args": ["3"]}
+{"t": 1792853835873, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792853862880, "cmd": "shot", "args": ["ghat3"]}
+{"t": 1792853866603, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792853866826, "cmd": "step", "args": ["3"]}
+{"t": 1792853867394, "cmd": "shot", "args": ["ghat4"]}
+{"t": 1792853870905, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792853905280, "cmd": "shot", "args": ["ghat5"]}
+{"t": 1792853908819, "cmd": "wait", "args": ["10"]}
+{"t": 1792854004796, "cmd": "shot", "args": ["sunset1"]}
+{"t": 1792854008618, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1792854008875, "cmd": "wait", "args": ["25"]}
+{"t": 1792854133063, "cmd": "status", "args": []}
+{"t": 1792854236560, "cmd": "shot", "args": ["sunset2"]}
+{"t": 1792854246882, "cmd": "note", "args": ["--shot", "sunset_wait", "'Wait on the ghat steps for the sunset': no indication of how long to wait or whether I am in the right spot (distance line disappeared, nothing confirms 'you are on the steps'). From 5:36 to 6:11 pm game time nothing changed; on this loaded machine 25 game-seconds took ~3.5 minutes of wall clock."]}
+{"t": 1792854247480, "cmd": "wait", "args": ["15"]}
+{"t": 1792854363435, "cmd": "shot", "args": ["sunset3"]}
+{"t": 1792854374970, "cmd": "key", "args": ["f"]}
+{"t": 1792854375088, "cmd": "look", "args": ["600", "0"]}
+{"t": 1792854375174, "cmd": "step", "args": ["3"]}
+{"t": 1792854376418, "cmd": "shot", "args": ["dusk1"]}
+{"t": 1792854380394, "cmd": "look", "args": ["80", "0"]}
+{"t": 1792854380488, "cmd": "step", "args": ["2"]}
+{"t": 1792854380623, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792854411652, "cmd": "shot", "args": ["dusk2"]}
+{"t": 1792854416243, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854440793, "cmd": "shot", "args": ["dusk3"]}
+{"t": 1792854446153, "cmd": "look", "args": ["-60", "150"]}
+{"t": 1792854446276, "cmd": "step", "args": ["20"]}
+{"t": 1792854446655, "cmd": "shot", "args": ["snake1"]}
+{"t": 1792854453796, "cmd": "look", "args": ["-40", "-30"]}
+{"t": 1792854453994, "cmd": "step", "args": ["3"]}
+{"t": 1792854454207, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1792854465411, "cmd": "shot", "args": ["snake2"]}
+{"t": 1792854473333, "cmd": "key", "args": ["e"]}
+{"t": 1792854473553, "cmd": "step", "args": ["20"]}
+{"t": 1792854476007, "cmd": "shot", "args": ["snake3"]}
+{"t": 1792854482198, "cmd": "note", "args": ["--shot", "rope_reveal", "Dusk path: the snake froze my progress (distance stuck at '30 m ahead' while holding W, Fear full) and nothing on screen said what to do. Pressing E (guessing) while looking at it turned it into a coiled rope, Fear started dropping and a codex page opened. Lovely moment, but no on-screen 'E look closer' prompt was visible (maybe hidden under the HUD)."]}
+{"t": 1792854482443, "cmd": "key", "args": ["Tab"]}
+{"t": 1792854482635, "cmd": "step", "args": ["3"]}
+{"t": 1792854482824, "cmd": "shot", "args": ["codex_rope"]}
+{"t": 1792854486514, "cmd": "key", "args": ["Up", "Up", "Up"]}
+{"t": 1792854486913, "cmd": "step", "args": ["3"]}
+{"t": 1792854487039, "cmd": "shot", "args": ["codex_rope2"]}
+{"t": 1792854492550, "cmd": "note", "args": ["--shot", "codex_rope2", "Codex opens on the last page viewed, not the newly unlocked one; new page 'The rope and the snake' was added at the top of the list, so I had to press Up three times to find it. Also shows 'Working translation ... awaiting review' again."]}
+{"t": 1792854492712, "cmd": "key", "args": ["Tab"]}
+{"t": 1792854492844, "cmd": "look", "args": ["60", "-100"]}
+{"t": 1792854492957, "cmd": "step", "args": ["3"]}
+{"t": 1792854493091, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792854525458, "cmd": "shot", "args": ["village1"]}
+{"t": 1792854529230, "cmd": "look", "args": ["120", "0"]}
+{"t": 1792854529328, "cmd": "step", "args": ["3"]}
+{"t": 1792854529474, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792854574488, "cmd": "shot", "args": ["village2"]}
+{"t": 1792854579013, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792854579192, "cmd": "step", "args": ["3"]}
+{"t": 1792854579347, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792854612993, "cmd": "shot", "args": ["village3"]}
+{"t": 1792854617666, "cmd": "look", "args": ["400", "0"]}
+{"t": 1792854617752, "cmd": "step", "args": ["3"]}
+{"t": 1792854617879, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792854649396, "cmd": "shot", "args": ["village4"]}
+{"t": 1792854654298, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792854654388, "cmd": "step", "args": ["3"]}
+{"t": 1792854654500, "cmd": "shot", "args": ["v5a"]}
+{"t": 1792854655079, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792854680592, "cmd": "shot", "args": ["village5"]}
+{"t": 1792854684603, "cmd": "look", "args": ["700", "0"]}
+{"t": 1792854684689, "cmd": "step", "args": ["3"]}
+{"t": 1792854684799, "cmd": "shot", "args": ["v6"]}
+{"t": 1792854689616, "cmd": "note", "args": ["--shot", "v6b", "HUD text (white/orange, no backing panel) becomes very hard to read against the bright lamp-lit house wall at night."]}
+{"t": 1792854689718, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792854689810, "cmd": "step", "args": ["3"]}
+{"t": 1792854689966, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792854717667, "cmd": "shot", "args": ["v7"]}
+{"t": 1792854721200, "cmd": "look", "args": ["80", "0"]}
+{"t": 1792854721293, "cmd": "step", "args": ["3"]}
+{"t": 1792854721424, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1792854738664, "cmd": "shot", "args": ["v8"]}
+{"t": 1792854742489, "cmd": "look", "args": ["550", "0"]}
+{"t": 1792854742571, "cmd": "step", "args": ["3"]}
+{"t": 1792854742660, "cmd": "shot", "args": ["v9a"]}
+{"t": 1792854743164, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792854754738, "cmd": "shot", "args": ["v9"]}
+{"t": 1792854759402, "cmd": "hold", "args": ["d", "2"]}
+{"t": 1792854771937, "cmd": "shot", "args": ["v10"]}
+{"t": 1792854778197, "cmd": "note", "args": ["--shot", "waypoint_wall", "'Walk back to the village along the path' waypoint: after ~3 minutes of wall clock circling (distance flipping between '15 m behind you', '6 m ahead', '5 m to your right') I end up pressed against a house wall with the target '3 m to your right', i.e. apparently on the other side of the wall. Strafing right just slides on the wall. Either the waypoint is inside/behind a building or the compass wording is too coarse to steer by; a world marker would help."]}
+{"t": 1792854781334, "cmd": "hold", "args": ["s", "1.5"]}
+{"t": 1792854789516, "cmd": "hold", "args": ["d", "3"]}
+{"t": 1792854807057, "cmd": "shot", "args": ["v11"]}
+{"t": 1792854810987, "cmd": "wait", "args": ["3"]}
+{"t": 1792854827748, "cmd": "shot", "args": ["v12"]}
+{"t": 1792854832366, "cmd": "note", "args": ["--shot", "arrived_no_advance", "Distance line vanished (I reached the 'village' waypoint by the house) but after 3 more game-seconds the NEXT objective still reads 'Walk back to the village along the path' with no further hint. Stopped here for time."]}
+{"t": 1792854832473, "cmd": "stop", "args": []}
+{"t": 1792854873386, "cmd": "report", "args": []}
+{"t": 1792854935845, "cmd": "stop", "args": []}
