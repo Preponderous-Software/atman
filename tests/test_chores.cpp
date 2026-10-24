@@ -182,5 +182,25 @@ int main() {
         CHECK(nextStep(w) == "Nothing here seems strange");
     }
 
+    // Which way the next step's place is, in words.
+    {
+        World w = newWorld(1);
+        Vec2 at;
+        CHECK(nextPlace(w, at));
+        CHECK(at.x == V::kWheel.x && at.z == V::kWheel.z);
+        w.player.x = V::kWheel.x;
+        w.player.z = V::kWheel.z + 20;  // 20 m south of the wheel
+        w.player.yaw = 0;                // facing north, toward it
+        CHECK(bearingText(w, at) == "20 m ahead");
+        w.player.yaw = kPi / 2;  // facing east: the wheel is to the left
+        CHECK(bearingText(w, at) == "20 m to your left");
+        w.player.yaw = kPi;
+        CHECK(bearingText(w, at) == "20 m behind you");
+        w.player.z = V::kWheel.z + 2;
+        CHECK(bearingText(w, at).empty());  // there already
+        w.potsMade = kPotsForLens;
+        CHECK(!nextPlace(w, at));  // the lens works anywhere
+    }
+
     TEST_MAIN_END();
 }

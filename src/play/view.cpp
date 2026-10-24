@@ -385,6 +385,11 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     lines.push_back({""});
     lines.push_back({"NEXT", true});
     lines.push_back({nextStep(w)});
+    Vec2 at;
+    if (nextPlace(w, at)) {
+        const std::string way = bearingText(w, at);
+        if (!way.empty()) lines.push_back({"  " + way});
+    }
     lines.push_back({""});
     // The day's chores. In the after-mode they earn nothing, so they are offered, not asked.
     lines.push_back({w.after ? "CHORES  (as you like)" : "CHORES", true});
@@ -418,6 +423,8 @@ std::string prompt(const World& w, const std::string& typing) {
         if (w.potsMade >= valley::kBoardSlots) return "The drying board is full";
         return "At the wheel:  1 water jar   2 bowl   3 cup   4 lamp";
     }
+    const float wx = w.player.x - V::kWheel.x, wz = w.player.z - V::kWheel.z;
+    if (wx * wx + wz * wz < 5.0f * 5.0f && w.potsMade < valley::kBoardSlots) return "Step up to the wheel to throw a pot";
     if (isDusk(w) && !w.lampLit) return "F  light your lamp";
     return "";
 }
