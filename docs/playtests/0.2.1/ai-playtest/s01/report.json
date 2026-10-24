@@ -1,0 +1,125 @@
+{
+  "session": "s01",
+  "goal": "The rope: do what the NEXT line asks until dusk, then walk the path from the village to the ghat, light the lamp (F) and look steadily at each snake until it turns out to be a rope; then sleep at home (E at the indigo door) and, in the morning, try V. Answer the questions at the end.",
+  "build": {
+    "version": null,
+    "commit": "dae6fe4"
+  },
+  "seed": 3,
+  "durationSec": 1737,
+  "outcome": "partial",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "bug",
+      "title": "Sleeping at the indigo door runs the clock backwards on the same day instead of advancing to morning",
+      "detail": "At 7:00 pm on 21 March the door offered 'E  sleep until morning'. After E the screen went dark and the HUD read '21 March 6:03 pm', then 5:51 (2 s later), 5:21 (5 s), 5:17, and 3:17 pm after 20 more game seconds: the clock runs backwards at about 6 game-minutes per second while the sky brightens back to afternoon. The date never changes, tiredness stays at 5/10, the lamp is out and NEXT says 'Nothing here seems strange'. Expected: the next morning (22 March, early), tiredness reset. If the rewind is a deliberate 'night passing' effect, it reads as a broken clock, and it is far too slow to wait out in a driven session.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-pt --seed 3; follow NEXT (3 pots, break one, wait at the ghat to dusk, turn 3 snakes to rope with F + gaze); walk to the indigo door until 'E sleep until morning' shows; pt key e; pt step 60; pt shot a; pt wait 2; pt shot b; pt wait 20; pt shot c",
+      "screenshot": "shots/64-clock-back.png",
+      "tick": 9122
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "V after sleeping is refused: 'Stepping out of the body to watch comes later, once the teachings are done'",
+      "detail": "After sleeping (no real morning, see above) V shows 'Stepping out of the body to watch comes later, once the teachings are done.' Nothing tells me which teachings remain: NEXT says 'Nothing here seems strange', the two CHORES (water from the ghat to the potter, clay from the bank to the wheel) were never asked for by NEXT and remain unchecked. A player has no pointer to what is left.",
+      "repro": "as above, then pt key v; pt step 30; pt shot v",
+      "screenshot": "shots/65.png",
+      "tick": 9580
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Snake gaze has no feedback on range or aim; a near-miss from 4 m does nothing while fear climbs",
+      "detail": "Snake 2: about 6 s of looking from ~4 m with the snake ~40 px above the crosshair did nothing and fear rose to 9/10. After stepping to ~2 m and centring it on the crosshair it became a rope in 3 s. Nothing says how close or how centred you must be, and there is no progress cue (e.g. the snake slowly lightening) while holding the gaze.",
+      "repro": "at dusk with the lamp lit, pt look so the second snake is just above the crosshair from ~4 m; pt wait 3 twice; then pt hold w 1.2; centre it; pt wait 3",
+      "screenshot": "shots/51-rope2.png",
+      "tick": 7069
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Opaque HUD text block covers the centre-left of the view, hiding the snakes and the pots you must look at",
+      "detail": "The NEXT / CHORES / MADE block plus the orange hints fill the left half from y=120 to y=290. The first two snakes and the drying plank with my pots were drawn underneath it; I had to turn until they slid out from behind the text. F1 hides the help but not this block (H hides the HUD per the help, but then you lose NEXT).",
+      "repro": "dusk path: pt shot after the 'Hold the lamp to it' NEXT appears; or after throwing pots, look for them on the plank",
+      "screenshot": "shots/44-rope1.png",
+      "tick": 6732
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Thrown pots appear 4 m behind the wheel, never in view while throwing; hard to find for B",
+      "detail": "Throwing three pots at the wheel shows only a progress bar and a name prompt; the pots never appear in front of you. NEXT then says 'Break one of your pots (B) 4 m behind you, to the right', and once close the distance disappears. 'Look straight at one of your pots, close by' repeated until I did a full 360 panorama and found them on a low plank. The clay lens also turns the scene nearly black, which made finding them harder.",
+      "repro": "after 3 pots: pt key c; walk toward 'behind you, to the right'; pt key b -> 'Look straight at one of your pots'; pt look 250 0 repeatedly to find the plank",
+      "screenshot": "shots/24-pots-hidden.png",
+      "tick": 2955
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Start screen: orange intro hint overprints the help's first line",
+      "detail": "'The NEXT line, top left, says what comes next.' is drawn on top of 'W A S D walk  Shift hurry  Mouse look  E use'; both are unreadable where they overlap. Hiding help with F1 fixes it.",
+      "repro": "pt start ...; pt shot start",
+      "screenshot": "shots/02-overlap.png",
+      "tick": 0
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Indigo door not discoverable at night; white HUD text unreadable on the lamp-lit wall",
+      "detail": "Following 'Go home and sleep (E at your door) 5 m ahead' led me to a blank wall; E did nothing and no prompt appeared. The door was on another face; I had to strafe around. While standing at the lit wall the white HUD text on bright yellow was nearly unreadable (no outline or backing).",
+      "repro": "after the third rope: pt hold Shift_L+w 5; pt hold w 3; pt shot wall; pt key e",
+      "screenshot": "shots/56-wall.png",
+      "tick": 8534
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Codex sidebar clips 'The space in the pot'; 'Other schools' page explains the snake/rope before dusk",
+      "detail": "The page list cuts the title at the parchment edge. The 'Other schools: that you are' page (unlocked after breaking a pot) already says 'as the snake is put on the rope', spoiling the dusk scene.",
+      "repro": "after breaking a pot: pt key Tab; pt key Down",
+      "screenshot": "shots/29-codex-clip.png",
+      "tick": 3018
+    },
+    {
+      "severity": "minor",
+      "category": "perf",
+      "title": "Game time is very slow on the shared machine: 30 s of game wait took over 2 minutes of wall clock",
+      "detail": "Waiting for sunset on the ghat (pt wait 30) exceeded a 120 s shell timeout; pt wait 20 after sleeping took ~3 min. CPU ~190%. Combined with the backwards clock this made reaching morning impossible within 45 minutes. Walking speed is also slow: 4 s of W covered about 5 m.",
+      "repro": "pt wait 30 on the ghat steps; time it",
+      "screenshot": "shots/36.png",
+      "tick": 6370
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 7,
+    "deaths": 0,
+    "secondsToObjective": {
+      "throw 3 pots": 650,
+      "break a pot": 760,
+      "sunset on the ghat": 900,
+      "light lamp": 930,
+      "rope 1": 1010,
+      "rope 2": 1100,
+      "rope 3": 1140,
+      "sleep at the door": 1310
+    },
+    "ropesRevealed": 3,
+    "potsThrown": 3,
+    "peakFear": 9,
+    "morningReached": 0,
+    "vWorked": 0
+  },
+  "fun": 3,
+  "verdict": "The pots-to-clay and snake-to-rope beats land well: the clay lens relabelling each named pot as 'clay', the fear bar falling as the coil resolves into rope, and a carefully sourced, even-handed codex. But sleeping at the door runs the clock backwards on the same day instead of reaching morning, and V is refused with no pointer to what teaching is left, so the goal's last step could not be done. secondsToObjective is wall-clock (no probe), inflated by a slow shared machine.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "An ordinary afternoon used to show that the many things we name are one underlying reality seen under different names and fears. The pots: I made a water jar, a bowl and a cup, gave them names, and through the clay lens each was just 'clay'; breaking one, the codex said the space in the pot was never separate from space, so the pot is a name and shape on clay, and individual selves are like the space in pots. The snake and rope: at dusk the fear bar rose at each coiled snake, and looking at it steadily with the lamp showed it was a rope all along. Fear came from not seeing clearly, not from anything there; light and attention remove the mistake rather than changing the rope. Together they suggest the self and the world are misread on top of one reality (Brahman/Atman). I could not tell what the after-mode (V) adds, as it stayed locked."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Nothing felt preachy; the game shows rather than lectures and the codex quotes the sources (Chandogya 6.1.4 and 6.8.7, Gaudapada's Karika 3.3-3.4) with Sanskrit, transliteration and cited translations. The 'Other schools' page is fair to Vishishtadvaita and Dvaita and openly says the game takes the Advaita reading and that it is one school's reading, not what Hinduism says; I cannot judge its accuracy myself. Confusing: that page mentions the snake and the rope before the dusk scene (a spoiler), one Gaudapada page is labelled a 'working translation ... awaiting review', and V's message 'once the teachings are done' does not say which teachings remain."
+    }
+  ]
+}

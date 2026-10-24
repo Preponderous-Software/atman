@@ -1,0 +1,201 @@
+{"t": 1792855998309, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-pt", "--seed", "3"]}
+{"t": 1792856005602, "cmd": "shot", "args": ["01-start"]}
+{"t": 1792856011659, "cmd": "note", "args": ["--shot", "02-overlap", "Opening screen: the orange hint 'The NEXT line ... says what comes next' is drawn on top of the help line 'W A S D walk  Shift hurry  Mouse look  E use' and both are unreadable where they overlap"]}
+{"t": 1792856011721, "cmd": "key", "args": ["F1"]}
+{"t": 1792856012239, "cmd": "shot", "args": ["03-nohelp"]}
+{"t": 1792856017630, "cmd": "look", "args": ["-100", "0"]}
+{"t": 1792856017724, "cmd": "shot", "args": ["04"]}
+{"t": 1792856022839, "cmd": "step", "args": ["5"]}
+{"t": 1792856023187, "cmd": "shot", "args": ["05"]}
+{"t": 1792856028334, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792856041089, "cmd": "shot", "args": ["06"]}
+{"t": 1792856046644, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1792856046752, "cmd": "step", "args": ["3"]}
+{"t": 1792856047036, "cmd": "shot", "args": ["07"]}
+{"t": 1792856051838, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1792856069203, "cmd": "shot", "args": ["08"]}
+{"t": 1792856074972, "cmd": "hold", "args": ["Shift_L+w", "6"]}
+{"t": 1792856100216, "cmd": "shot", "args": ["09"]}
+{"t": 1792856105750, "cmd": "look", "args": ["-200", "0"]}
+{"t": 1792856105832, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792856113040, "cmd": "shot", "args": ["10"]}
+{"t": 1792856117951, "cmd": "look", "args": ["-150", "60"]}
+{"t": 1792856118038, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792856125729, "cmd": "shot", "args": ["11"]}
+{"t": 1792856130512, "cmd": "key", "args": ["1"]}
+{"t": 1792856131302, "cmd": "step", "args": ["10"]}
+{"t": 1792856132384, "cmd": "shot", "args": ["12"]}
+{"t": 1792856137359, "cmd": "wait", "args": ["8"]}
+{"t": 1792856183815, "cmd": "shot", "args": ["13"]}
+{"t": 1792856189104, "cmd": "type", "args": ["Ganga"]}
+{"t": 1792856189259, "cmd": "key", "args": ["Return"]}
+{"t": 1792856190154, "cmd": "step", "args": ["10"]}
+{"t": 1792856191243, "cmd": "shot", "args": ["14"]}
+{"t": 1792856196553, "cmd": "key", "args": ["2"]}
+{"t": 1792856197413, "cmd": "wait", "args": ["9"]}
+{"t": 1792856253423, "cmd": "shot", "args": ["15"]}
+{"t": 1792856258910, "cmd": "type", "args": ["Moon"]}
+{"t": 1792856259074, "cmd": "key", "args": ["Return"]}
+{"t": 1792856259927, "cmd": "step", "args": ["5"]}
+{"t": 1792856260521, "cmd": "key", "args": ["3"]}
+{"t": 1792856261368, "cmd": "wait", "args": ["9"]}
+{"t": 1792856329411, "cmd": "type", "args": ["Sip"]}
+{"t": 1792856329667, "cmd": "key", "args": ["Return"]}
+{"t": 1792856330797, "cmd": "step", "args": ["10"]}
+{"t": 1792856332237, "cmd": "shot", "args": ["16"]}
+{"t": 1792856337815, "cmd": "look", "args": ["0", "120"]}
+{"t": 1792856338021, "cmd": "step", "args": ["3"]}
+{"t": 1792856338584, "cmd": "shot", "args": ["17"]}
+{"t": 1792856338753, "cmd": "key", "args": ["c"]}
+{"t": 1792856340000, "cmd": "step", "args": ["20"]}
+{"t": 1792856343505, "cmd": "shot", "args": ["18"]}
+{"t": 1792856350120, "cmd": "look", "args": ["600", "-60"]}
+{"t": 1792856350370, "cmd": "step", "args": ["3"]}
+{"t": 1792856351039, "cmd": "shot", "args": ["19"]}
+{"t": 1792856357014, "cmd": "look", "args": ["150", "40"]}
+{"t": 1792856357272, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1792856377968, "cmd": "shot", "args": ["20"]}
+{"t": 1792856385423, "cmd": "key", "args": ["b"]}
+{"t": 1792856387015, "cmd": "step", "args": ["20"]}
+{"t": 1792856390634, "cmd": "shot", "args": ["21"]}
+{"t": 1792856396257, "cmd": "key", "args": ["c"]}
+{"t": 1792856397605, "cmd": "look", "args": ["0", "100"]}
+{"t": 1792856397835, "cmd": "step", "args": ["5"]}
+{"t": 1792856398805, "cmd": "shot", "args": ["22"]}
+{"t": 1792856406047, "cmd": "look", "args": ["60", "-80"]}
+{"t": 1792856406307, "cmd": "step", "args": ["3"]}
+{"t": 1792856406871, "cmd": "shot", "args": ["23"]}
+{"t": 1792856414064, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792856414270, "cmd": "step", "args": ["2"]}
+{"t": 1792856414678, "cmd": "shot", "args": ["pan1"]}
+{"t": 1792856414803, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792856414991, "cmd": "step", "args": ["2"]}
+{"t": 1792856415378, "cmd": "shot", "args": ["pan2"]}
+{"t": 1792856415545, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792856415798, "cmd": "step", "args": ["2"]}
+{"t": 1792856416192, "cmd": "shot", "args": ["pan3"]}
+{"t": 1792856416373, "cmd": "look", "args": ["250", "0"]}
+{"t": 1792856416568, "cmd": "step", "args": ["2"]}
+{"t": 1792856416962, "cmd": "shot", "args": ["pan4"]}
+{"t": 1792856425809, "cmd": "note", "args": ["--shot", "24-pots-hidden", "Finding my thrown pots was hard: the wheel prompt never shows them; after 'Look at your pots' the NEXT line said '4 m behind you, to the right' but once close it dropped the distance and the pots sat on a low plank under the HUD text (MADE list + orange hint cover the lower-left of the screen). Took a full 360 panorama to find them."]}
+{"t": 1792856425932, "cmd": "key", "args": ["b"]}
+{"t": 1792856427209, "cmd": "step", "args": ["30"]}
+{"t": 1792856431765, "cmd": "shot", "args": ["25"]}
+{"t": 1792856437700, "cmd": "key", "args": ["Tab"]}
+{"t": 1792856439910, "cmd": "step", "args": ["5"]}
+{"t": 1792856440147, "cmd": "shot", "args": ["26-codex"]}
+{"t": 1792856446157, "cmd": "key", "args": ["Up"]}
+{"t": 1792856446497, "cmd": "step", "args": ["3"]}
+{"t": 1792856446660, "cmd": "shot", "args": ["27-codex1"]}
+{"t": 1792856446768, "cmd": "key", "args": ["Down", "Down"]}
+{"t": 1792856447364, "cmd": "step", "args": ["3"]}
+{"t": 1792856447514, "cmd": "shot", "args": ["28-codex3"]}
+{"t": 1792856455360, "cmd": "note", "args": ["--shot", "29-codex-clip", "Codex sidebar clips the page title: 'The space in the pot' is cut at the panel edge ('...in the pot' runs under the parchment). Also the 'Other schools' page already explains the snake and the rope before the player has met them at dusk."]}
+{"t": 1792856455473, "cmd": "key", "args": ["Tab"]}
+{"t": 1792856456689, "cmd": "look", "args": ["500", "-40"]}
+{"t": 1792856456922, "cmd": "step", "args": ["3"]}
+{"t": 1792856457376, "cmd": "shot", "args": ["30"]}
+{"t": 1792856463584, "cmd": "look", "args": ["1000", "0"]}
+{"t": 1792856463790, "cmd": "step", "args": ["3"]}
+{"t": 1792856464358, "cmd": "shot", "args": ["31"]}
+{"t": 1792856470103, "cmd": "look", "args": ["120", "0"]}
+{"t": 1792856470291, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1792856507021, "cmd": "shot", "args": ["32"]}
+{"t": 1792856512245, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792856512471, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792856537930, "cmd": "shot", "args": ["33"]}
+{"t": 1792856570388, "cmd": "look", "args": ["200", "0"]}
+{"t": 1792856570592, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792856596411, "cmd": "shot", "args": ["34"]}
+{"t": 1792856601674, "cmd": "wait", "args": ["15"]}
+{"t": 1792856705139, "cmd": "shot", "args": ["35"]}
+{"t": 1792856711036, "cmd": "wait", "args": ["30"]}
+{"t": 1792856918069, "cmd": "shot", "args": ["36"]}
+{"t": 1792856925548, "cmd": "status", "args": []}
+{"t": 1792856925666, "cmd": "key", "args": ["f"]}
+{"t": 1792856925819, "cmd": "step", "args": ["5"]}
+{"t": 1792856927081, "cmd": "shot", "args": ["37"]}
+{"t": 1792856933871, "cmd": "look", "args": ["150", "0"]}
+{"t": 1792856934025, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792856959370, "cmd": "shot", "args": ["38"]}
+{"t": 1792856966819, "cmd": "look", "args": ["450", "60"]}
+{"t": 1792856966939, "cmd": "step", "args": ["3"]}
+{"t": 1792856967080, "cmd": "shot", "args": ["39"]}
+{"t": 1792856973783, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792857001728, "cmd": "look", "args": ["0", "80"]}
+{"t": 1792857001861, "cmd": "step", "args": ["3"]}
+{"t": 1792857002083, "cmd": "shot", "args": ["40"]}
+{"t": 1792857010508, "cmd": "look", "args": ["90", "0"]}
+{"t": 1792857010717, "cmd": "step", "args": ["3"]}
+{"t": 1792857010960, "cmd": "shot", "args": ["41"]}
+{"t": 1792857019817, "cmd": "look", "args": ["170", "0"]}
+{"t": 1792857019916, "cmd": "step", "args": ["3"]}
+{"t": 1792857020053, "cmd": "shot", "args": ["42"]}
+{"t": 1792857026390, "cmd": "look", "args": ["-15", "-10"]}
+{"t": 1792857026497, "cmd": "wait", "args": ["3"]}
+{"t": 1792857042793, "cmd": "shot", "args": ["43"]}
+{"t": 1792857050762, "cmd": "note", "args": ["--shot", "44-rope1", "First snake turned into a coiled rope after ~3 s of looking with the lamp lit; fear bar dropped from 9/10 to 6/10. Good moment. But the snake sat directly under the white NEXT/CHORES text block, which is opaque and covers the thing you are told to look at steadily."]}
+{"t": 1792857050885, "cmd": "look", "args": ["0", "-40"]}
+{"t": 1792857050961, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1792857073179, "cmd": "shot", "args": ["45"]}
+{"t": 1792857079398, "cmd": "look", "args": ["-250", "15"]}
+{"t": 1792857079520, "cmd": "step", "args": ["3"]}
+{"t": 1792857079677, "cmd": "shot", "args": ["46"]}
+{"t": 1792857086299, "cmd": "look", "args": ["5", "-45"]}
+{"t": 1792857086402, "cmd": "wait", "args": ["3"]}
+{"t": 1792857107399, "cmd": "shot", "args": ["47"]}
+{"t": 1792857113953, "cmd": "look", "args": ["0", "15"]}
+{"t": 1792857114052, "cmd": "wait", "args": ["3"]}
+{"t": 1792857136057, "cmd": "shot", "args": ["48"]}
+{"t": 1792857143502, "cmd": "hold", "args": ["w", "1.2"]}
+{"t": 1792857150777, "cmd": "shot", "args": ["49"]}
+{"t": 1792857156754, "cmd": "look", "args": ["10", "40"]}
+{"t": 1792857156904, "cmd": "wait", "args": ["3"]}
+{"t": 1792857177977, "cmd": "shot", "args": ["50"]}
+{"t": 1792857186532, "cmd": "note", "args": ["--shot", "51-rope2", "Second snake: ~6 s of looking from 4 m with the snake ~40 px above the crosshair did nothing and fear kept climbing (to 9/10); stepping to ~2 m and centering it turned it to rope in 3 s. Nothing on screen says how close or how centred you must be, and there is no progress cue while you hold the gaze."]}
+{"t": 1792857186674, "cmd": "look", "args": ["20", "-60"]}
+{"t": 1792857186805, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792857209524, "cmd": "shot", "args": ["52"]}
+{"t": 1792857215808, "cmd": "look", "args": ["60", "10"]}
+{"t": 1792857215892, "cmd": "wait", "args": ["3"]}
+{"t": 1792857233717, "cmd": "shot", "args": ["53"]}
+{"t": 1792857252690, "cmd": "hold", "args": ["Shift_L+w", "5"]}
+{"t": 1792857286765, "cmd": "shot", "args": ["54"]}
+{"t": 1792857293298, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1792857316208, "cmd": "look", "args": ["0", "-60"]}
+{"t": 1792857316283, "cmd": "step", "args": ["3"]}
+{"t": 1792857316378, "cmd": "shot", "args": ["55"]}
+{"t": 1792857325286, "cmd": "note", "args": ["--shot", "56-wall", "White HUD text on the lamp-lit yellow house wall is nearly unreadable (no outline/backing). Also at the house the NEXT line drops the distance but no 'E sleep' prompt appears; I could not tell which side the indigo door is on."]}
+{"t": 1792857325392, "cmd": "key", "args": ["e"]}
+{"t": 1792857325536, "cmd": "step", "args": ["20"]}
+{"t": 1792857328171, "cmd": "shot", "args": ["57"]}
+{"t": 1792857334594, "cmd": "hold", "args": ["s", "2"]}
+{"t": 1792857347797, "cmd": "look", "args": ["0", "20"]}
+{"t": 1792857347880, "cmd": "step", "args": ["3"]}
+{"t": 1792857347985, "cmd": "shot", "args": ["58"]}
+{"t": 1792857354687, "cmd": "hold", "args": ["d", "2.5"]}
+{"t": 1792857369953, "cmd": "look", "args": ["-250", "0"]}
+{"t": 1792857370962, "cmd": "step", "args": ["3"]}
+{"t": 1792857371047, "cmd": "shot", "args": ["59"]}
+{"t": 1792857377173, "cmd": "look", "args": ["20", "-40"]}
+{"t": 1792857377255, "cmd": "hold", "args": ["w", "3.5"]}
+{"t": 1792857400979, "cmd": "shot", "args": ["60"]}
+{"t": 1792857407825, "cmd": "key", "args": ["e"]}
+{"t": 1792857407982, "cmd": "step", "args": ["60"]}
+{"t": 1792857414401, "cmd": "shot", "args": ["61"]}
+{"t": 1792857421121, "cmd": "wait", "args": ["2"]}
+{"t": 1792857437560, "cmd": "shot", "args": ["62"]}
+{"t": 1792857444956, "cmd": "wait", "args": ["5"]}
+{"t": 1792857501834, "cmd": "shot", "args": ["63"]}
+{"t": 1792857510404, "cmd": "note", "args": ["--shot", "64-clock-back", "After E at the indigo door ('E sleep until morning') at 7:00 pm, the screen went dark and the clock jumped to '21 March 6:03 pm' and then kept running BACKWARDS (5:51 after 2 s, 5:21 after 5 more s) with the sky brightening to daylight. The date never advanced; it is not morning. Lamp went out; NEXT reads 'Nothing here seems strange'. Expected: 22 March, morning."]}
+{"t": 1792857510533, "cmd": "key", "args": ["v"]}
+{"t": 1792857512060, "cmd": "step", "args": ["30"]}
+{"t": 1792857517581, "cmd": "shot", "args": ["65"]}
+{"t": 1792857526779, "cmd": "wait", "args": ["20"]}
+{"t": 1792857720900, "cmd": "shot", "args": ["66"]}
+{"t": 1792857732702, "cmd": "note", "args": ["--shot", "67-still-back", "20 more game seconds later the clock reads 3:17 pm, still 21 March and still running backwards (~6 game-minutes per second). Tiredness stayed at 5/10 and thirst rose after 'sleeping'. Morning never arrived inside my budget. Also perf: 'pt wait 20' took ~3 min of wall clock (cpu ~190%)."]}
+{"t": 1792857732877, "cmd": "log", "args": ["15"]}
+{"t": 1792857733864, "cmd": "stop", "args": []}
+{"t": 1792857770841, "cmd": "report", "args": []}
+{"t": 1792857783529, "cmd": "report", "args": []}
+{"t": 1792858498759, "cmd": "stop", "args": []}
