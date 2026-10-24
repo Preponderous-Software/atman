@@ -86,7 +86,7 @@ codex is open.
 
 | The next morning | Watching the avatar go about its day |
 |---|---|
-| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the chores are listed again, the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
+| ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the chores are listed again "as you like", the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 
