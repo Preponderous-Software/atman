@@ -27,6 +27,7 @@ constexpr float kFlySpeed = 4.0f, kFlyFast = 12.0f;  // metres per second
 constexpr float kLabelRange = 16.0f;       // places are named within this many metres
 constexpr float kHouseLabelRange = 30.0f;
 constexpr float kLabelNear = 3.0f;  // houses, by their roofs, from further
+constexpr float kLabelGap = 3 * kTextSize;  // between the end of a HUD line and a name on its row
 constexpr float kDarkSeconds = 0.6f, kFadeSeconds = 2.4f;  // waking: dark, then the morning fades in
 
 StrataCamera lookFrom(Vec3 eye, float yaw, float pitch, float aspect) {
@@ -355,13 +356,17 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
         const float fade[4] = {ink[0], ink[1], ink[2], clampf((place.range - d) / 4.0f, 0.0f, 0.85f)};
         const std::string name = place.name;
         const float wide = kTextSize * static_cast<float>(name.size());
-        const float left = clampf(sx - wide / 2, kMargin, static_cast<float>(width) - kMargin - wide);  // all on screen
-        // Not over the HUD's words: the lines the label's row would cross.
-        bool covered = false;
+        float left = clampf(sx - wide / 2, kMargin, static_cast<float>(width) - kMargin - wide);  // all on screen
+        // Clear of the HUD's words on the lines the label's row would cross,
+        // and far enough after them not to read as their next word: moved
+        // right while it still starts left of its place, otherwise not shown.
+        float clear = 0;
         for (size_t i = 0; i < hudRight.size(); ++i) {
             const float top = kMargin + kLine * static_cast<float>(i);
-            if (sy + kTextSize > top && sy < top + kTextSize && left < hudRight[i]) covered = true;
+            if (sy + kTextSize > top && sy < top + kTextSize && hudRight[i] > 0) clear = std::max(clear, hudRight[i] + kLabelGap);
         }
+        bool covered = clear > sx || clear + wide > static_cast<float>(width) - kMargin;
+        left = std::max(left, clear);
         if (left < cover.right && sy < cover.bottom) covered = true;  // under the page's own HUD
         if (covered) continue;
         text(texts, keep, left, sy, name, fade);
