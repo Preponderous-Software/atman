@@ -50,6 +50,7 @@ add_library(atman_sim STATIC
   src/sim/autopilot.cpp
   src/sim/chores.cpp
   src/sim/clay.cpp
+  src/sim/days.cpp
   src/sim/valley.cpp
   src/sim/world.cpp)
 target_include_directories(atman_sim PUBLIC src)

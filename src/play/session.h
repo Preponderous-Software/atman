@@ -122,6 +122,7 @@ private:
     double clock_ = 0, lastSave_ = 0;  // seconds of play, for the autosave
     int pagesSeen_ = 0;     // codex pages the player has been told of
     bool fourthSeen_ = false;  // whether waking from the deep sleep has been announced
+    int32_t daySeen_ = 0;      // the day whose morning has been announced
     std::string message_;
     double messageUntil_ = 0;
     int textSize_ = 0;

@@ -51,7 +51,10 @@ round again and earn nothing; Standing is gone from the HUD. Press V to step out
 avatar carries on alone, drinking, eating, carrying water and clay, sitting on the ghat steps,
 going home at dusk, while you fly anywhere in the valley. V again steps back in. That morning the
 game says the teachings are done and nothing more is asked of you, and the drone of a tanpura comes
-in under the valley's sounds; nothing says the game is won.
+in under the valley's sounds; nothing says the game is won. The days after are not all alike: the
+second evening the village sets small clay lamps along the ghat steps and floats more on the river
+(the morning says so), the third morning a flock of egrets crosses the valley, and after that each
+comes round now and then.
 
 Until then the HUD's NEXT line says what comes next, and the names of houses and places show over
 them as you near them: your door is indigo, the potter's ochre, the shrine's saffron under a
@@ -105,6 +108,10 @@ codex is open.
 | The next morning | Watching the avatar go about its day |
 |---|---|
 | ![Waking at 6:35 on 22 March outside your house in the dawn light; the potter's house is named and the shrine's saffron pennant shows over the roofs; NEXT reads "Nothing more is asked of you", the chores are listed again "as you like", the HUD reads "Living, step back and watch (V)", and there is no Standing line](docs/images/m5-morning.jpg) | ![From behind and above, the avatar in white and brown walks toward the potter's yard; the HUD reads "Watching, step back in (V)"](docs/images/m5-watching.jpg) |
+
+| A lamp night, the second evening | Egrets, the third morning |
+|---|---|
+| ![Night on the ghat steps: small clay lamps burning along four of the steps, more far out on the dark river](docs/images/m7-lamp-night.jpg) | ![Early morning from the ghat: a V of nine white egrets over the river against a pale blue sky](docs/images/m7-egrets.jpg) |
 
 *Frames from the game's own headless tour (`atman --headless --tour --frames DIR`).*
 

@@ -83,7 +83,7 @@ jobs:
         run: |
           mkdir -p tour
           ./build/atman --headless --tour --frames tour --width 960 --height 540
-          test "$(ls tour/*.png | wc -l)" -eq 26
+          test "$(ls tour/*.png | wc -l)" -eq 28
       - name: Autopilot playthrough (pinned fingerprint)
         run: |
           mkdir -p autopilot

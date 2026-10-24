@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "save/save.h"
+#include "sim/days.h"
 
 namespace atman::play {
 
@@ -78,6 +79,7 @@ void Session::adopt(const World& w) {
     pending_ = 0;
     pagesSeen_ = pagesOpen(w_);  // a loaded game's pages and after-mode are not news
     fourthSeen_ = w_.codex[static_cast<int>(CodexId::Fourth)];
+    daySeen_ = w_.day;
     if (pages_.isOpen()) pages_.close();
 }
 
@@ -99,6 +101,10 @@ void Session::noticeChanges() {
             "Live the day as it comes, or step back and watch it lived (V).",
             kAfterSeconds);
     fourthSeen_ = fourth;
+    // A lamp night is told of in its morning, so the player can be at the ghat for it.
+    if (w_.day != daySeen_ && dayKind(w_) == DayKind::LampNight && !watching_)
+        say("This evening the village sets lamps on the ghat steps, and floats more on the river.", 10);
+    daySeen_ = w_.day;
 }
 
 bool Session::save(const char* note) {
