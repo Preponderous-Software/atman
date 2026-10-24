@@ -15,6 +15,7 @@ compiled with Emscripten.
 | Tab and F1 | the codex and the controls | the same: the page keeps them from the browser |
 | Touch | none | a stick (drag on the left half), look (drag on the right half), Use / Lamp / Break / Lens buttons, the four forms at the wheel, page buttons in the codex, and a text box for a pot's name, so a phone's keyboard comes up |
 | HUD | drawn on the canvas | drawn on the canvas on a wide page; below 760 CSS pixels wide the page shows the HUD, the crosshair and the prompt itself |
+| Sound | miniaudio on WASAPI (Windows) or ALSA / PulseAudio (Linux); M turns it off | miniaudio on Web Audio. Browsers let a page make sound only after a tap or click on it, so the valley is silent until the first one. M or the **Sound** button turns it off, and the page remembers the choice in that browser |
 | Shadows | 4 cascades of 2048² | 3 cascades of 1024², for phones |
 | Resolution | the window's | the page's size times the device pixel ratio, capped at 2 |
 | Saves | `atman.save` in the slot directory (`%APPDATA%\Atman\default`, `~/.local/share/atman/default`, or `--slot`) | the same format and code (`src/save`), in `/atman-save/default`, which the page keeps in IndexedDB. Saves stay in that browser on that device |
@@ -45,6 +46,7 @@ only frees the mouse. On a touch screen:
 - at the wheel, tap a form to throw it, then type its name in the box;
 - **Codex** along the top opens the codex (the arrows choose a page), and in the after-mode
   **Watch** steps out of the body and back in;
+- **Sound** along the top turns the sound off or on (it says which), and the page remembers it;
 - **Save**, **New** and **?** (how to play) are along the top as well.
 
 ## Building
@@ -71,8 +73,9 @@ play on a first visit, that the canvas draws the valley, that walking moves the 
 touch stick) and looking turns them, that the lamp lights and the codex opens and closes (Tab, or
 the page's buttons), and that the pointer lock is taken and given back (desktop). On the desktop
 viewport it also walks to the potter's wheel, throws a bowl and types its name, which must land in
-the list of things made. On both it saves, reloads the page, and checks that the place, the time of
-day and the pots came back with a "Loaded your save" message. It uploads its screenshots.
+the list of things made. On both it turns the sound off with the Sound button, saves, reloads the page, and checks that
+the place, the time of day and the pots came back with a "Loaded your save" message, and the sound
+stayed off. It uploads its screenshots.
 
 Headless Chromium fakes mouse movement under the pointer lock (it jumps to the cursor and back),
 so the smoke test looks through the same call the page's mouse handler makes; how the mouse feels
