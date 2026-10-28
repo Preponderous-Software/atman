@@ -1,9 +1,10 @@
 # Architecture
 
 Atman is a C++17 game on [Strata](https://github.com/Preponderous-Software/strata). Implemented
-(milestones M1 to M7): the valley's ground, river and village layout with walking and collision,
-the game clock, the body's needs, chapter 1, The Rope, chapter 2, Clay and Pots, the prologue's
-chores, sleep and the after-mode, and the autopilot with its pinned playthrough (`src/sim/`);
+(milestones M1 to M7, and chapter 3 since): the valley's ground, river and village layout with
+walking and collision, the game clock, the body's needs, chapter 1, The Rope, chapter 2, Clay and
+Pots, the prologue's chores, sleep, chapter 3, Three States, the after-mode and its days, and the
+autopilot with its pinned playthrough (`src/sim/`);
 the terrain grid and the village, snake, rope, pot and shard meshes, each paintable through the
 clay lens (`src/bridge/geometry.*`), and their upload to Strata (`src/bridge/scene.*`); the sun,
 the lamp, the motes, the camera and the HUD (`src/play/view.*`); the codex, its entries and plates
@@ -46,7 +47,7 @@ generic features a real consumer needs. Atman may propose engine additions (list
 
 | Path | Contents |
 |---|---|
-| `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep, the dream and the deep sleep, and the after-mode (`chores.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
+| `src/sim/` | Engine-free, deterministic rules: the valley, the fear meter, snakes and ropes, pots and clay (`clay.*`), the chores, sleep, the dream and the deep sleep, and the after-mode (`chores.*`), which of the after-mode's days are lamp nights and which bring egrets (`days.*`), the clock, and the autopilot with its route planner (`autopilot.*`) |
 | `src/bridge/` | The valley as a terrain grid and meshes (`geometry.*`) and their upload to Strata (`scene.*`), which swaps each coil's snake mesh for its rope mesh when the player sees it, a pot for its shards when it breaks, and every clay colour when the lens turns on |
 | `src/codex/` | The codex entries and their plates, built in at compile time by `cmake/embed_codex.cmake`; which entries are open; the PNG decoder (stb_image). No engine. |
 | `src/play/` | The sun, camera and HUD (`view.*`), the codex screen (`codex_screen.*`), and the `Session` that drives a game for either front end: input, the codex, watching the avatar (`session.*`) |
@@ -79,7 +80,8 @@ generic features a real consumer needs. Atman may propose engine additions (list
 
 ## Mapping the game to Strata
 
-Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked.
+Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked. The game pins Strata v0.6.0
+(ABI 1.12), whose drive channel lets a test harness run it (see [Saves](#saves)).
 
 | Game need | Strata feature | Since |
 |---|---|---|
