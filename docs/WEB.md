@@ -99,7 +99,9 @@ the page's buttons), and that the pointer lock is taken and given back (desktop)
 viewport it also walks to the potter's wheel, throws a bowl and types its name, which must land in
 the list of things made. On both it turns the sound off with the Sound button, saves, reloads the page, and checks that
 the place, the time of day and the pots came back with a "Loaded your save" message, and the sound
-stayed off. It uploads its screenshots.
+stayed off. It then checks that the second village starts new while the first keeps its day, that
+the loading shell finished, and that with WebGL 2 taken away the shell says why and nothing of the
+engine downloads. It uploads its screenshots.
 
 Headless Chromium fakes mouse movement under the pointer lock (it jumps to the cursor and back),
 so the smoke test looks through the same call the page's mouse handler makes; how the mouse feels

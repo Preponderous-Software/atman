@@ -155,7 +155,7 @@ simulation and its tests, with no engine.
 | 1 2 3 4 | At the wheel: throw a water jar, a bowl, a cup or a lamp, then type its name and press Enter |
 | B | Break the pot you are looking at |
 | C | The clay lens (after three pots) |
-| Tab | The codex (Up and Down choose a page; Tab or Esc goes back) |
+| Tab | The codex (Up and Down, or W and S, choose a page; Tab or Esc goes back) |
 | V | In the after-mode: step out and watch the avatar (W A S D and the mouse fly), or step back in |
 | M | Sound on or off |
 | F1 | Show or hide the controls |
