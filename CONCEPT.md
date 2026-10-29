@@ -102,7 +102,9 @@ assumes it is gone.
   second bird finally makes sense [C6].
 - **As built (after the MVP):** the first night after chapters 1 and 2. In the dream the sun runs
   backwards and each place wears the next one's name, and the HUD says "Nothing here seems
-  strange"; deep sleep is black, with the river and a dim, slowly breathing point; on waking the
+  strange", with "Nothing to do; the dream passes by itself" under it; deep sleep is black, with
+  the river, a dim, slowly breathing point and the faint line "Deep sleep. Morning comes by
+  itself." (#37); on waking the
   codex opens the dream (Bṛhadāraṇyaka 4.3.9–10, 4.3.14) [P2] and the fourth (Māṇḍūkya 2, 7) [P3],
   and the after-mode begins. The sheaths (chapter 3 here) are not built yet.
 
@@ -170,6 +172,4 @@ Watts's recordings are not used. *Everything* licensed them from the Alan Watts 
 - Which translation goes in-game: Hume (public domain) or a licensed Olivelle? [P1]
 - Who reviews it? Candidates are an Indologist and a teacher from the Ramakrishna Order or Arsha
   Vidya [M8] [M9].
-- Deep sleep is a black screen with no input. Does it need a small cue so players don't think the
-  game has frozen?
 - Does devotional (*bhakti*) Advaita belong anywhere beyond the codex?

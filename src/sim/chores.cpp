@@ -165,6 +165,12 @@ std::string nextStep(const World& w) {
     return isDusk(w) ? "Go home and sleep (E at your door)" : "Live the day; sleep at home after dark";
 }
 
+std::string sleepNote(const World& w) {
+    if (w.sleep == Sleep::Dream) return "Nothing to do; the dream passes by itself";
+    if (w.sleep == Sleep::Deep) return "Deep sleep. Morning comes by itself.";
+    return "";
+}
+
 bool nextPlace(const World& w, Vec2& at) {
     if (w.sleep != Sleep::Awake || (w.after && teachingsDone(w))) return false;
     if (w.potsMade < kPotsForLens) {
