@@ -395,7 +395,11 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     lines.push_back({nextStep(w)});
     if (w.sleep == Sleep::Dream) lines.push_back({"  " + sleepNote(w)});
     Vec2 at;
-    if (nextPlace(w, at)) {
+    const float sun = sunsetWait(w);
+    // On the ghat steps, waiting: how far the sun has gone, where the way
+    // there would be (#40).
+    if (sun >= 0) lines.push_back({"  the sun going down " + bar(sun, 10)});
+    else if (nextPlace(w, at)) {
         const std::string way = bearingText(w, at);
         if (!way.empty()) lines.push_back({"  " + way});
     }
@@ -504,10 +508,24 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     const float lamp[4] = {1.0f, 0.62f, 0.22f, 1.0f};
     float y = kMargin;
     std::vector<float> hudRight;  // where each HUD line ends, top to bottom
+    // As many characters as fit across the window.
+    const auto columns = static_cast<size_t>(std::max(16.0f, (static_cast<float>(width) - 2 * kMargin) / gTextSize));
     for (const HudLine& l : gHudShown ? hudLines(w, watching != nullptr) : std::vector<HudLine>{}) {
-        hudRight.push_back(noText ? 0 : kMargin + gTextSize * static_cast<float>(l.text.size()));
-        if (!l.text.empty()) text(texts, keep, kMargin, y, l.text, l.heading ? lamp : ink);
-        y += gLine;
+        // A line wider than the window goes on in the next row, indented two
+        // more, rather than off its edge: at 640x360 the snakes' count was
+        // cut off (#41).
+        std::vector<std::string> rows{l.text};
+        if (l.text.size() > columns) {
+            const size_t indent = std::min(l.text.find_first_not_of(' '), l.text.size());
+            const std::string pad(indent, ' ');
+            rows = wrapped(l.text.substr(indent), columns - indent - 2);
+            for (size_t i = 0; i < rows.size(); ++i) rows[i] = pad + (i ? "  " : "") + rows[i];
+        }
+        for (const std::string& row : rows) {
+            hudRight.push_back(noText ? 0 : kMargin + gTextSize * static_cast<float>(row.size()));
+            if (!row.empty()) text(texts, keep, kMargin, y, row, l.heading ? lamp : ink);
+            y += gLine;
+        }
     }
     const size_t hudTexts = texts.size();
     // Deep sleep has nothing to show: only a dim point that slowly breathes,
@@ -556,8 +574,6 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     if (!watching && w.sleep != Sleep::Deep)
         text(texts, keep, static_cast<float>(width) / 2 - gTextSize / 2, static_cast<float>(height) / 2 - gTextSize / 2,
              "+", ink);
-    // As many characters as fit across the window.
-    const auto columns = static_cast<size_t>(std::max(16.0f, (static_cast<float>(width) - 2 * kMargin) / gTextSize));
     // Centred lines of text from `row` down. Where they would cross the HUD's
     // lines (a short window), they are centred in the space to the HUD's
     // right instead, or, with no room there, start below the HUD. Returns the

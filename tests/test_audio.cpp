@@ -93,6 +93,15 @@ int main() {
         const std::vector<Cue> woke = cues(after, morning);
         CHECK(has(woke, Cue::Wake));
         CHECK(!has(woke, Cue::LampOff));
+
+        // The shrine's bell as the sun goes down, awake, and not in the dream.
+        World afternoon = before, dusk = before;
+        atMinute(afternoon, kDuskMinute - 1);
+        atMinute(dusk, kDuskMinute + 1);
+        CHECK(has(cues(afternoon, dusk), Cue::Sunset));
+        CHECK(!has(cues(dusk, dusk), Cue::Sunset));
+        dusk.sleep = afternoon.sleep = Sleep::Dream;
+        CHECK(!has(cues(afternoon, dusk), Cue::Sunset));
     }
 
     // The steady sounds follow the place and the hour.

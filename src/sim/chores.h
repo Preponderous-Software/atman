@@ -46,6 +46,13 @@ std::string nextStep(const World& w);
 // both read as a hang (the AI playtest of 0.3.0, #37). Empty when awake.
 std::string sleepNote(const World& w);
 
+// While the next step is to wait for the sunset and the player stands on the
+// ghat steps, how far the sun has gone down since the afternoon (or the
+// morning) began: 0 to 1, 1 at dusk. Otherwise -1. Under NEXT, in place of
+// the way to the ghat, so the wait reads as a wait (the AI playtest of
+// 0.3.0, #40).
+float sunsetWait(const World& w);
+
 // Where the next step is done, when it is done in one place: the wheel, the
 // drying board, the ghat, at dusk the nearest snake still on the path, then
 // your door. False when there is

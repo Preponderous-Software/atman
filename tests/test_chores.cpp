@@ -169,6 +169,23 @@ int main() {
         CHECK(nextStep(w).find("Break") == 0);
         w.codex[static_cast<int>(CodexId::PotSpace)] = true;
         CHECK(nextStep(w) == "Wait on the ghat steps for the sunset");
+        // Waiting there: how far the sun has gone, under NEXT (#40); not
+        // off the steps.
+        CHECK(sunsetWait(w) < 0);
+        w.player.x = (V::kGhat.x0 + V::kGhat.x1) / 2;
+        w.player.z = 0;
+        atMinute(kStartMinute);
+        CHECK(sunsetWait(w) == 0.0f);
+        atMinute((kStartMinute + kDuskMinute) / 2);
+        CHECK(sunsetWait(w) > 0.45f && sunsetWait(w) < 0.55f);
+        atMinute(kDuskMinute - 1);
+        CHECK(sunsetWait(w) > 0.95f && sunsetWait(w) <= 1.0f);
+        atMinute(kDuskMinute + 1);
+        CHECK(sunsetWait(w) < 0);  // dusk: the snakes now
+        atMinute(kDuskMinute - 1);
+        w.codex[static_cast<int>(CodexId::PotSpace)] = false;
+        CHECK(sunsetWait(w) < 0);  // not yet the next step
+        w.codex[static_cast<int>(CodexId::PotSpace)] = true;
         atMinute(19 * 60);
         CHECK(isDusk(w));
         CHECK(nextStep(w) == "Walk back to the village along the path");
