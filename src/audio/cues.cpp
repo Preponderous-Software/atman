@@ -91,6 +91,8 @@ std::vector<Cue> cues(const World& before, const World& after) {
     if (after.clayLens != before.clayLens) out.push_back(Cue::Lens);
     if (seenThrough(after) > seenThrough(before)) out.push_back(Cue::Rope);
     if (pages(after) > pages(before)) out.push_back(Cue::Page);
+    if (isDusk(after) && !isDusk(before) && after.sleep == Sleep::Awake && before.sleep == Sleep::Awake)
+        out.push_back(Cue::Sunset);
     return out;
 }
 

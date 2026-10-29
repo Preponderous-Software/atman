@@ -131,6 +131,7 @@ private:
     bool fourthSeen_ = false;  // whether waking from the deep sleep has been announced
     int32_t daySeen_ = 0;      // the day whose morning has been announced
     Sleep sleepSeen_ = Sleep::Awake;
+    bool duskSeen_ = false;  // whether the sun was down at the last frame
     std::string message_;
     double messageUntil_ = 0;
     int village_ = 1;

@@ -63,8 +63,8 @@ saffron pennant. After sunset each house lights a lamp by its door.
 
 Every sound is made by the game as it plays, with no recordings: the river, the wind, birds and a
 koel by day, crickets at night, footsteps on earth and on the ghat's stone, the wheel, a heartbeat
-while there is fear, a bell for each new page of the codex. M (or the page's Sound button) turns it
-off.
+while there is fear, a bell for each new page of the codex, and the shrine's low bell each evening as
+the sun goes down. M (or the page's Sound button) turns it off.
 
 The codex (Tab) holds each verse the game has taught, as a page with the Sanskrit in Devanagari and
 IAST, an English translation, the translator, the edition and the sources. A page opens when its

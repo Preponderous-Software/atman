@@ -1,6 +1,7 @@
 #include "sim/chores.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "sim/clay.h"
 #include "sim/valley.h"
@@ -169,6 +170,18 @@ std::string sleepNote(const World& w) {
     if (w.sleep == Sleep::Dream) return "Nothing to do; the dream passes by itself";
     if (w.sleep == Sleep::Deep) return "Deep sleep. Morning comes by itself.";
     return "";
+}
+
+float sunsetWait(const World& w) {
+    if (w.sleep != Sleep::Awake || w.fearRetired || isDusk(w) || !w.codex[static_cast<int>(CodexId::PotSpace)])
+        return -1;
+    for (const Coil& c : w.coils)
+        if (c.seenThrough) return -1;  // then NEXT says a snake is still on the path
+    const Player& p = w.player;
+    if (p.x < V::kGhat.x0 || p.x > V::kGhat.x1 || p.z < V::kGhat.z0 || p.z > V::kGhat.z1) return -1;
+    const double minute = std::fmod(skyMinutes(w), 1440.0);
+    const double from = w.day == 0 ? kStartMinute : kWakeMinute;
+    return static_cast<float>(std::clamp((minute - from) / (kDuskMinute - from), 0.0, 1.0));
 }
 
 bool nextPlace(const World& w, Vec2& at) {

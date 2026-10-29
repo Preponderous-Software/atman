@@ -88,6 +88,7 @@ void Session::adopt(const World& w) {
     fourthSeen_ = w_.codex[static_cast<int>(CodexId::Fourth)];
     daySeen_ = w_.day;
     sleepSeen_ = w_.sleep;
+    duskSeen_ = isDusk(w_);
     codexRead_ = w_.codex;  // a loaded game's pages are not new
     if (pages_.isOpen()) pages_.close();
 }
@@ -114,6 +115,12 @@ void Session::noticeChanges() {
     // without a word it reads as a broken clock (the AI playtests of 0.2.0).
     if (w_.sleep == Sleep::Dream && sleepSeen_ != Sleep::Dream) say("You sleep, and dream.", 6);
     sleepSeen_ = w_.sleep;
+    // The sunset is said, with the shrine's bell, while the snakes are still
+    // to come: the wait on the ghat steps ended in silence before (#40).
+    const bool dusk = isDusk(w_);
+    if (dusk && !duskSeen_ && w_.sleep == Sleep::Awake && !w_.fearRetired && !watching_)
+        say("The sun is down; a bell rings at the shrine.", 6);
+    duskSeen_ = dusk;
     // A lamp night is told of in its morning, so the player can be at the ghat for it.
     if (w_.day != daySeen_ && dayKind(w_) == DayKind::LampNight && !watching_)
         say("This evening the village sets lamps on the ghat steps, and floats more on the river.", 10);

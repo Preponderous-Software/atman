@@ -41,6 +41,7 @@ enum class Cue : int {
     Lens,        // the clay lens on or off
     Page,        // a new page in the codex
     Rope,        // a snake seen through
+    Sunset,      // the shrine's evening bell, as the sun goes down (#40)
     Count
 };
 

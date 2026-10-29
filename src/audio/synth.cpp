@@ -297,6 +297,7 @@ Synth::Synth() {
     set(Cue::Lens, chime({523, 587, 659, 784, 880}, 0.1f, 0.35f, 1.8f));
     set(Cue::Page, bell(523, 4));
     set(Cue::Rope, bell(392, 4));
+    set(Cue::Sunset, bell(262, 6));  // low and long, from the shrine
     for (int i = 0; i < 8; ++i) chirps_.push_back(chirps(r));
     for (int i = 0; i < 3; ++i) koel_.push_back(koel(r));
     for (int i = 0; i < 4; ++i) {
@@ -309,8 +310,8 @@ Synth::Synth() {
 }
 
 void Synth::play(Cue c) {
-    // The page bell and the rope's are the quietest: they are not rewards.
-    const float gain = c == Cue::Page || c == Cue::Rope || c == Cue::Wake ? 0.6f : 0.8f;
+    // The bells (a page, a rope, waking, the evening) are the quietest: they are not rewards.
+    const float gain = c == Cue::Page || c == Cue::Rope || c == Cue::Wake || c == Cue::Sunset ? 0.6f : 0.8f;
     playing_.push_back({&cues_[static_cast<size_t>(c)], 0, gain});
 }
 
