@@ -306,6 +306,8 @@ void Session::onKeyDown(int scancode, bool repeat) {
         setHudShown(hudShown_);
         say(hudShown_ ? "HUD shown (H)" : "HUD hidden (H shows it)", 3);
     } else if (scancode == kTab) openCodex();
+    else if (scancode == kV && w_.sleep != Sleep::Awake && !options_.autopilot)
+        say("Nothing is asked of you in sleep; it passes by itself.");  // not "later", which read as more to do (#37)
     else if (scancode == kV && !(w_.after || options_.autopilot))
         say("Stepping out of the body to watch comes later, once the teachings are done.");
     else if (scancode == kV) {

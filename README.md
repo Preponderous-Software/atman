@@ -41,8 +41,9 @@ list again.
 The night after the rope and the clay, the third teaching, Three States, comes in sleep. You dream
 the valley: the same houses and paths in an evening light, except that the sun runs backwards and
 every place wears the next one's name, and nothing on the HUD finds that strange ("Nothing here
-seems strange"). After a minute and a quarter the dream goes out, and deep sleep is a black screen
-with only the river and a dim point that slowly breathes. Then you wake, and two pages of the codex
+seems strange"); under it, a quieter line says there is nothing to do and the dream passes by itself.
+After a minute and a quarter the dream goes out, and deep sleep is a black screen with only the
+river, a dim point that slowly breathes, and one faint line: "Deep sleep. Morning comes by itself." Then you wake, and two pages of the codex
 are open: Yājñavalkya on the dream, and the fourth, what was there through waking, dream and deep
 sleep.
 
@@ -99,7 +100,7 @@ codex is open.
 
 | The dream, at a quarter to six | Later in the dream: the sun back in the afternoon |
 |---|---|
-| ![The dream, through a faint violet haze: the village in dusk light from your door; the HUD's NEXT reads "Nothing here seems strange" and the well is labelled "The potter's wheel"](docs/images/m6-dream.jpg) | ![Further on in the dream, by the well in bright afternoon sun at 2:38 pm by the HUD's clock; the well is still labelled "The potter's wheel" and a house "The shrine"](docs/images/m6-dream-sun.jpg) |
+| ![The dream, through a faint violet haze: the village in dusk light from your door; the HUD's NEXT reads "Nothing here seems strange", with "Nothing to do; the dream passes by itself" under it, and the well is labelled "The potter's wheel"](docs/images/m6-dream.jpg) | ![Further on in the dream, by the well in bright afternoon sun at 2:38 pm by the HUD's clock; the well is still labelled "The potter's wheel" and a house "The shrine"](docs/images/m6-dream-sun.jpg) |
 
 | The codex: the dream | The codex: the fourth |
 |---|---|

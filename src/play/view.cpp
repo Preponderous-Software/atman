@@ -393,6 +393,7 @@ std::vector<HudLine> hudLines(const World& w, bool watching) {
     lines.push_back({""});
     lines.push_back({"NEXT", true});
     lines.push_back({nextStep(w)});
+    if (w.sleep == Sleep::Dream) lines.push_back({"  " + sleepNote(w)});
     Vec2 at;
     if (nextPlace(w, at)) {
         const std::string way = bearingText(w, at);
@@ -510,13 +511,19 @@ void render(strata::Engine& engine, const World& w, bool help, const std::string
     }
     const size_t hudTexts = texts.size();
     // Deep sleep has nothing to show: only a dim point that slowly breathes,
-    // so that the dark does not look like the game has stopped. (Drawn with
+    // and one faint line under it, so that the dark does not look like the
+    // game has stopped. (Drawn with
     // the names of places, so a narrow page shows it too.)
     if (w.sleep == Sleep::Deep) {
         const float breath = 0.5f - 0.5f * std::cos(sleptSeconds(w) * 2 * kPi / 5.0f);
         const float dim[4] = {ink[0], ink[1], ink[2], 0.08f + 0.22f * breath};
         text(texts, keep, static_cast<float>(width) / 2 - gTextSize / 2, static_cast<float>(height) / 2 - gTextSize / 2,
              ".", dim);
+        // Below it, faint and still, that this passes by itself (#37).
+        const float faint[4] = {ink[0], ink[1], ink[2], 0.3f};
+        const std::string note = sleepNote(w);
+        text(texts, keep, static_cast<float>(width) / 2 - gTextSize * static_cast<float>(note.size()) / 2,
+             static_cast<float>(height) / 2 + 3 * gLine, note, faint);
     }
     // The names of places nearby, fading out with distance.
     for (const Place& place : deep ? std::vector<Place>{} : places(w)) {

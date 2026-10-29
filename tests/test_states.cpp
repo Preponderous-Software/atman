@@ -68,6 +68,9 @@ int main() {
     CHECK(!isDusk(w));  // the dream's light is the evening's, before the dark
     CHECK(clockText(w) == "6:10 pm");
     CHECK(nextStep(w) == "Nothing here seems strange");
+    // ...and under it, that the dream passes by itself: without that it read
+    // as a hang to three of four AI players of 0.3.0 (#37).
+    CHECK(sleepNote(w).find("passes by itself") != std::string::npos);
     CHECK(usable(w) == Use::None);
 
     // The dream's clock runs backwards, and the body walks, and that is all:
@@ -92,6 +95,8 @@ int main() {
     run(w, kDreamSeconds - 10, still(w));
     CHECK(w.sleep == Sleep::Deep);
     CHECK(nextStep(w).empty());
+    // The deep sleep's one line says it ends by itself (#37).
+    CHECK(sleepNote(w).find("Deep sleep") == 0 && sleepNote(w).find("by itself") != std::string::npos);
     const float x1 = w.player.x, z1 = w.player.z;
     run(w, kDeepSleepSeconds - 1, walk);
     CHECK(w.player.x == x1 && w.player.z == z1);
@@ -106,6 +111,7 @@ int main() {
     CHECK(w.codex[static_cast<int>(CodexId::Dream)] && w.codex[static_cast<int>(CodexId::Fourth)]);
     CHECK(teachingsDone(w) && w.after);
     CHECK(nextStep(w) == "Nothing more is asked of you");
+    CHECK(sleepNote(w).empty());  // awake again, nothing to say
 
     // The next night is the cut to morning again.
     w.tick += static_cast<int64_t>(14 * 60 * kTickRate);  // 8:30 pm

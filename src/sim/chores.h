@@ -41,6 +41,10 @@ bool teachingsDone(const World& w);
 // is asked. Keys are named in brackets, (C), for the page to rename on a
 // touch screen.
 std::string nextStep(const World& w);
+// While asleep, that the sleep passes by itself and nothing is to be done:
+// under NEXT in the dream, and the only words in the deep sleep. Without it
+// both read as a hang (the AI playtest of 0.3.0, #37). Empty when awake.
+std::string sleepNote(const World& w);
 
 // Where the next step is done, when it is done in one place: the wheel, the
 // drying board, the ghat, at dusk the nearest snake still on the path, then
