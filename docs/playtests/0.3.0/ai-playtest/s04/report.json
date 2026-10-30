@@ -3,101 +3,93 @@
   "goal": "As a brand-new player, follow the NEXT line from the first afternoon (the potter's wheel, then dusk and the snakes on the path) until you sleep at home after both teachings. Describe exactly what happens after you sleep (the dream, the deep sleep), whether anything made you think the game had stopped or frozen, then read the codex pages that open when you wake and try V and the after-mode chores. Answer the questions at the end.",
   "build": {
     "version": null,
-    "commit": "e1b80d3"
+    "commit": "b4bde32"
   },
   "seed": 4,
-  "durationSec": 2500,
+  "durationSec": 3808,
   "outcome": "achieved",
   "findings": [
     {
-      "severity": "major",
+      "severity": "minor",
       "category": "ux",
-      "title": "Deep sleep is a fully black screen with no HUD or caption: reads as a crash/freeze",
-      "detail": "At the end of the dream the screen goes completely black apart from one faint grey dot in the centre; HUD, clock and captions all disappear. Nothing tells the player this is deep sleep or that the game is still running. It lasted under ~10 game-seconds here and then I woke on 22 March 6:39 am, but a player at that moment has no way to know it will end. Expected: a quiet caption ('Deep sleep. Nothing appears.') or a slowly breathing light so the player knows it is intended.",
-      "repro": "pt start --profile atman-strata --game-dir /root/atman-proctor-030 --seed 4; complete wheel, break a pot, wait for sunset at the ghat, turn 3 snakes to rope, E at your door; pt wait ~85 in total; shot shows black screen",
-      "screenshot": "shots/deepsleep.png",
-      "tick": null
-    },
-    {
-      "severity": "major",
-      "category": "ux",
-      "title": "Dream phase gives no instruction or end cue; clock runs backward for ~70 game-seconds",
-      "detail": "After 'You sleep, and dream.' the village appears darker but walkable, full HUD stays up, NEXT says 'Nothing here seems strange', and the clock runs backward about 6 game-minutes per second (6:08 pm down to ~11 am). Nothing tells the player whether to act, wait, or find something. I tried F1 (no dream-specific help), C, E and walking; nothing changed, and it ended on its own. 'Nothing here seems strange' sounds like a hint to look for something strange, which sent me searching. The idea (the dreamer does not notice the dream is odd) is lovely, but for over a minute it felt stuck or looping. Expected: a short line like 'In the dream nothing seems strange. Let it pass.' or a visible way to tell it will end.",
-      "repro": "same as above; after E at the door, pt wait 3 several times and take shots: clock goes backward, NEXT stays 'Nothing here seems strange'",
-      "screenshot": "shots/dream.png",
+      "title": "At 640x360 a snake on the dusk path can sit under the HUD's NEXT text and only shows with H",
+      "detail": "The second snake was drawn behind the NEXT/CHORES text block at the left of the screen; it was found only after hiding the HUD with H. Expected: the HUD not to cover the thing NEXT points at, or a lighter HUD backing.",
+      "repro": "pt start --profile atman-strata --seed 4; at dusk turn the first snake to rope, then turn left toward the second (bearing '3 m ahead, to the left')",
+      "screenshot": "shots/a41.png",
       "tick": null
     },
     {
       "severity": "minor",
       "category": "text",
-      "title": "Text runs off the 640x360 window: NEXT snake counter and after-mode caption",
-      "detail": "During the snakes the NEXT line 'Go closer with the lamp, then look at it steadily (1 of 3)' is cut at the right edge to '(1' or '(2'. In the after-mode the orange caption '...Live the day as it comes, or step back...' runs off the bottom of the screen. Expected the text to wrap inside the window.",
-      "repro": "light lamp at dusk and look at a snake; later press V after waking",
-      "screenshot": "shots/cutoff.png",
+      "title": "NEXT at the snakes is cut at the right edge: '(1 of 3' loses its count's end",
+      "detail": "'Hold the lamp to it and look at it steadily (1 of 3' and 'Go closer with the lamp, then look at it steadily (2' run past the right edge at 640x360. Seen in the previous run too.",
+      "repro": "as above; after the first rope",
+      "screenshot": "shots/rope1_cutoff.png",
       "tick": null
     },
     {
       "severity": "minor",
       "category": "ux",
-      "title": "Opening tutorial line is overlapped by the help overlay",
-      "detail": "On start, the orange line 'The NEXT line, top left, says what comes next' is drawn underneath the white help rows (WASD walk / F lamp ...), so both are partly unreadable until F1 hides the help.",
-      "repro": "pt start ...; pt shot start",
-      "screenshot": "shots/overlap.png",
+      "title": "Aiming at a pot on the drying board takes several tries",
+      "detail": "At the board the pots are small and below eye level; 'Look straight at one of your pots, close by, to break it (B)' kept showing until the crosshair was exactly on a pot within reach (the 'B break the Ganga' prompt then appeared). It took several look adjustments.",
+      "repro": "throw three pots, C, walk to the drying board, aim at a pot",
+      "screenshot": "shots/a24.png",
       "tick": null
     },
     {
       "severity": "minor",
       "category": "ux",
-      "title": "After-mode chores have no direction hint and E at the well does nothing",
-      "detail": "After waking, NEXT reads 'Nothing more is asked of you' and the chores stay listed '(as you like)', but they no longer show a distance/direction and I could not find what E does at the well. A new player has no lead to start the chores. (I ran out of time before walking to the ghat or clay bank.)",
-      "repro": "after waking: walk to the well, pt key e",
-      "screenshot": "shots/afterchores.png",
+      "title": "The ghat's 'Wait on the ghat steps' bearing flips between behind and left within 3 to 4 m",
+      "detail": "Within a few metres of the ghat the bearing went '4 m behind you, to the left', '4 m to your left', '3 m behind you, to the left' as I turned and stepped; I never saw a sign that I had arrived. Dusk came on its own at 6:15 pm and NEXT moved on.",
+      "repro": "after breaking a pot, follow NEXT to the ghat and try to stand on the steps",
+      "screenshot": "shots/a33.png",
       "tick": null
     },
     {
-      "severity": "polish",
-      "category": "ux",
-      "title": "Pot targeting for B is fiddly and HUD covers the wheel area",
-      "detail": "The MADE list and chores block cover the lower left where the pots sit, and the crosshair must be exactly on a pot before 'B break the Moon' shows; it took 4 look adjustments. Thrown pots also never appeared in view while throwing; I only saw them after turning around.",
-      "repro": "throw 3 pots at the wheel, press C, then try B",
-      "screenshot": "shots/aimbreak.png",
-      "tick": null
-    },
-    {
-      "severity": "polish",
+      "severity": "minor",
       "category": "text",
-      "title": "Codex list entry 'The space in the pot' clipped by page panel",
-      "detail": "In the codex the left list item is cut at 'The space in the pot' by the page. The pages themselves (The dream, The fourth, Other schools) are excellent: Devanagari, IAST, Hume translation, sources, and a fair note on Advaita/Visistadvaita/Dvaita.",
-      "repro": "after waking, Tab",
-      "screenshot": "shots/codex.png",
+      "title": "The waking message runs off the bottom of the window after V",
+      "detail": "After waking and pressing V, the message 'Waking, dream and deep sleep: ... Live the day as it comes, or step back' is cut at the bottom edge at 640x360.",
+      "repro": "sleep after both teachings, wait to the morning, press V",
+      "screenshot": "shots/wake_msg_cut.png",
+      "tick": null
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "Opening hint is drawn over the help block; codex list clips long titles",
+      "detail": "Both known from earlier runs: the orange opening lines overlap the white help at the start, and 'The rope and the snake' / 'The space in the pot' are clipped in the codex list.",
+      "repro": "pt start; pt shot start; then Tab after waking",
+      "screenshot": "shots/start.png",
       "tick": null
     }
   ],
   "metrics": {
-    "objectivesCompleted": 6,
+    "objectivesCompleted": 7,
     "deaths": 0,
     "secondsToObjective": {
-      "Throw pots at the wheel (3 of 3)": 440.0,
-      "Break one of your pots": 550.0,
-      "Wait on the ghat steps for the sunset": 1340.0,
-      "Three snakes seen as rope": 1530.0,
-      "Sleep at home": 1650.0,
-      "Wake after dream and deep sleep": 2420.0
+      "Throw three pots": 1540,
+      "Clay lens": 1560,
+      "Break a pot": 2130,
+      "Dusk": 2700,
+      "Three snakes as rope": 3000,
+      "Sleep": 3570,
+      "Woke 22 March": 3725
     },
-    "dreamGameSecondsApprox": 70,
-    "deepSleepGameSecondsMax": 10,
-    "chorescompleted": 0
+    "dream game seconds": 77,
+    "deep sleep game seconds": "about 12",
+    "thought the game had frozen": 0
   },
-  "fun": 4,
-  "verdict": "The NEXT line carried me cleanly from the wheel through the snakes to sleep, and the snake-into-rope under the lamp and the waking codex pages are the high points. The dream gives no cue for over a minute and the deep sleep is an unlabelled black screen, so both look like the game has hung; one quiet caption each would fix that. secondsToObjective are wall-clock seconds on a heavily loaded stepped headless run (about 8x slower than real time), not game time.",
+  "fun": 3,
+  "verdict": "#37 is fixed as far as this session can tell: in the dream a second NEXT line says 'Nothing to do; the dream passes by itself', V says 'Nothing is asked of you in sleep; it passes by itself.', and the deep sleep shows 'Deep sleep. Morning comes by itself.' under the breathing point, so at no point did the sleep read as a hang. The rest of the day played as before; the remaining rough edges are HUD overlap and cut-off text at 640x360. secondsToObjective are wall-clock seconds from pt start (no probe) on a heavily loaded machine (load average near 120). This session was driven by the proctor, who had read the #39 diff, so it is not a naive first-time read.",
   "answers": [
     {
       "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
-      "answer": "An ordinary day in a village used to point at what does not change underneath it. The pots I named (Ganga, Moon, Sip) all read 'clay' through the clay lens, and breaking one just leaves clay: names and forms are real enough to use but the substance is one. The snake on the dusk path raised a Fear meter until I held the lamp steady on it and it was only ever a rope: the fear came from not seeing clearly, and light (knowledge) removes it without changing the rope. Sleep then walked me through waking, dream and dreamless sleep, and the closing line said I was there for all three, so the self is the witness present in every state; the codex calls it the fourth."
+      "answer": "A village day used to show that the many things we name are one stuff: three pots with three names are, through the clay lens, all just clay, and breaking one leaves clay. The snake on the dusk path was only ever a rope; the fear was real but its object was not, and steady light, not a fight, ended it. The sleep extends this: the waking day, the dream and deep sleep pass, and something was there for all three."
     },
     {
       "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
-      "answer": "Nothing felt preachy; the game mostly shows rather than tells, and the 'Other schools' codex page fairly notes that Visistadvaita and Dvaita read 'tat tvam asi' differently and that Atman teaches Advaita as one reading. The confusing part was the dream: 'Nothing here seems strange' with a clock running backward made me think I had to find something, and the black deep-sleep screen looked like a crash; only the waking caption and 'The dream' codex page made it make sense afterward. I cannot judge the Sanskrit or translations myself; they cite Hume and sources, which inspired trust."
+      "answer": "Nothing felt preachy; the game shows and the codex quotes. The 'Other schools' page is fair: it gives Visistadvaita and Dvaita their own readings of 'that you are' and says the game follows one school. Not confusing this time: the sleep says it passes by itself. I cannot judge the accuracy of the translations."
     }
   ]
 }

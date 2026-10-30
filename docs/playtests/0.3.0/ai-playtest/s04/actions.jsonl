@@ -1,234 +1,226 @@
-{"t": 1793282848354, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-proctor-030", "--seed", "4"]}
-{"t": 1793282864072, "cmd": "shot", "args": ["start"]}
-{"t": 1793282870054, "cmd": "note", "args": ["--shot", "overlap", "On start, the orange tutorial line 'The NEXT line ... says what comes next' is drawn underneath the white help overlay (WASD walk ... E use), so both are partly unreadable."]}
-{"t": 1793282870224, "cmd": "key", "args": ["F1"]}
-{"t": 1793282872112, "cmd": "shot", "args": ["nohelp"]}
-{"t": 1793282876895, "cmd": "look", "args": ["-100", "0"]}
-{"t": 1793282877203, "cmd": "shot", "args": ["l1"]}
-{"t": 1793282881653, "cmd": "step", "args": ["3"]}
-{"t": 1793282882429, "cmd": "shot", "args": ["l2"]}
-{"t": 1793282888709, "cmd": "look", "args": ["-250", "0"]}
-{"t": 1793282889014, "cmd": "step", "args": ["3"]}
-{"t": 1793282889850, "cmd": "shot", "args": ["l3"]}
-{"t": 1793282894099, "cmd": "hold", "args": ["w", "4"]}
-{"t": 1793282947610, "cmd": "shot", "args": ["w1"]}
-{"t": 1793282952090, "cmd": "hold", "args": ["Shift_L+w", "5"]}
-{"t": 1793282999985, "cmd": "shot", "args": ["w2"]}
-{"t": 1793283004077, "cmd": "look", "args": ["-150", "0"]}
-{"t": 1793283004227, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793283019175, "cmd": "shot", "args": ["w3"]}
-{"t": 1793283023637, "cmd": "hold", "args": ["Shift_L+w", "3"]}
-{"t": 1793283054531, "cmd": "shot", "args": ["w4"]}
-{"t": 1793283060204, "cmd": "key", "args": ["1"]}
-{"t": 1793283062102, "cmd": "step", "args": ["5"]}
-{"t": 1793283063220, "cmd": "shot", "args": ["p1"]}
-{"t": 1793283068251, "cmd": "wait", "args": ["4"]}
-{"t": 1793283120051, "cmd": "shot", "args": ["p2"]}
-{"t": 1793283125807, "cmd": "type", "args": ["Ganga"]}
-{"t": 1793283126116, "cmd": "key", "args": ["Return"]}
-{"t": 1793283128052, "cmd": "step", "args": ["5"]}
-{"t": 1793283129270, "cmd": "shot", "args": ["p3"]}
-{"t": 1793283135904, "cmd": "key", "args": ["2"]}
-{"t": 1793283137833, "cmd": "wait", "args": ["5"]}
-{"t": 1793283233654, "cmd": "type", "args": ["Moon"]}
-{"t": 1793283233986, "cmd": "key", "args": ["Return"]}
-{"t": 1793283235363, "cmd": "step", "args": ["3"]}
-{"t": 1793283236310, "cmd": "key", "args": ["3"]}
-{"t": 1793283237544, "cmd": "wait", "args": ["5"]}
-{"t": 1793283262312, "cmd": "status", "args": []}
-{"t": 1793283303587, "cmd": "type", "args": ["Sip"]}
-{"t": 1793283303956, "cmd": "key", "args": ["Return"]}
-{"t": 1793283305003, "cmd": "step", "args": ["5"]}
-{"t": 1793283305611, "cmd": "shot", "args": ["p4"]}
-{"t": 1793283313689, "cmd": "key", "args": ["c"]}
-{"t": 1793283318816, "cmd": "step", "args": ["5"]}
-{"t": 1793283320119, "cmd": "shot", "args": ["c1"]}
-{"t": 1793283328175, "cmd": "look", "args": ["500", "150"]}
-{"t": 1793283328452, "cmd": "step", "args": ["3"]}
-{"t": 1793283329335, "cmd": "shot", "args": ["c2"]}
-{"t": 1793283335339, "cmd": "look", "args": ["150", "-150"]}
-{"t": 1793283335614, "cmd": "step", "args": ["3"]}
-{"t": 1793283336485, "cmd": "shot", "args": ["c3"]}
-{"t": 1793283342919, "cmd": "key", "args": ["b"]}
-{"t": 1793283344972, "cmd": "step", "args": ["10"]}
-{"t": 1793283347464, "cmd": "shot", "args": ["b1"]}
-{"t": 1793283353297, "cmd": "hold", "args": ["w", "1"]}
-{"t": 1793283367099, "cmd": "look", "args": ["0", "150"]}
-{"t": 1793283367432, "cmd": "step", "args": ["3"]}
-{"t": 1793283368164, "cmd": "shot", "args": ["b2"]}
-{"t": 1793283374089, "cmd": "look", "args": ["200", "150"]}
-{"t": 1793283374348, "cmd": "step", "args": ["3"]}
-{"t": 1793283375128, "cmd": "shot", "args": ["b3"]}
-{"t": 1793283381029, "cmd": "look", "args": ["150", "30"]}
-{"t": 1793283381337, "cmd": "step", "args": ["3"]}
-{"t": 1793283381986, "cmd": "shot", "args": ["b4"]}
-{"t": 1793283387760, "cmd": "look", "args": ["70", "-40"]}
-{"t": 1793283388031, "cmd": "step", "args": ["3"]}
-{"t": 1793283388773, "cmd": "key", "args": ["b"]}
-{"t": 1793283390527, "cmd": "step", "args": ["10"]}
-{"t": 1793283392755, "cmd": "shot", "args": ["b5"]}
-{"t": 1793283398169, "cmd": "look", "args": ["80", "-50"]}
-{"t": 1793283398423, "cmd": "step", "args": ["3"]}
-{"t": 1793283399158, "cmd": "shot", "args": ["b6"]}
-{"t": 1793283403170, "cmd": "key", "args": ["b"]}
-{"t": 1793283404961, "cmd": "step", "args": ["20"]}
-{"t": 1793283409452, "cmd": "shot", "args": ["b7"]}
-{"t": 1793283416971, "cmd": "note", "args": ["--shot", "aimbreak", "Breaking a pot (B) needs the crosshair exactly on it; took me 4 look adjustments. The hint 'Look straight at one of your pots, close by' only shows 'B break the Moon' once aimed; worked. HUD text (MADE list, chores) covers the lower-left where pots sit at the wheel."]}
-{"t": 1793283417132, "cmd": "key", "args": ["c"]}
-{"t": 1793283419156, "cmd": "look", "args": ["-250", "-60"]}
-{"t": 1793283419612, "cmd": "step", "args": ["3"]}
-{"t": 1793283420562, "cmd": "shot", "args": ["g1"]}
-{"t": 1793283425172, "cmd": "look", "args": ["0", "-100"]}
-{"t": 1793283425446, "cmd": "hold", "args": ["Shift_L+w", "4"]}
-{"t": 1793283471059, "cmd": "shot", "args": ["g2"]}
-{"t": 1793283475395, "cmd": "hold", "args": ["Shift_L+w", "4"]}
-{"t": 1793283514864, "cmd": "shot", "args": ["g3"]}
-{"t": 1793283519254, "cmd": "hold", "args": ["s", "1.5"]}
-{"t": 1793283531616, "cmd": "hold", "args": ["a", "0.7"]}
-{"t": 1793283537345, "cmd": "shot", "args": ["g4"]}
-{"t": 1793283541791, "cmd": "hold", "args": ["a", "1.5"]}
-{"t": 1793283555141, "cmd": "shot", "args": ["g5"]}
-{"t": 1793283560990, "cmd": "wait", "args": ["5"]}
-{"t": 1793283603306, "cmd": "shot", "args": ["g6"]}
-{"t": 1793283608221, "cmd": "key", "args": ["e"]}
-{"t": 1793283609521, "cmd": "step", "args": ["10"]}
-{"t": 1793283611204, "cmd": "shot", "args": ["g7"]}
-{"t": 1793283615778, "cmd": "wait", "args": ["30"]}
-{"t": 1793283946544, "cmd": "shot", "args": ["g8"]}
-{"t": 1793283952876, "cmd": "wait", "args": ["20"]}
-{"t": 1793284076981, "cmd": "shot", "args": ["g9"]}
-{"t": 1793284081808, "cmd": "wait", "args": ["20"]}
-{"t": 1793284201499, "cmd": "shot", "args": ["g10"]}
-{"t": 1793284206565, "cmd": "key", "args": ["f"]}
-{"t": 1793284206762, "cmd": "look", "args": ["450", "60"]}
-{"t": 1793284206911, "cmd": "step", "args": ["5"]}
-{"t": 1793284208073, "cmd": "shot", "args": ["s1"]}
-{"t": 1793284213846, "cmd": "look", "args": ["150", "-20"]}
-{"t": 1793284213970, "cmd": "hold", "args": ["w", "1.5"]}
-{"t": 1793284225270, "cmd": "shot", "args": ["s2"]}
-{"t": 1793284230273, "cmd": "hold", "args": ["w", "1"]}
-{"t": 1793284238111, "cmd": "look", "args": ["0", "60"]}
-{"t": 1793284238267, "cmd": "step", "args": ["3"]}
-{"t": 1793284238486, "cmd": "shot", "args": ["s3"]}
-{"t": 1793284243128, "cmd": "look", "args": ["0", "25"]}
-{"t": 1793284243230, "cmd": "wait", "args": ["3"]}
-{"t": 1793284263249, "cmd": "shot", "args": ["s4"]}
-{"t": 1793284269456, "cmd": "note", "args": ["--shot", "cutoff", "NEXT line 'Go closer with the lamp, then look at it steadily (1...' runs off the right edge of the 640px window; the counter (1 of N?) is cut off. First snake turned to a coiled rope after ~3 s of steady lamp-gaze: nice moment."]}
-{"t": 1793284269637, "cmd": "look", "args": ["30", "-60"]}
-{"t": 1793284269745, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284285613, "cmd": "shot", "args": ["s5"]}
-{"t": 1793284291364, "cmd": "look", "args": ["150", "0"]}
-{"t": 1793284291510, "cmd": "hold", "args": ["w", "1.5"]}
-{"t": 1793284300754, "cmd": "shot", "args": ["s6"]}
-{"t": 1793284305164, "cmd": "look", "args": ["-20", "120"]}
-{"t": 1793284305259, "cmd": "wait", "args": ["3"]}
-{"t": 1793284323006, "cmd": "shot", "args": ["s7"]}
-{"t": 1793284328837, "cmd": "look", "args": ["0", "-150"]}
-{"t": 1793284328934, "cmd": "hold", "args": ["w", "2.5"]}
-{"t": 1793284349810, "cmd": "shot", "args": ["s8"]}
-{"t": 1793284354507, "cmd": "hold", "args": ["w", "1.5"]}
-{"t": 1793284369550, "cmd": "look", "args": ["0", "80"]}
-{"t": 1793284369672, "cmd": "step", "args": ["3"]}
-{"t": 1793284370667, "cmd": "shot", "args": ["s9"]}
-{"t": 1793284375129, "cmd": "look", "args": ["30", "110"]}
-{"t": 1793284375196, "cmd": "wait", "args": ["3"]}
-{"t": 1793284390601, "cmd": "shot", "args": ["s10"]}
-{"t": 1793284398210, "cmd": "look", "args": ["0", "-200"]}
-{"t": 1793284398343, "cmd": "hold", "args": ["Shift_L+w", "3"]}
-{"t": 1793284425656, "cmd": "shot", "args": ["h1"]}
-{"t": 1793284431993, "cmd": "hold", "args": ["Shift_L+w", "2"]}
-{"t": 1793284445870, "cmd": "shot", "args": ["h2"]}
-{"t": 1793284451635, "cmd": "hold", "args": ["d", "2"]}
-{"t": 1793284463390, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284477459, "cmd": "look", "args": ["-300", "0"]}
-{"t": 1793284477536, "cmd": "step", "args": ["3"]}
-{"t": 1793284477654, "cmd": "shot", "args": ["h3"]}
-{"t": 1793284483172, "cmd": "look", "args": ["80", "0"]}
-{"t": 1793284483919, "cmd": "hold", "args": ["w", "1.5"]}
-{"t": 1793284496610, "cmd": "shot", "args": ["h4"]}
-{"t": 1793284502089, "cmd": "key", "args": ["e"]}
-{"t": 1793284502259, "cmd": "step", "args": ["10"]}
-{"t": 1793284503355, "cmd": "shot", "args": ["d0"]}
-{"t": 1793284505038, "cmd": "wait", "args": ["2"]}
-{"t": 1793284517278, "cmd": "shot", "args": ["d1"]}
-{"t": 1793284522393, "cmd": "wait", "args": ["3"]}
-{"t": 1793284549574, "cmd": "shot", "args": ["d2"]}
-{"t": 1793284549731, "cmd": "wait", "args": ["3"]}
-{"t": 1793284572811, "cmd": "shot", "args": ["d3"]}
-{"t": 1793284572948, "cmd": "wait", "args": ["3"]}
-{"t": 1793284597675, "cmd": "shot", "args": ["d4"]}
-{"t": 1793284597804, "cmd": "wait", "args": ["3"]}
-{"t": 1793284625854, "cmd": "shot", "args": ["d5"]}
-{"t": 1793284635753, "cmd": "look", "args": ["-600", "0"]}
-{"t": 1793284635927, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284653837, "cmd": "shot", "args": ["d6"]}
-{"t": 1793284658681, "cmd": "wait", "args": ["2"]}
-{"t": 1793284674674, "cmd": "shot", "args": ["d7"]}
-{"t": 1793284674799, "cmd": "wait", "args": ["3"]}
-{"t": 1793284695471, "cmd": "shot", "args": ["d8"]}
-{"t": 1793284702823, "cmd": "note", "args": ["--shot", "dream", "After E at the door: 'You sleep, and dream.' The dream is the same village, darkened, walkable; HUD stays fully up, clock runs BACKWARD (~6 game-min per second: 6:08 pm -> 4:02 pm by ~20 s) and NEXT says 'Nothing here seems strange'. No prompt says what to do or how long it lasts; it read as possibly stuck/looping."]}
-{"t": 1793284702960, "cmd": "wait", "args": ["10"]}
-{"t": 1793284785264, "cmd": "shot", "args": ["d9"]}
-{"t": 1793284798602, "cmd": "key", "args": ["F1"]}
-{"t": 1793284799615, "cmd": "step", "args": ["5"]}
-{"t": 1793284800330, "cmd": "shot", "args": ["d10"]}
-{"t": 1793284804862, "cmd": "key", "args": ["F1"]}
-{"t": 1793284805998, "cmd": "key", "args": ["c"]}
-{"t": 1793284807066, "cmd": "step", "args": ["10"]}
-{"t": 1793284808393, "cmd": "shot", "args": ["d11"]}
-{"t": 1793284808513, "cmd": "key", "args": ["e"]}
-{"t": 1793284809861, "cmd": "step", "args": ["10"]}
-{"t": 1793284811201, "cmd": "shot", "args": ["d12"]}
-{"t": 1793284817032, "cmd": "wait", "args": ["10"]}
-{"t": 1793284889784, "cmd": "shot", "args": ["d13"]}
-{"t": 1793284889895, "cmd": "wait", "args": ["10"]}
-{"t": 1793284976078, "cmd": "shot", "args": ["d14"]}
-{"t": 1793284990855, "cmd": "look", "args": ["1000", "0"]}
-{"t": 1793284991016, "cmd": "step", "args": ["3"]}
-{"t": 1793284991392, "cmd": "shot", "args": ["e1"]}
-{"t": 1793284991500, "cmd": "look", "args": ["900", "0"]}
-{"t": 1793284991675, "cmd": "step", "args": ["3"]}
-{"t": 1793284992083, "cmd": "shot", "args": ["e2"]}
-{"t": 1793284997698, "cmd": "look", "args": ["-60", "0"]}
-{"t": 1793284997846, "cmd": "hold", "args": ["Shift_L+w", "4"]}
-{"t": 1793285021891, "cmd": "shot", "args": ["e3"]}
-{"t": 1793285028219, "cmd": "wait", "args": ["15"]}
-{"t": 1793285141325, "cmd": "shot", "args": ["e4"]}
-{"t": 1793285141499, "cmd": "wait", "args": ["15"]}
-{"t": 1793285219333, "cmd": "shot", "args": ["e5"]}
-{"t": 1793285228143, "cmd": "note", "args": ["--shot", "deepsleep", "Dream ended somewhere between 11:01 am (dream clock) and ~30 game-s later; now the screen is entirely black except one faint grey pixel-dot at centre, with no HUD, no caption, no clock. A player would very likely think the game has crashed/frozen here."]}
-{"t": 1793285228225, "cmd": "wait", "args": ["10"]}
-{"t": 1793285289087, "cmd": "shot", "args": ["f1"]}
-{"t": 1793285293728, "cmd": "key", "args": ["Tab"]}
-{"t": 1793285294127, "cmd": "step", "args": ["5"]}
-{"t": 1793285294311, "cmd": "shot", "args": ["k1"]}
-{"t": 1793285299280, "cmd": "key", "args": ["Up"]}
-{"t": 1793285299743, "cmd": "step", "args": ["3"]}
-{"t": 1793285299881, "cmd": "shot", "args": ["k2"]}
-{"t": 1793285299973, "cmd": "key", "args": ["Down", "Down"]}
-{"t": 1793285300495, "cmd": "step", "args": ["3"]}
-{"t": 1793285300659, "cmd": "shot", "args": ["k3"]}
-{"t": 1793285307177, "cmd": "note", "args": ["--shot", "codex", "Codex after waking: pages 'The dream' (Brhadaranyaka 4.3.9-14) and 'The fourth' (Mandukya 2,7) with Devanagari, IAST, Hume translation and sources; plus 'Other schools' giving Advaita, Visistadvaita and Dvaita readings of tat tvam asi fairly. Excellent. Minor: left list entry 'The space in the pot' is clipped by the page panel. The codex did not open on its own; only the earlier 'new page' hint pointed at Tab."]}
-{"t": 1793285307271, "cmd": "key", "args": ["Tab"]}
-{"t": 1793285308246, "cmd": "step", "args": ["3"]}
-{"t": 1793285308628, "cmd": "key", "args": ["v"]}
-{"t": 1793285309604, "cmd": "step", "args": ["30"]}
-{"t": 1793285313264, "cmd": "shot", "args": ["v1"]}
-{"t": 1793285318004, "cmd": "wait", "args": ["3"]}
-{"t": 1793285337510, "cmd": "shot", "args": ["v2"]}
-{"t": 1793285343567, "cmd": "note", "args": ["--shot", "watch", "V in after-mode: 'Watching  step back in (V)'; camera pulls behind and the player figure walks the village on its own. Works. But the orange caption '...Live the day as it comes, or step back' runs off the bottom of the 640x360 window (last line cut)."]}
-{"t": 1793285343623, "cmd": "key", "args": ["v"]}
-{"t": 1793285344133, "cmd": "step", "args": ["10"]}
-{"t": 1793285344814, "cmd": "shot", "args": ["v3"]}
-{"t": 1793285347373, "cmd": "look", "args": ["0", "40"]}
-{"t": 1793285347467, "cmd": "hold", "args": ["w", "1"]}
-{"t": 1793285351464, "cmd": "shot", "args": ["v4"]}
-{"t": 1793285356216, "cmd": "look", "args": ["-120", "0"]}
-{"t": 1793285356300, "cmd": "key", "args": ["e"]}
-{"t": 1793285356838, "cmd": "step", "args": ["10"]}
-{"t": 1793285357480, "cmd": "shot", "args": ["v5"]}
-{"t": 1793285362995, "cmd": "note", "args": ["--shot", "afterchores", "After waking, the chores list stays ('as you like') but there is no distance/direction hint for them any more (NEXT just says 'Nothing more is asked of you') and E at the well does nothing; I could not tell how to start the water chore without a guide. Ran out of time before trying the ghat/clay bank."]}
-{"t": 1793285363047, "cmd": "stop", "args": []}
-{"t": 1793285397169, "cmd": "report", "args": []}
-{"t": 1793285464201, "cmd": "stop", "args": []}
-{"t": 1793285464234, "cmd": "report", "args": []}
+{"t": 1793317421176, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-wt-pt030b", "--seed", "4"]}
+{"t": 1793317449252, "cmd": "shot", "args": ["start"]}
+{"t": 1793317475017, "cmd": "key", "args": ["F1"]}
+{"t": 1793317479127, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1793317480109, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793317537678, "cmd": "shot", "args": ["a1"]}
+{"t": 1793317553992, "cmd": "look", "args": ["-250", "0"]}
+{"t": 1793317554669, "cmd": "hold", "args": ["w", "6"]}
+{"t": 1793317685069, "cmd": "shot", "args": ["a2"]}
+{"t": 1793317696017, "cmd": "hold", "args": ["d", "1.5"]}
+{"t": 1793317724333, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793317830326, "cmd": "shot", "args": ["a3"]}
+{"t": 1793317865057, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1793317865725, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793317956292, "cmd": "shot", "args": ["a4"]}
+{"t": 1793317968724, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1793317969118, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1793318047882, "cmd": "shot", "args": ["a5"]}
+{"t": 1793318059432, "cmd": "look", "args": ["-40", "0"]}
+{"t": 1793318059911, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793318101415, "cmd": "key", "args": ["1"]}
+{"t": 1793318105142, "cmd": "wait", "args": ["4"]}
+{"t": 1793318185029, "cmd": "shot", "args": ["a6"]}
+{"t": 1793318201991, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1793318202752, "cmd": "shot", "args": ["a7"]}
+{"t": 1793318214124, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793318224742, "cmd": "shot", "args": ["a8"]}
+{"t": 1793318247636, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1793318248343, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793318262439, "cmd": "shot", "args": ["a9"]}
+{"t": 1793318275943, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793318330976, "cmd": "shot", "args": ["a10"]}
+{"t": 1793318347070, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793318420787, "cmd": "key", "args": ["1"]}
+{"t": 1793318424174, "cmd": "wait", "args": ["1"]}
+{"t": 1793318449723, "cmd": "shot", "args": ["a11"]}
+{"t": 1793318462545, "cmd": "wait", "args": ["3"]}
+{"t": 1793318536185, "cmd": "shot", "args": ["a12"]}
+{"t": 1793318546287, "cmd": "type", "args": ["Ganga"]}
+{"t": 1793318546737, "cmd": "key", "args": ["Return"]}
+{"t": 1793318550279, "cmd": "key", "args": ["2"]}
+{"t": 1793318554022, "cmd": "wait", "args": ["3.5"]}
+{"t": 1793318623026, "cmd": "type", "args": ["Bowl"]}
+{"t": 1793318623635, "cmd": "key", "args": ["Return"]}
+{"t": 1793318626107, "cmd": "key", "args": ["3"]}
+{"t": 1793318628792, "cmd": "wait", "args": ["3.5"]}
+{"t": 1793318699928, "cmd": "type", "args": ["Lamp"]}
+{"t": 1793318700447, "cmd": "key", "args": ["Return"]}
+{"t": 1793318703184, "cmd": "wait", "args": ["1"]}
+{"t": 1793318721995, "cmd": "shot", "args": ["a13"]}
+{"t": 1793318727537, "cmd": "key", "args": ["c"]}
+{"t": 1793318729925, "cmd": "look", "args": ["600", "0"]}
+{"t": 1793318730345, "cmd": "wait", "args": ["1"]}
+{"t": 1793318747581, "cmd": "shot", "args": ["a14"]}
+{"t": 1793318752830, "cmd": "look", "args": ["120", "0"]}
+{"t": 1793318753361, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793318847196, "cmd": "shot", "args": ["a15"]}
+{"t": 1793318852142, "cmd": "look", "args": ["500", "0"]}
+{"t": 1793318852475, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793318861503, "cmd": "shot", "args": ["a16"]}
+{"t": 1793318865379, "cmd": "look", "args": ["150", "0"]}
+{"t": 1793318865855, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793318917623, "cmd": "shot", "args": ["a17"]}
+{"t": 1793318923714, "cmd": "look", "args": ["250", "80"]}
+{"t": 1793318924184, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793318932599, "cmd": "shot", "args": ["a18"]}
+{"t": 1793318937281, "cmd": "look", "args": ["120", "60"]}
+{"t": 1793318937829, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793318949486, "cmd": "shot", "args": ["a19"]}
+{"t": 1793318954890, "cmd": "look", "args": ["90", "20"]}
+{"t": 1793318955369, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793318962670, "cmd": "key", "args": ["b"]}
+{"t": 1793318966095, "cmd": "wait", "args": ["1"]}
+{"t": 1793318987769, "cmd": "shot", "args": ["a20"]}
+{"t": 1793318992977, "cmd": "look", "args": ["220", "30"]}
+{"t": 1793318993434, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1793319026407, "cmd": "shot", "args": ["a21"]}
+{"t": 1793319032676, "cmd": "look", "args": ["15", "-15"]}
+{"t": 1793319033271, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793319040459, "cmd": "key", "args": ["b"]}
+{"t": 1793319043581, "cmd": "wait", "args": ["1"]}
+{"t": 1793319066673, "cmd": "shot", "args": ["a22"]}
+{"t": 1793319073452, "cmd": "look", "args": ["10", "20"]}
+{"t": 1793319073944, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793319096520, "cmd": "key", "args": ["b"]}
+{"t": 1793319099752, "cmd": "wait", "args": ["1"]}
+{"t": 1793319122738, "cmd": "shot", "args": ["a23"]}
+{"t": 1793319130083, "cmd": "key", "args": ["h"]}
+{"t": 1793319132969, "cmd": "look", "args": ["0", "40"]}
+{"t": 1793319133458, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793319139891, "cmd": "shot", "args": ["a24"]}
+{"t": 1793319145059, "cmd": "key", "args": ["b"]}
+{"t": 1793319147196, "cmd": "wait", "args": ["1"]}
+{"t": 1793319165812, "cmd": "key", "args": ["h"]}
+{"t": 1793319168952, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793319175122, "cmd": "shot", "args": ["a25"]}
+{"t": 1793319182567, "cmd": "look", "args": ["-550", "-40"]}
+{"t": 1793319182905, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1793319268791, "cmd": "shot", "args": ["a26"]}
+{"t": 1793319274696, "cmd": "look", "args": ["-100", "-30"]}
+{"t": 1793319275140, "cmd": "hold", "args": ["w", "6"]}
+{"t": 1793319401294, "cmd": "shot", "args": ["a27"]}
+{"t": 1793319407538, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1793319407966, "cmd": "hold", "args": ["w", "8"]}
+{"t": 1793319556139, "cmd": "shot", "args": ["a28"]}
+{"t": 1793319560449, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1793319560720, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793319593815, "cmd": "shot", "args": ["a29"]}
+{"t": 1793319598636, "cmd": "look", "args": ["-400", "0"]}
+{"t": 1793319598913, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1793319615886, "cmd": "shot", "args": ["a30"]}
+{"t": 1793319622898, "cmd": "look", "args": ["-250", "0"]}
+{"t": 1793319623078, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793319624543, "cmd": "shot", "args": ["a31"]}
+{"t": 1793319630040, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1793319630264, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793319674246, "cmd": "shot", "args": ["a32"]}
+{"t": 1793319680400, "cmd": "look", "args": ["-200", "0"]}
+{"t": 1793319680544, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793319707419, "cmd": "shot", "args": ["a33"]}
+{"t": 1793319712275, "cmd": "wait", "args": ["7"]}
+{"t": 1793319784341, "cmd": "shot", "args": ["a34"]}
+{"t": 1793319789375, "cmd": "key", "args": ["f"]}
+{"t": 1793319791026, "cmd": "look", "args": ["-400", "0"]}
+{"t": 1793319791147, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793319798583, "cmd": "shot", "args": ["a35"]}
+{"t": 1793319802596, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1793319802685, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793319845712, "cmd": "shot", "args": ["a36"]}
+{"t": 1793319850080, "cmd": "look", "args": ["-350", "30"]}
+{"t": 1793319850195, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793319853490, "cmd": "shot", "args": ["a37"]}
+{"t": 1793319858617, "cmd": "look", "args": ["-40", "0"]}
+{"t": 1793319858688, "cmd": "hold", "args": ["w", "3.5"]}
+{"t": 1793319879719, "cmd": "shot", "args": ["a38"]}
+{"t": 1793319885376, "cmd": "look", "args": ["-5", "-25"]}
+{"t": 1793319885495, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793319891555, "cmd": "wait", "args": ["3"]}
+{"t": 1793319914628, "cmd": "shot", "args": ["a39"]}
+{"t": 1793319921566, "cmd": "note", "args": ["--shot", "rope1_cutoff", "One snake turned to rope. NEXT reads 'Hold the lamp to it and look at it steadily (1 of 3' with the count cut off at the right edge at 640x360 (seen in the previous run too)."]}
+{"t": 1793319921690, "cmd": "look", "args": ["-350", "20"]}
+{"t": 1793319921775, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793319924871, "cmd": "shot", "args": ["a40"]}
+{"t": 1793319929621, "cmd": "look", "args": ["-170", "15"]}
+{"t": 1793319929713, "cmd": "wait", "args": ["3"]}
+{"t": 1793319949130, "cmd": "shot", "args": ["a41"]}
+{"t": 1793319953995, "cmd": "key", "args": ["h"]}
+{"t": 1793319954157, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793319956276, "cmd": "shot", "args": ["a42"]}
+{"t": 1793319964122, "cmd": "note", "args": ["--shot", "snake_under_hud", "At 640x360 the second snake on the path was hidden under the HUD's NEXT text; only H (hide HUD) showed it."]}
+{"t": 1793319964251, "cmd": "look", "args": ["-55", "-8"]}
+{"t": 1793319964360, "cmd": "wait", "args": ["3"]}
+{"t": 1793319988635, "cmd": "shot", "args": ["a43"]}
+{"t": 1793319995263, "cmd": "look", "args": ["-110", "-12"]}
+{"t": 1793319995404, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793320004808, "cmd": "wait", "args": ["3"]}
+{"t": 1793320036315, "cmd": "shot", "args": ["a44"]}
+{"t": 1793320041937, "cmd": "key", "args": ["h"]}
+{"t": 1793320042196, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793320047033, "cmd": "shot", "args": ["a45"]}
+{"t": 1793320051808, "cmd": "look", "args": ["650", "0"]}
+{"t": 1793320051960, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793320054307, "cmd": "shot", "args": ["a46"]}
+{"t": 1793320058798, "cmd": "look", "args": ["160", "0"]}
+{"t": 1793320058872, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793320098354, "cmd": "shot", "args": ["a47"]}
+{"t": 1793320103451, "cmd": "look", "args": ["350", "30"]}
+{"t": 1793320103604, "cmd": "key", "args": ["h"]}
+{"t": 1793320103776, "cmd": "wait", "args": ["0.4"]}
+{"t": 1793320110566, "cmd": "shot", "args": ["a48"]}
+{"t": 1793320115276, "cmd": "look", "args": ["180", "0"]}
+{"t": 1793320115366, "cmd": "wait", "args": ["3"]}
+{"t": 1793320138404, "cmd": "shot", "args": ["a49"]}
+{"t": 1793320143898, "cmd": "key", "args": ["h"]}
+{"t": 1793320144171, "cmd": "wait", "args": ["0.4"]}
+{"t": 1793320148952, "cmd": "shot", "args": ["a50"]}
+{"t": 1793320155058, "cmd": "look", "args": ["-80", "0"]}
+{"t": 1793320155202, "cmd": "hold", "args": ["w", "10"]}
+{"t": 1793320230464, "cmd": "shot", "args": ["a51"]}
+{"t": 1793320236230, "cmd": "key", "args": ["e"]}
+{"t": 1793320236396, "cmd": "look", "args": ["-60", "0"]}
+{"t": 1793320236497, "cmd": "hold", "args": ["a", "1.5"]}
+{"t": 1793320245208, "cmd": "hold", "args": ["w", "7"]}
+{"t": 1793320285313, "cmd": "shot", "args": ["a52"]}
+{"t": 1793320289713, "cmd": "look", "args": ["-500", "0"]}
+{"t": 1793320289822, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793320291410, "cmd": "shot", "args": ["a53"]}
+{"t": 1793320295847, "cmd": "look", "args": ["-150", "0"]}
+{"t": 1793320295941, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793320324561, "cmd": "shot", "args": ["a54"]}
+{"t": 1793320329214, "cmd": "key", "args": ["e"]}
+{"t": 1793320329399, "cmd": "wait", "args": ["3"]}
+{"t": 1793320349746, "cmd": "shot", "args": ["dream1"]}
+{"t": 1793320354857, "cmd": "note", "args": ["--shot", "dream_note", "#37 check: in the dream, under NEXT 'Nothing here seems strange', a second line now reads 'Nothing to do; the dream passes by itself'. With the caption 'You sleep, and dream.' it is clear nothing is expected of the player."]}
+{"t": 1793320354961, "cmd": "key", "args": ["v"]}
+{"t": 1793320356176, "cmd": "wait", "args": ["1"]}
+{"t": 1793320365460, "cmd": "shot", "args": ["dream_v"]}
+{"t": 1793320369869, "cmd": "wait", "args": ["35"]}
+{"t": 1793320717700, "cmd": "shot", "args": ["dream2"]}
+{"t": 1793320717848, "cmd": "wait", "args": ["30"]}
+{"t": 1793320967318, "cmd": "shot", "args": ["dream3"]}
+{"t": 1793320972424, "cmd": "wait", "args": ["8"]}
+{"t": 1793321029243, "cmd": "shot", "args": ["deep1"]}
+{"t": 1793321034980, "cmd": "note", "args": ["--shot", "deep_note", "#37 check: the deep sleep is black with the breathing dot and, under it, 'Deep sleep. Morning comes by itself.' No longer reads as a crash."]}
+{"t": 1793321035096, "cmd": "wait", "args": ["12"]}
+{"t": 1793321151913, "cmd": "shot", "args": ["wake1"]}
+{"t": 1793321157108, "cmd": "key", "args": ["Tab"]}
+{"t": 1793321157860, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793321159226, "cmd": "shot", "args": ["codex1"]}
+{"t": 1793321159465, "cmd": "key", "args": ["Down"]}
+{"t": 1793321159884, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793321161262, "cmd": "shot", "args": ["codex2"]}
+{"t": 1793321166672, "cmd": "key", "args": ["Tab"]}
+{"t": 1793321168557, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793321173055, "cmd": "key", "args": ["e"]}
+{"t": 1793321174976, "cmd": "wait", "args": ["1"]}
+{"t": 1793321189060, "cmd": "shot", "args": ["eat"]}
+{"t": 1793321189325, "cmd": "key", "args": ["v"]}
+{"t": 1793321191052, "cmd": "wait", "args": ["2"]}
+{"t": 1793321216000, "cmd": "shot", "args": ["v1"]}
+{"t": 1793321222696, "cmd": "note", "args": ["--shot", "wake_msg_cut", "After V on waking, the long waking message ('...Live the day as it comes, or step back') runs off the bottom edge of the 640x360 window, so its end is cut."]}
+{"t": 1793321222822, "cmd": "key", "args": ["v"]}
+{"t": 1793321224481, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793321230150, "cmd": "stop", "args": []}
+{"t": 1793321257210, "cmd": "report", "args": []}
+{"t": 1793326054580, "cmd": "report", "args": []}
