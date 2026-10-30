@@ -1,0 +1,104 @@
+{
+  "session": "s02",
+  "goal": "Clay and pots: at the potter's wheel throw three pots (1-4) and name each one, use the clay lens (C) and look around with it, break a pot (B), then read what opened in the codex (Tab). Then carry on toward dusk as far as your time allows, and answer the questions at the end.",
+  "build": {
+    "version": null,
+    "commit": "e1b80d3"
+  },
+  "seed": 2,
+  "durationSec": 1563,
+  "outcome": "achieved",
+  "findings": [
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Potter's wheel is an unreadable dark disc on the ground; NEXT says '3 m ahead' while standing beside it",
+      "detail": "Following NEXT ('Throw pots at the potter's wheel ... 3 m ahead') I stopped next to a dark flat disc I took for a shadow. Pressing 1 did nothing and no prompt appeared until I looked down and walked onto the disc. Expected a recognisable wheel (rim, stool, spinning head) and the 'At the wheel' prompt within ~2 m.",
+      "repro": "pt start --profile atman-strata --seed 2; F1; look left ~-670 px total; walk with Shift+W ~10 s toward the wheel until NEXT reads '3 m ahead'; press 1 (nothing); look 0 150; hold w 1.5 -> wheel prompt appears",
+      "screenshot": "shots/wheel_disc.png",
+      "tick": 1219
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Thrown pots appear behind the player, out of view, with no feedback at the wheel",
+      "detail": "After throwing and naming each pot, the wheel shows nothing and no message says where the pot went; only the HUD MADE list changes. I found the three pots 3 m behind the wheel on the drying board only via the NEXT distance hint after turning on the clay lens. Expected the finished pot to be seen on the wheel or carried to the board in view, plus a short 'Ganga set to dry' message.",
+      "repro": "At the wheel: pt key 1; pt wait 4; pt type Ganga; pt key Return -> wheel empty, nothing in view",
+      "screenshot": "shots/clay_lens.png",
+      "tick": 2361
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Opening hint overlaps the help panel's first line at game start",
+      "detail": "On the very first frame the orange hint 'The NEXT line, top left, says what comes next.' is drawn over 'W A S D walk  Shift hurry  Mouse look  E use', so both are unreadable. Pressing F1 hides the help and fixes it.",
+      "repro": "pt start --profile atman-strata --seed 2; pt shot start",
+      "screenshot": "shots/overlap_start.png",
+      "tick": 0
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Wheel prompt is drawn over the HUD CHORES/MADE lists when the HUD is shown",
+      "detail": "With the HUD visible at the wheel, 'At the wheel: 1 water jar 2 bowl 3 cup 4 lamp' is centered over the chore lines and wraps '4 lamp' onto the MADE header row. The naming prompt also sits on the CHORES lines.",
+      "repro": "Stand on the wheel with the HUD on (H); pt shot",
+      "screenshot": "shots/hud_wheel_overlap.png",
+      "tick": 1617
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "NEXT line cut off at the right edge after the first rope ('...look at it steadily (1')",
+      "detail": "After the first snake became a rope, NEXT read 'Go closer with the lamp, then look at it steadily (1' with the rest, presumably '(1 of N)', off screen. The codex list also truncates titles ('The space in the po', 'The rope and the sna').",
+      "repro": "Reach dusk, F, walk to the coil on the path, hold view on it ~4 s; pt shot",
+      "screenshot": "shots/rope_seen.png",
+      "tick": 7486
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "E at the ghat gives no feedback; the sunset wait gives no sense of how long",
+      "detail": "Standing on the ghat steps with the chore 'Water from the ghat to the potter' open, E did nothing visible: no prompt and no message saying a jar is needed. Then 'Wait on the ghat steps for the sunset' ran from 5:22 to 6:22 pm (about 60 game seconds) with nothing on screen counting down or changing apart from the sky. On this shared machine that wait took about 6 minutes of wall-clock time.",
+      "repro": "Walk to the ghat steps; pt key e; pt wait 20 (x3)",
+      "screenshot": "shots/ghat_wait.png",
+      "tick": 3500
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Codex body text is very small at 640x360",
+      "detail": "Codex pages have Devanagari, IAST, translation and commentary in small serif type; at 640x360 the commentary and source lines are about 6 px tall and hard to read. The pages themselves are excellent.",
+      "repro": "Break a pot; Tab",
+      "screenshot": "shots/codex_schools.png",
+      "tick": 2617
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 5,
+    "deaths": 0,
+    "secondsToObjective": {
+      "Reach the potter's wheel": 418,
+      "Throw and name three pots": 590,
+      "Clay lens": 676,
+      "Break a pot": 700,
+      "Read codex page": 725,
+      "First snake seen as rope": 1554
+    },
+    "potsThrown": 3,
+    "potsBroken": 1,
+    "codexPagesSeen": 4,
+    "ropesRevealed": 1
+  },
+  "fun": 4,
+  "verdict": "The clay-and-pots loop works end to end: throwing three pots, naming them, then seeing 'Ganga: clay' under the lens and breaking one to open Gaudapada's pot-space verse lands its idea quietly. The rope reveal at dusk, with Fear filling and then draining under the lamp, is the strongest moment I played. What mostly gets in the way is how the screen reads: the wheel looks like a shadow, finished pots appear out of view, and several text overlaps and cut-off lines show at 640x360. The sunset wait is long and gives no feedback. secondsToObjective is wall-clock seconds from pt start; the game has no probe.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "An ordinary afternoon in a river village used to show that the many things and selves we see are one underlying reality seen under different names and forms. The pots I made and named (Ganga, Annapurna, Chai) were all just clay under the lens: the names and shapes are real enough to use, but what they are is one thing. Breaking a pot showed the space inside it was never separate from the space outside, which the codex likens to individual selves and the one Self. The snake on the dusk path was fear coming from not seeing clearly. When I held the lamp on it, it was a rope and always had been, so the error simply stopped and nothing was destroyed."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Nothing felt preachy. The game shows rather than lectures, and the 'Other schools' codex page fairly gives the Vishishtadvaita (Ramanuja) and Dvaita (Madhva) readings of 'tat tvam asi' and says the game follows one school. Small confusions: that page mentions the snake and rope before I had met them at dusk, which is a mild spoiler. The pot-space and rope-snake pages say their translations are a 'working translation ... awaiting review', so I could not judge their accuracy. I am not qualified to judge the Sanskrit; nothing looked wrong to me."
+    }
+  ]
+}

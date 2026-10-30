@@ -1,0 +1,152 @@
+{"t": 1793282847755, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-proctor-030", "--seed", "2"]}
+{"t": 1793282860123, "cmd": "shot", "args": ["start"]}
+{"t": 1793282865288, "cmd": "note", "args": ["--shot", "overlap_start", "At start, the orange hint 'The NEXT line ... says what comes next' is drawn over the help line 'W A S D walk Shift hurry Mouse look E use', both unreadable where they overlap"]}
+{"t": 1793282865380, "cmd": "key", "args": ["F1"]}
+{"t": 1793282866702, "cmd": "shot", "args": ["f1"]}
+{"t": 1793282870977, "cmd": "look", "args": ["-120", "0"]}
+{"t": 1793282871980, "cmd": "shot", "args": ["l1"]}
+{"t": 1793282876817, "cmd": "step", "args": ["10"]}
+{"t": 1793282878752, "cmd": "shot", "args": ["l2"]}
+{"t": 1793282884471, "cmd": "look", "args": ["-300", "0"]}
+{"t": 1793282884715, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793282913783, "cmd": "shot", "args": ["w1"]}
+{"t": 1793282919815, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1793282933216, "cmd": "hold", "args": ["d", "1.5"]}
+{"t": 1793282953597, "cmd": "shot", "args": ["w2"]}
+{"t": 1793282958308, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793282997221, "cmd": "shot", "args": ["w3"]}
+{"t": 1793283001653, "cmd": "hold", "args": ["d", "1"]}
+{"t": 1793283009794, "cmd": "hold", "args": ["Shift_L+w", "4"]}
+{"t": 1793283043265, "cmd": "shot", "args": ["w4"]}
+{"t": 1793283049560, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1793283087658, "cmd": "shot", "args": ["w5"]}
+{"t": 1793283092205, "cmd": "look", "args": ["-150", "40"]}
+{"t": 1793283092495, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793283106918, "cmd": "shot", "args": ["w6"]}
+{"t": 1793283112549, "cmd": "look", "args": ["-250", "0"]}
+{"t": 1793283112836, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793283127944, "cmd": "shot", "args": ["w7"]}
+{"t": 1793283133409, "cmd": "key", "args": ["1"]}
+{"t": 1793283135170, "cmd": "step", "args": ["10"]}
+{"t": 1793283143909, "cmd": "shot", "args": ["p1"]}
+{"t": 1793283234053, "cmd": "key", "args": ["h"]}
+{"t": 1793283235390, "cmd": "step", "args": ["5"]}
+{"t": 1793283236245, "cmd": "shot", "args": ["h1"]}
+{"t": 1793283241757, "cmd": "look", "args": ["0", "150"]}
+{"t": 1793283242139, "cmd": "step", "args": ["3"]}
+{"t": 1793283242969, "cmd": "shot", "args": ["h2"]}
+{"t": 1793283247828, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1793283271315, "cmd": "shot", "args": ["h3"]}
+{"t": 1793283278584, "cmd": "note", "args": ["--shot", "wheel_disc", "The potter's wheel reads as a flat dark disc on the ground (looked like a shadow); NEXT said '3 m ahead' while I stood beside it, and I had to look down and walk onto it before the wheel prompt appeared"]}
+{"t": 1793283278759, "cmd": "key", "args": ["1"]}
+{"t": 1793283280774, "cmd": "step", "args": ["10"]}
+{"t": 1793283283509, "cmd": "shot", "args": ["p2"]}
+{"t": 1793283288664, "cmd": "wait", "args": ["4"]}
+{"t": 1793283339224, "cmd": "shot", "args": ["p3"]}
+{"t": 1793283345336, "cmd": "type", "args": ["Ganga"]}
+{"t": 1793283345631, "cmd": "key", "args": ["Return"]}
+{"t": 1793283347627, "cmd": "step", "args": ["10"]}
+{"t": 1793283349992, "cmd": "shot", "args": ["p4"]}
+{"t": 1793283355489, "cmd": "key", "args": ["h"]}
+{"t": 1793283357299, "cmd": "step", "args": ["5"]}
+{"t": 1793283358593, "cmd": "shot", "args": ["p5"]}
+{"t": 1793283364281, "cmd": "note", "args": ["--shot", "hud_wheel_overlap", "With HUD shown at the wheel, the wheel prompt '1 water jar 2 bowl 3 cup 4 lamp' is centered over the CHORES list and MADE header, wrapping '4 lamp' onto the MADE line"]}
+{"t": 1793283364406, "cmd": "key", "args": ["2"]}
+{"t": 1793283366305, "cmd": "wait", "args": ["5"]}
+{"t": 1793283427500, "cmd": "shot", "args": ["p6"]}
+{"t": 1793283432516, "cmd": "type", "args": ["Annapurna"]}
+{"t": 1793283432760, "cmd": "key", "args": ["Return"]}
+{"t": 1793283434434, "cmd": "step", "args": ["5"]}
+{"t": 1793283435474, "cmd": "key", "args": ["3"]}
+{"t": 1793283437172, "cmd": "wait", "args": ["5"]}
+{"t": 1793283490936, "cmd": "type", "args": ["Chai"]}
+{"t": 1793283491174, "cmd": "key", "args": ["Return"]}
+{"t": 1793283492517, "cmd": "step", "args": ["10"]}
+{"t": 1793283494160, "cmd": "shot", "args": ["p7"]}
+{"t": 1793283498725, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1793283508708, "cmd": "look", "args": ["0", "-60"]}
+{"t": 1793283508937, "cmd": "step", "args": ["3"]}
+{"t": 1793283509545, "cmd": "shot", "args": ["p8"]}
+{"t": 1793283513809, "cmd": "key", "args": ["c"]}
+{"t": 1793283515005, "cmd": "step", "args": ["10"]}
+{"t": 1793283516120, "cmd": "shot", "args": ["c1"]}
+{"t": 1793283516228, "cmd": "look", "args": ["300", "0"]}
+{"t": 1793283516360, "cmd": "step", "args": ["5"]}
+{"t": 1793283516977, "cmd": "shot", "args": ["c2"]}
+{"t": 1793283522510, "cmd": "look", "args": ["400", "30"]}
+{"t": 1793283522715, "cmd": "step", "args": ["5"]}
+{"t": 1793283523602, "cmd": "shot", "args": ["c3"]}
+{"t": 1793283528383, "cmd": "key", "args": ["h"]}
+{"t": 1793283529598, "cmd": "look", "args": ["0", "40"]}
+{"t": 1793283529791, "cmd": "step", "args": ["5"]}
+{"t": 1793283530580, "cmd": "shot", "args": ["c4"]}
+{"t": 1793283536669, "cmd": "note", "args": ["--shot", "clay_lens", "Clay lens (C): world goes dark umber with dust motes, the three pots sit in a row on the ground 3 m behind the wheel and glow; the MADE list now reads 'Ganga: clay' etc. Evocative. But the pots spawn behind the player at the wheel, so I only found them via the NEXT distance hint"]}
+{"t": 1793283536775, "cmd": "key", "args": ["b"]}
+{"t": 1793283538105, "cmd": "step", "args": ["30"]}
+{"t": 1793283542982, "cmd": "shot", "args": ["b1"]}
+{"t": 1793283547559, "cmd": "look", "args": ["0", "70"]}
+{"t": 1793283547789, "cmd": "step", "args": ["3"]}
+{"t": 1793283548417, "cmd": "shot", "args": ["b2"]}
+{"t": 1793283552496, "cmd": "key", "args": ["b"]}
+{"t": 1793283553658, "cmd": "step", "args": ["20"]}
+{"t": 1793283556261, "cmd": "shot", "args": ["b3"]}
+{"t": 1793283556383, "cmd": "wait", "args": ["2"]}
+{"t": 1793283573182, "cmd": "shot", "args": ["b4"]}
+{"t": 1793283577885, "cmd": "key", "args": ["Tab"]}
+{"t": 1793283578408, "cmd": "step", "args": ["10"]}
+{"t": 1793283578848, "cmd": "shot", "args": ["t1"]}
+{"t": 1793283585504, "cmd": "note", "args": ["--shot", "codex_space", "Breaking the Ganga pot opened codex page 'The space in the pot' (Gaudapada, Mandukya Karika 3.3-3.4) with Devanagari, transliteration, translation and a note tying it to my broken pot. Lovely. Minor: left-hand page list truncates the title to 'The space in the pot' running into the page edge"]}
+{"t": 1793283585616, "cmd": "key", "args": ["Up"]}
+{"t": 1793283586020, "cmd": "step", "args": ["5"]}
+{"t": 1793283586311, "cmd": "shot", "args": ["t2"]}
+{"t": 1793283586460, "cmd": "key", "args": ["Down", "Down"]}
+{"t": 1793283587133, "cmd": "step", "args": ["5"]}
+{"t": 1793283587379, "cmd": "shot", "args": ["t3"]}
+{"t": 1793283594817, "cmd": "note", "args": ["--shot", "codex_schools", "Codex 'Other schools: that you are' presents Advaita, Vishishtadvaita and Dvaita readings of tat tvam asi even-handedly and says the game takes the Advaita reading as one school's reading. Good. At 640x360 the body text of codex pages is very small (roughly 6-7 px glyphs), hard to read"]}
+{"t": 1793283594918, "cmd": "key", "args": ["Tab"]}
+{"t": 1793283596333, "cmd": "key", "args": ["c"]}
+{"t": 1793283597718, "cmd": "key", "args": ["h"]}
+{"t": 1793283598721, "cmd": "step", "args": ["10"]}
+{"t": 1793283600202, "cmd": "shot", "args": ["n1"]}
+{"t": 1793283605323, "cmd": "look", "args": ["150", "-110"]}
+{"t": 1793283605496, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1793283634005, "cmd": "shot", "args": ["n2"]}
+{"t": 1793283638742, "cmd": "look", "args": ["200", "0"]}
+{"t": 1793283638972, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1793283670236, "cmd": "shot", "args": ["n3"]}
+{"t": 1793283674392, "cmd": "hold", "args": ["Shift_L+w", "3"]}
+{"t": 1793283707382, "cmd": "shot", "args": ["n4"]}
+{"t": 1793283713643, "cmd": "key", "args": ["e"]}
+{"t": 1793283715360, "cmd": "step", "args": ["10"]}
+{"t": 1793283717423, "cmd": "shot", "args": ["n5"]}
+{"t": 1793283717593, "cmd": "wait", "args": ["20"]}
+{"t": 1793283957724, "cmd": "shot", "args": ["n6"]}
+{"t": 1793283964961, "cmd": "note", "args": ["--shot", "ghat_wait", "On the ghat steps, NEXT says 'Wait on the ghat steps for the sunset' with no sense of how long; E on the steps gave no feedback (no 'fill' prompt, no message) though the chore says 'Water from the ghat to the potter'. pt wait 20 = 20 game minutes and took ~3 min wall-clock on the shared machine"]}
+{"t": 1793283965185, "cmd": "wait", "args": ["25"]}
+{"t": 1793284180046, "cmd": "shot", "args": ["n7"]}
+{"t": 1793284185718, "cmd": "wait", "args": ["15"]}
+{"t": 1793284294574, "cmd": "shot", "args": ["n8"]}
+{"t": 1793284301612, "cmd": "key", "args": ["f"]}
+{"t": 1793284301730, "cmd": "look", "args": ["600", "0"]}
+{"t": 1793284301802, "cmd": "step", "args": ["10"]}
+{"t": 1793284303618, "cmd": "shot", "args": ["n9"]}
+{"t": 1793284308743, "cmd": "look", "args": ["120", "40"]}
+{"t": 1793284308843, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793284328943, "cmd": "shot", "args": ["n10"]}
+{"t": 1793284335041, "cmd": "look", "args": ["70", "-10"]}
+{"t": 1793284335175, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1793284347272, "cmd": "wait", "args": ["3"]}
+{"t": 1793284374734, "cmd": "shot", "args": ["n11"]}
+{"t": 1793284380570, "cmd": "look", "args": ["60", "80"]}
+{"t": 1793284380673, "cmd": "wait", "args": ["4"]}
+{"t": 1793284405244, "cmd": "shot", "args": ["n12"]}
+{"t": 1793284414827, "cmd": "note", "args": ["--shot", "rope_seen", "After lighting the lamp (F) and holding it on the coiled snake on the dusk path for a few seconds, it became a pale rope, Fear dropped from full to half and a new codex page opened. Text issue: NEXT line 'Go closer with the lamp, then look at it steadily (1' is cut off at the right edge of the screen"]}
+{"t": 1793284415198, "cmd": "key", "args": ["Tab"]}
+{"t": 1793284415478, "cmd": "step", "args": ["10"]}
+{"t": 1793284415671, "cmd": "shot", "args": ["t4"]}
+{"t": 1793284420702, "cmd": "key", "args": ["Tab"]}
+{"t": 1793284420900, "cmd": "stop", "args": []}
+{"t": 1793284448062, "cmd": "report", "args": []}
+{"t": 1793284456152, "cmd": "report", "args": []}
+{"t": 1793285464067, "cmd": "stop", "args": []}
+{"t": 1793285464098, "cmd": "report", "args": []}

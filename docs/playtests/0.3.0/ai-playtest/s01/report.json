@@ -1,0 +1,112 @@
+{
+  "session": "s01",
+  "goal": "Play as a brand-new player who has never heard of the game, following the HUD's NEXT line (top left) from the first afternoon until you have slept at home and woken the next morning; then try V. Note every moment of confusion, and answer the questions at the end.",
+  "build": {
+    "version": null,
+    "commit": "e1b80d3"
+  },
+  "seed": 1,
+  "durationSec": 2564,
+  "outcome": "achieved",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "Dream after sleeping gives no instruction and cannot be shortened; clock runs backwards for ~100 game seconds",
+      "detail": "After E at the door ('You sleep, and dream.') the world turns grey, the HUD clock runs backwards (6:56 pm -> 6:03 -> 4:33 -> 2:46 -> 11:43 am) and NEXT says only 'Nothing here seems strange'. Walking, E, C, F1 help and the codex give no hint of what to do or how to wake. It ended on its own at 22 March 7:07 am after roughly 100 game seconds (about 13 minutes wall-clock on this machine). A new player would likely think the game had hung or that they were meant to find something. Expected: a NEXT line such as 'Wait for morning' or a shorter dream.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-proctor-030 --seed 1; follow NEXT through pots, ghat, three ropes; E at your door; pt wait 15 repeatedly and pt shot",
+      "screenshot": "shots/dream_stuck.png",
+      "tick": 10883
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Waiting on the ghat steps for the sunset gives no feedback for ~55 in-game minutes",
+      "detail": "Standing on the steps from 5:27 to about 6:21 pm, NEXT stays 'Wait on the ghat steps for the sunset' with no countdown, no 'you sit and watch' message, and E does nothing. A player cannot tell whether they are in the right place. When it ended, NEXT switched straight to 'Light your lamp (F)' with no sunset moment acknowledged.",
+      "repro": "after breaking a pot, walk to the ghat steps until the distance hint disappears; pt wait 8; pt key e; pt wait 25; pt shot",
+      "screenshot": "shots/ghat_wait_nofeedback.png",
+      "tick": 6000
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "NEXT line during the rope/snake step is cut off at the right edge, hiding the (n of 3) counter",
+      "detail": "After the first snake becomes a rope the NEXT line reads 'Go closer with the lamp, then look at it steadily (1' and is clipped at the window edge in 640x360; the 'Hold the lamp to it ... (2 of 3' line is also clipped. The counter is the only clue that there are three.",
+      "repro": "on the dusk path, light the lamp (F), look steadily at the first coil until it turns to rope; pt shot",
+      "screenshot": "shots/next_cut_off.png",
+      "tick": 7333
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Thrown pots do not appear at the wheel; they land on a bench behind the player",
+      "detail": "After throwing and naming three pots at the wheel nothing is visible on or by the wheel. Only the next step's distance hint ('4 m behind you, to the right') reveals they are on a drying board behind. Breaking one also needs very precise aim ('Look straight at one of your pots, close by') and the clay lens view is so dark the pots are hard to find.",
+      "repro": "at the wheel: pt key 1; pt wait 6; pt type Ganga; pt key Return; repeat with 2 and 3; pt shot",
+      "screenshot": "shots/pots_elsewhere.png",
+      "tick": 2633
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Opening intro message overlaps the help block on the first screen",
+      "detail": "On start the orange line 'The NEXT line, top left, says what comes next.' is drawn over the help's first line 'W A S D walk ... E use', making both unreadable until F1 hides the help.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-proctor-030 --seed 1; pt shot",
+      "screenshot": "shots/overlap_help.png",
+      "tick": 0
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "HUD text unreadable against lamp-lit walls",
+      "detail": "White HUD text has no backing panel or outline; beside a house wall lit by the lamp the NEXT and CHORES lines nearly vanish into bright yellow.",
+      "repro": "walk home at dusk with the lamp lit and face your house wall; pt shot",
+      "screenshot": "shots/hud_washout.png",
+      "tick": 8746
+    },
+    {
+      "severity": "polish",
+      "category": "bug",
+      "title": "V (step back and watch) first puts the camera inside a house wall",
+      "detail": "On waking beside a house, V initially showed half the screen as a flat grey slab; after about 3 seconds the camera settled behind the figure walking on its own, which is a lovely moment.",
+      "repro": "after waking, pt key v; pt step 30; pt shot",
+      "screenshot": "shots/v_clip.png",
+      "tick": 16350
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Codex page titles truncated in the left list",
+      "detail": "'The space in the pot' and 'The rope and the snake' are cut off ('The space in the pot', 'The rope and the sna') by the left column width.",
+      "repro": "pt key Tab; pt shot",
+      "screenshot": "shots/codex1.png",
+      "tick": 2896
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 7,
+    "deaths": 0,
+    "secondsToObjective": {
+      "Throw pots at the potter's wheel (3 of 3)": 640,
+      "Look at your pots through the clay lens": 650,
+      "Break one of your pots": 740,
+      "Wait on the ghat steps for the sunset": 1370,
+      "Three snakes seen as rope": 1630,
+      "Go home and sleep": 1720,
+      "Woke the next morning": 2540
+    },
+    "chores done": 0,
+    "game seconds spent in dream": 100
+  },
+  "fun": 3,
+  "verdict": "The core sequence (pots that are clay, a coiled snake that becomes rope under a steady lamp, a codex page with Sanskrit and translation unlocking at each beat) is clear, quiet and lands well, and the NEXT line with distance hints carried me through without getting lost. The two long waits are the weak spots: the sunset wait and especially the dream after sleeping have no feedback and no hint, and the dream's backwards-running clock felt like a hang. secondsToObjective are wall-clock seconds from pt start (no probe), inflated by a slow shared software renderer.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "An ordinary village day used to show that what we take as many separate things are names and shapes laid over one reality. The pots I made and named (Ganga, Moon, Sparrow) were, seen through the clay lens, just clay; breaking one changed nothing real, like space in a pot rejoining space. The snake on the dusk path was fear projected onto something not seen clearly; looking steadily with the lamp showed it was only ever a rope, and the fear meter dropped. Together they seemed to say the world of many things is like that snake: a mistaken appearance over the one Self, which clear seeing removes. The dream and waking, and 'Nothing more is asked of you' with V to step back and watch, felt like the waking state seen as another dream and the self as witness."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Nothing felt preachy: the codex only appears when you ask for it, cites sources (Chandogya Upanisad 6.1.4, Gaudapada Mandukya Karika 2.17-18 and 3.3-4) with Sanskrit, transliteration and translation, and the italic notes are short. The rope-and-snake note's line that the village, chores and people are 'that kind of error; they are real for living in' was a careful touch. I cannot judge accuracy of the Sanskrit or translations. Confusing: the dream after sleeping ('Nothing here seems strange', clock running backwards) - I could not tell what it was teaching or whether I was meant to do something; the one line of meaning I guessed (dream vs waking) was never stated. I did not open the 'Other schools' page, so cannot say how other traditions are described."
+    }
+  ]
+}

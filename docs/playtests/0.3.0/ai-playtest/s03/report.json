@@ -1,0 +1,94 @@
+{
+  "session": "s03",
+  "goal": "The rope: do what the NEXT line asks until dusk, then walk the path from the village to the ghat, light the lamp (F) and look steadily at each snake until it turns out to be a rope; then sleep at home (E at the indigo door) and, in the morning, try V. Answer the questions at the end.",
+  "build": {"version": null, "commit": "e1b80d3"},
+  "seed": 3,
+  "durationSec": 1982,
+  "outcome": "partial",
+  "findings": [
+    {
+      "severity": "major",
+      "category": "ux",
+      "title": "Sleeping at the indigo door starts a dream with a backward-running clock and no way forward shown; morning never came",
+      "detail": "The prompt said 'E sleep until morning'. After E: 'You sleep, and dream.' The day stays 21 March, the clock runs backward (7:00 pm -> 6:03 -> 5:45 -> 4:45 -> 2:54 pm over ~45 game-seconds), the world is greyed, and NEXT says only 'Nothing here seems strange'. Pressing E again, V and C did nothing to end it (V says stepping out comes later). A player expecting morning has no hint what to do or how long to wait; I could not reach the morning to try V there. It may be an intended dream state, but it needs a clear NEXT or an ending cue.",
+      "repro": "pt start --profile atman-strata --game-dir /root/atman-proctor-030 --seed 3; do the pots, wait for dusk, turn the three snakes into ropes; walk to the indigo door; pt key e; pt wait 10; pt shot x (clock earlier than when you slept, NEXT 'Nothing here seems strange'); pt wait 15",
+      "screenshot": "shots/m3.png",
+      "tick": 9984
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Waiting on the ghat steps for the sunset gives no sense of how long the wait is",
+      "detail": "NEXT read 'Wait on the ghat steps for the sunset' from 5:23 pm to about 6:20 pm (about 60 game-seconds) with nothing changing on screen. A countdown, the sun visibly sinking, or a 'the sun is low' line would help. In this stepped headless run 30 game-seconds also took about 5.5 min of wall-clock time (about 5-6 fps, game at 125% CPU), so the wait felt even longer.",
+      "repro": "after breaking a pot: walk to the ghat steps (NEXT stops showing a distance); pt wait 30; pt shot s1 (still waiting, 5:53 pm); pt wait 30 (dusk at about 6:23 pm)",
+      "screenshot": "shots/s1.png",
+      "tick": 5061
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "NEXT snake counter runs off the right edge at 640x360",
+      "detail": "At dusk the NEXT line 'Go closer with the lamp, then look at it steadily (1 of 3)' is cut off at the right edge, so it shows '(1' or '(2 of 3' and the snake count is partly lost. The line should wrap like the distance line does.",
+      "repro": "at dusk turn the first snake into a rope (F, look at it for about 3 s); pt shot x",
+      "screenshot": "shots/d8.png",
+      "tick": 7300
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "Lamp-lit wall up close washes out the HUD; door distance points through the house",
+      "detail": "Going home at night with the lamp lit, a house wall close in front turns pale yellow and the white HUD text over it (NEXT/CHORES/MADE) is nearly unreadable. Also, 'Go home and sleep (E at your door) 6 m ahead' pointed straight through my house wall, because the door is on the far side, facing the well. I walked into the wall: one frame was solid dark grey, then I had to back off and go around.",
+      "repro": "after the third rope: hurry toward the house following NEXT; pt shot x when against the wall",
+      "screenshot": "shots/h4.png",
+      "tick": 8742
+    },
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "Opening help overlaps the orange intro hint",
+      "detail": "On the first screen the orange line 'The NEXT line, top left, says what comes next.' is drawn on top of the help row 'W A S D walk  Shift hurry  Mouse look  E use', so both are unreadable until F1 hides the help.",
+      "repro": "pt start ...; pt shot start",
+      "screenshot": "shots/overlap.png",
+      "tick": 0
+    },
+    {
+      "severity": "polish",
+      "category": "text",
+      "title": "Text clipped or badly wrapped in several places",
+      "detail": "The codex page list clips long titles at the panel edge ('The space in the pot' and 'The rope and the sna...'). The wheel prompt '1 water jar 2 bowl 3 cup 4 lamp' wraps so that 'lamp' sits alone on the next line, apart from its '4'. 'Look straight at one of your pots, close by, to break it (B).' first appeared cut off at the bottom of the screen. The 'Other schools' codex page is very small, dense serif text at 640x360.",
+      "repro": "pt key Tab after the first codex page appears; stand at the wheel",
+      "screenshot": "shots/codex2.png",
+      "tick": 2696
+    },
+    {
+      "severity": "polish",
+      "category": "ux",
+      "title": "Opening hint 'Your house is beside you' stays on screen after walking away",
+      "detail": "The hint 'Your house is beside you; its door, the indigo one, faces the well' stayed up after I had walked 20 m away to the wheel, where it was no longer true.",
+      "repro": "pt key F1; walk toward the wheel; pt shot x",
+      "screenshot": "shots/w2.png",
+      "tick": 561
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 5,
+    "deaths": 0,
+    "secondsToObjective": {
+      "Throw three pots and name them": 360,
+      "Break a pot after the clay lens": 400,
+      "Dusk reached on the ghat": 1330,
+      "All three snakes seen as ropes": 1560,
+      "Sleep at the indigo door": 1690
+    },
+    "snakesTurnedToRope": 3,
+    "secondsOfSteadyLookPerSnake": 3,
+    "morningReached": 0
+  },
+  "fun": 3,
+  "verdict": "The pots-into-clay and snake-into-rope beats both work and land well: the clay lens relabelling every named pot as 'clay', and a coiled snake turning into an orange rope after about 3 s of steady lamplight, are clear, quiet payoffs, and the codex pages give sources and fair readings from several schools. What went wrong was sleeping: 'sleep until morning' led to a dream with the clock running backward and the NEXT line 'Nothing here seems strange', no way forward and no morning, so V in the morning could not be tested (V in the dream says stepping out comes later). The other issues are the unmeasured sunset wait and several HUD lines that clip or wash out at 640x360. secondsToObjective is wall-clock time (no probe), slowed by about 5 fps headless."
+,
+  "answers": [
+    {"question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?", "answer": "A quiet day in a river village used to teach non-dual Vedanta. The pots I threw and named (a water jar, a bowl, a cup) showed up as just 'clay' through the clay lens. The names and shapes are real enough to use, but what they are made of is one thing, and breaking one let the space inside it rejoin the space outside (the codex links that to the self and Brahman). The snakes on the dusk path were fear made by poor light; with the lamp held to them and a steady look they turned out to be rope and the Fear bar dropped. The snake was never there and the rope never changed: the many-ness and the fear are an error laid over one reality, and seeing clearly removes them. The dream after sleeping, with time running backward and 'Nothing here seems strange', seemed to say the same about dreaming, but I could not tell where it was going."},
+    {"question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.", "answer": "Not preachy: the codex is careful, gives Sanskrit with transliteration and sources, and the 'Other schools' page fairly sets out Advaita, Vishishtadvaita and Dvaita readings of 'tat tvam asi', saying plainly that the game follows one reading and that this is not 'what Hinduism says'. I do not have the expertise to judge the translations, and I saw nothing obviously inaccurate. What confused me was the dream: the prompt promised sleep until morning, but I got a backward-running clock and 'Nothing here seems strange' with no explanation in the HUD or in a codex page I found. The 'Other schools' page also mentions the snake and rope before you meet them, which is a small spoiler, and its text is very small to read."}
+  ]
+}
