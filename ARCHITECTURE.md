@@ -80,8 +80,8 @@ generic features a real consumer needs. Atman may propose engine additions (list
 
 ## Mapping the game to Strata
 
-Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked. The game pins Strata v0.6.0
-(ABI 1.12), whose drive channel lets a test harness run it (see [Saves](#saves)).
+Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked. The game pins Strata v0.7.0
+(ABI 1.12), whose drive channel (since v0.6.0) lets a test harness run it (see [Saves](#saves)).
 
 | Game need | Strata feature | Since |
 |---|---|---|
