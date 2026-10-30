@@ -1,0 +1,57 @@
+{
+  "session": "s05",
+  "goal": "Check the newest main (the fixes for #40 and #41 on top of #37): follow the NEXT line from the first afternoon (the wheel, a broken pot, the wait on the ghat steps for the sunset, the snakes on the dusk path), watch what the HUD says while you wait for the sunset and whether any HUD line runs off the screen, then sleep at home and describe the dream and the deep sleep and whether anything made you think the game had stopped. Wake, try V, and answer the questions at the end.",
+  "build": {
+    "version": "0.2.1",
+    "commit": "ccf8e99"
+  },
+  "seed": 5,
+  "durationSec": 1277,
+  "outcome": "achieved",
+  "findings": [
+    {
+      "severity": "minor",
+      "category": "text",
+      "title": "The waking message runs off the bottom of the window after V (still on ccf8e99)",
+      "detail": "After waking on 22 March and pressing V, 'Waking, dream and deep sleep: ... Live the day as it comes, or step back' is cut at the bottom edge at 640x360. #41 wraps HUD lines; this message box is separate and still clips.",
+      "repro": "sleep after both teachings, wait to the morning, press V",
+      "screenshot": "shots/v1.png",
+      "tick": null
+    },
+    {
+      "severity": "minor",
+      "category": "ux",
+      "title": "'Go home' bearing leads round the house the long way",
+      "detail": "From the third snake, 'Go home and sleep' pointed at the door through the house, and getting to the door took several turns along the walls ('6 m ahead, to the right', then '9 m', '8 m to your right', '4 m', '3 m'). Seen in earlier runs.",
+      "repro": "after the third rope, follow the bearing home",
+      "screenshot": "shots/e17.png",
+      "tick": null
+    }
+  ],
+  "metrics": {
+    "objectivesCompleted": 7,
+    "deaths": 0,
+    "secondsToObjective": {
+      "Three pots": 420,
+      "Break a pot": 620,
+      "Sunset (bar seen)": 900,
+      "Dusk": 1100,
+      "Three ropes": 1700,
+      "Sleep": 2200,
+      "Woke 22 March": 2400
+    },
+    "thought the game had frozen": 0
+  },
+  "fun": 3,
+  "verdict": "On the newest main (ccf8e99) the two fixes from #42 work: on the ghat steps the line under NEXT shows 'the sun going down [######....]', the sunset is announced with 'The sun is down; a bell rings at the shrine.', and the snakes' NEXT line wraps so '(1 of 3 seen)' is readable at 640x360. #37's cues are unchanged and still clear in the dream, the deep sleep and V in sleep. secondsToObjective are wall-clock seconds from pt start (no probe); this session was driven by the proctor, who had read the #39 and #42 diffs.",
+  "answers": [
+    {
+      "question": "In your own words, what did you think the game was about? What did the rope and the snake, and the clay and the pots, mean?",
+      "answer": "Many names and shapes over one clay; a rope taken for a snake until a steady light shows it; and waking, dream and deep sleep passing while one witness stays. The game teaches by doing these, not by telling."
+    },
+    {
+      "question": "Did anything feel preachy, confusing, or inaccurate (in the teaching, the verses in the codex, or how the tradition is described)? Say what and where; if nothing did, say so.",
+      "answer": "Nothing felt preachy. The codex cites its sources and 'Other schools' is fair to Visistadvaita and Dvaita. Nothing in the sleep was confusing now. I cannot judge the working translations."
+    }
+  ]
+}

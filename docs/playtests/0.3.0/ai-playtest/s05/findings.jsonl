@@ -1,0 +1,3 @@
+{"t": 1793326444895, "text": "#40 check: on the ghat steps the line under NEXT is now 'the sun going down [######....]', so the wait has a visible end.", "screenshot": "shots/sunset_bar.png"}
+{"t": 1793326651678, "text": "#41 check: the NEXT line at the snakes now wraps: 'Go closer with the lamp, then look at it / steadily (1 of 3 seen)', with the count readable at 640x360.", "screenshot": "shots/next_wrap.png"}
+{"t": 1793327400736, "text": "Still on ccf8e99: after waking and V the long waking message is cut at the bottom edge ('... or step back' and on) at 640x360. #41 wraps HUD lines, but this message box is not a HUD line.", "screenshot": "shots/v1.png"}

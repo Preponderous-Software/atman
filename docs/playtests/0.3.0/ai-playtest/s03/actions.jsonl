@@ -1,226 +1,161 @@
-{"t": 1793282847211, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-proctor-030", "--seed", "3"]}
-{"t": 1793282863716, "cmd": "shot", "args": ["start"]}
-{"t": 1793282869086, "cmd": "note", "args": ["--shot", "overlap", "Opening screen: the orange hint 'The NEXT line ... says what comes next' is drawn on top of the help line 'W A S D walk Shift hurry Mouse look E use', both unreadable where they overlap"]}
-{"t": 1793282869228, "cmd": "key", "args": ["F1"]}
-{"t": 1793282870892, "cmd": "shot", "args": ["nohelp"]}
-{"t": 1793282877609, "cmd": "look", "args": ["-150", "0"]}
-{"t": 1793282877820, "cmd": "shot", "args": ["l1"]}
-{"t": 1793282881562, "cmd": "step", "args": ["3"]}
-{"t": 1793282882321, "cmd": "shot", "args": ["l2"]}
-{"t": 1793282886214, "cmd": "hold", "args": ["w", "3"]}
-{"t": 1793282923181, "cmd": "step", "args": ["2"]}
-{"t": 1793282923681, "cmd": "shot", "args": ["w1"]}
-{"t": 1793282927906, "cmd": "look", "args": ["-200", "0"]}
-{"t": 1793282928760, "cmd": "step", "args": ["2"]}
-{"t": 1793282929304, "cmd": "shot", "args": ["l3"]}
-{"t": 1793282932857, "cmd": "hold", "args": ["w", "5"]}
-{"t": 1793282991332, "cmd": "step", "args": ["2"]}
-{"t": 1793282991693, "cmd": "shot", "args": ["w2"]}
-{"t": 1793282995125, "cmd": "look", "args": ["-60", "0"]}
-{"t": 1793282995298, "cmd": "hold", "args": ["Shift_L+w", "4"]}
-{"t": 1793283024448, "cmd": "step", "args": ["2"]}
-{"t": 1793283024752, "cmd": "shot", "args": ["w3"]}
-{"t": 1793283027975, "cmd": "look", "args": ["-40", "0"]}
-{"t": 1793283028165, "cmd": "hold", "args": ["w", "2.5"]}
-{"t": 1793283058768, "cmd": "step", "args": ["2"]}
-{"t": 1793283059226, "cmd": "shot", "args": ["w4"]}
-{"t": 1793283063232, "cmd": "look", "args": ["-120", "30"]}
-{"t": 1793283063529, "cmd": "step", "args": ["2"]}
-{"t": 1793283064091, "cmd": "shot", "args": ["l4"]}
-{"t": 1793283067626, "cmd": "hold", "args": ["w", "3"]}
-{"t": 1793283108058, "cmd": "step", "args": ["2"]}
-{"t": 1793283108674, "cmd": "shot", "args": ["w5"]}
-{"t": 1793283113570, "cmd": "look", "args": ["-60", "0"]}
-{"t": 1793283113878, "cmd": "hold", "args": ["w", "1.2"]}
-{"t": 1793283130905, "cmd": "step", "args": ["2"]}
-{"t": 1793283131416, "cmd": "shot", "args": ["w6"]}
-{"t": 1793283139083, "cmd": "key", "args": ["1"]}
-{"t": 1793283140395, "cmd": "step", "args": ["5"]}
-{"t": 1793283141092, "cmd": "shot", "args": ["p1"]}
-{"t": 1793283241648, "cmd": "wait", "args": ["6"]}
-{"t": 1793283318493, "cmd": "shot", "args": ["p2"]}
-{"t": 1793283324544, "cmd": "type", "args": ["Ganga"]}
-{"t": 1793283324764, "cmd": "key", "args": ["Return"]}
-{"t": 1793283326550, "cmd": "step", "args": ["5"]}
-{"t": 1793283327656, "cmd": "key", "args": ["2"]}
-{"t": 1793283329585, "cmd": "wait", "args": ["7"]}
-{"t": 1793283413399, "cmd": "shot", "args": ["p3"]}
-{"t": 1793283416983, "cmd": "type", "args": ["Moon"]}
-{"t": 1793283417271, "cmd": "key", "args": ["Return"]}
-{"t": 1793283419177, "cmd": "step", "args": ["5"]}
-{"t": 1793283420417, "cmd": "key", "args": ["3"]}
-{"t": 1793283422095, "cmd": "wait", "args": ["7"]}
-{"t": 1793283496137, "cmd": "type", "args": ["Little"]}
-{"t": 1793283496366, "cmd": "key", "args": ["Return"]}
-{"t": 1793283497537, "cmd": "step", "args": ["5"]}
-{"t": 1793283498366, "cmd": "shot", "args": ["p4"]}
-{"t": 1793283501303, "cmd": "key", "args": ["c"]}
-{"t": 1793283502563, "cmd": "step", "args": ["30"]}
-{"t": 1793283507298, "cmd": "shot", "args": ["c1"]}
-{"t": 1793283510425, "cmd": "look", "args": ["200", "40"]}
-{"t": 1793283510683, "cmd": "step", "args": ["2"]}
-{"t": 1793283511102, "cmd": "shot", "args": ["r1"]}
-{"t": 1793283514359, "cmd": "look", "args": ["300", "60"]}
-{"t": 1793283514559, "cmd": "step", "args": ["2"]}
-{"t": 1793283514960, "cmd": "shot", "args": ["r2"]}
-{"t": 1793283518040, "cmd": "look", "args": ["120", "60"]}
-{"t": 1793283518198, "cmd": "step", "args": ["2"]}
-{"t": 1793283518519, "cmd": "shot", "args": ["r3"]}
-{"t": 1793283522275, "cmd": "look", "args": ["60", "15"]}
-{"t": 1793283522484, "cmd": "step", "args": ["2"]}
-{"t": 1793283522913, "cmd": "key", "args": ["b"]}
-{"t": 1793283524286, "cmd": "step", "args": ["30"]}
-{"t": 1793283528899, "cmd": "shot", "args": ["b1"]}
-{"t": 1793283532827, "cmd": "look", "args": ["100", "10"]}
-{"t": 1793283533001, "cmd": "hold", "args": ["w", "0.8"]}
-{"t": 1793283540365, "cmd": "step", "args": ["2"]}
-{"t": 1793283540753, "cmd": "shot", "args": ["b2"]}
-{"t": 1793283544220, "cmd": "key", "args": ["b"]}
-{"t": 1793283545556, "cmd": "step", "args": ["30"]}
-{"t": 1793283550507, "cmd": "shot", "args": ["b3"]}
-{"t": 1793283553312, "cmd": "key", "args": ["Tab"]}
-{"t": 1793283553856, "cmd": "step", "args": ["5"]}
-{"t": 1793283554159, "cmd": "shot", "args": ["codex1"]}
-{"t": 1793283558085, "cmd": "key", "args": ["Down"]}
-{"t": 1793283558475, "cmd": "step", "args": ["5"]}
-{"t": 1793283558750, "cmd": "shot", "args": ["codex2"]}
-{"t": 1793283558859, "cmd": "key", "args": ["Up", "Up"]}
-{"t": 1793283560710, "cmd": "step", "args": ["5"]}
-{"t": 1793283560949, "cmd": "shot", "args": ["codex0"]}
-{"t": 1793283566000, "cmd": "note", "args": ["--shot", "codex2", "Codex 'Other schools' page body text and citations are very small at 640x360 (several lines of ~6px serif), hard to read; left-hand page list also truncates 'The space in the pot' to 'The space in the pot' clipped at the panel edge"]}
-{"t": 1793283566127, "cmd": "key", "args": ["Tab"]}
-{"t": 1793283567402, "cmd": "key", "args": ["c"]}
-{"t": 1793283568680, "cmd": "step", "args": ["3"]}
-{"t": 1793283569212, "cmd": "hold", "args": ["Shift_L+w", "3"]}
-{"t": 1793283595471, "cmd": "step", "args": ["2"]}
-{"t": 1793283595900, "cmd": "shot", "args": ["g1"]}
-{"t": 1793283599119, "cmd": "look", "args": ["150", "-150"]}
-{"t": 1793283600111, "cmd": "step", "args": ["2"]}
-{"t": 1793283600535, "cmd": "shot", "args": ["g2"]}
-{"t": 1793283603391, "cmd": "hold", "args": ["Shift_L+w", "3.5"]}
-{"t": 1793283636255, "cmd": "step", "args": ["2"]}
-{"t": 1793283636632, "cmd": "shot", "args": ["g3"]}
-{"t": 1793283639816, "cmd": "hold", "args": ["w", "1"]}
-{"t": 1793283650525, "cmd": "step", "args": ["2"]}
-{"t": 1793283650967, "cmd": "shot", "args": ["g4"]}
-{"t": 1793283654102, "cmd": "hold", "args": ["d", "1"]}
-{"t": 1793283664810, "cmd": "step", "args": ["2"]}
-{"t": 1793283665278, "cmd": "shot", "args": ["g5"]}
-{"t": 1793283669231, "cmd": "wait", "args": ["30"]}
-{"t": 1793284006078, "cmd": "shot", "args": ["s1"]}
-{"t": 1793284007217, "cmd": "status", "args": []}
-{"t": 1793284014311, "cmd": "note", "args": ["--shot", "s1", "Waiting on the ghat for the sunset: NEXT gives no hint how long the wait is; 30 game-seconds (17:23 to 17:53) went by with no change. In this stepped headless run 30 s of game time took ~5.5 min wall-clock (~5-6 fps, cpu 125%)"]}
-{"t": 1793284014397, "cmd": "wait", "args": ["15"]}
-{"t": 1793284097734, "cmd": "shot", "args": ["s2"]}
-{"t": 1793284101472, "cmd": "wait", "args": ["15"]}
-{"t": 1793284191589, "cmd": "shot", "args": ["s3"]}
-{"t": 1793284195874, "cmd": "key", "args": ["f"]}
-{"t": 1793284196035, "cmd": "look", "args": ["300", "40"]}
-{"t": 1793284196151, "cmd": "step", "args": ["3"]}
-{"t": 1793284197447, "cmd": "shot", "args": ["d1"]}
-{"t": 1793284200780, "cmd": "look", "args": ["60", "-60"]}
-{"t": 1793284200969, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284215209, "cmd": "step", "args": ["2"]}
-{"t": 1793284215332, "cmd": "shot", "args": ["d2"]}
-{"t": 1793284221424, "cmd": "look", "args": ["280", "20"]}
-{"t": 1793284221635, "cmd": "step", "args": ["2"]}
-{"t": 1793284221756, "cmd": "shot", "args": ["d3"]}
-{"t": 1793284226512, "cmd": "look", "args": ["120", "20"]}
-{"t": 1793284226614, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284240650, "cmd": "step", "args": ["2"]}
-{"t": 1793284241333, "cmd": "shot", "args": ["d4"]}
-{"t": 1793284246652, "cmd": "look", "args": ["90", "70"]}
-{"t": 1793284246812, "cmd": "step", "args": ["2"]}
-{"t": 1793284246902, "cmd": "shot", "args": ["d5"]}
-{"t": 1793284250695, "cmd": "look", "args": ["45", "15"]}
-{"t": 1793284250821, "cmd": "hold", "args": ["w", "0.8"]}
-{"t": 1793284257454, "cmd": "step", "args": ["2"]}
-{"t": 1793284257537, "cmd": "shot", "args": ["d6"]}
-{"t": 1793284260948, "cmd": "look", "args": ["30", "55"]}
-{"t": 1793284261070, "cmd": "step", "args": ["2"]}
-{"t": 1793284261158, "cmd": "shot", "args": ["d7"]}
-{"t": 1793284261570, "cmd": "wait", "args": ["3"]}
-{"t": 1793284282667, "cmd": "shot", "args": ["d8"]}
-{"t": 1793284288391, "cmd": "note", "args": ["--shot", "d8", "First snake on the dusk path became a rope after ~3 s of steady look with the lamp lit; good payoff. But the NEXT line 'Go closer with the lamp, then look at it steadily (1' runs off the right edge at 640x360, so the snake counter is cut off"]}
-{"t": 1793284288499, "cmd": "look", "args": ["0", "-60"]}
-{"t": 1793284288589, "cmd": "hold", "args": ["w", "2.5"]}
-{"t": 1793284304783, "cmd": "step", "args": ["2"]}
-{"t": 1793284305415, "cmd": "shot", "args": ["e1"]}
-{"t": 1793284308815, "cmd": "look", "args": ["-15", "25"]}
-{"t": 1793284308917, "cmd": "hold", "args": ["w", "0.6"]}
-{"t": 1793284314850, "cmd": "step", "args": ["2"]}
-{"t": 1793284316192, "cmd": "shot", "args": ["e2"]}
-{"t": 1793284320039, "cmd": "look", "args": ["-15", "35"]}
-{"t": 1793284320138, "cmd": "step", "args": ["2"]}
-{"t": 1793284320242, "cmd": "shot", "args": ["e3"]}
-{"t": 1793284320948, "cmd": "wait", "args": ["3"]}
-{"t": 1793284343433, "cmd": "shot", "args": ["e4"]}
-{"t": 1793284347892, "cmd": "look", "args": ["0", "-50"]}
-{"t": 1793284347994, "cmd": "hold", "args": ["w", "2.6"]}
-{"t": 1793284374658, "cmd": "step", "args": ["2"]}
-{"t": 1793284374733, "cmd": "shot", "args": ["e5"]}
-{"t": 1793284378888, "cmd": "look", "args": ["-15", "0"]}
-{"t": 1793284379003, "cmd": "hold", "args": ["w", "1.2"]}
-{"t": 1793284390601, "cmd": "look", "args": ["0", "45"]}
-{"t": 1793284392099, "cmd": "step", "args": ["2"]}
-{"t": 1793284392261, "cmd": "shot", "args": ["e6"]}
-{"t": 1793284396891, "cmd": "look", "args": ["0", "25"]}
-{"t": 1793284397073, "cmd": "step", "args": ["2"]}
-{"t": 1793284397176, "cmd": "wait", "args": ["3"]}
-{"t": 1793284422512, "cmd": "shot", "args": ["e7"]}
-{"t": 1793284427754, "cmd": "look", "args": ["0", "-70"]}
-{"t": 1793284427855, "cmd": "hold", "args": ["Shift_L+w", "3"]}
-{"t": 1793284450910, "cmd": "step", "args": ["2"]}
-{"t": 1793284450978, "cmd": "shot", "args": ["h1"]}
-{"t": 1793284454756, "cmd": "hold", "args": ["Shift_L+w", "5"]}
-{"t": 1793284494075, "cmd": "step", "args": ["2"]}
-{"t": 1793284494212, "cmd": "shot", "args": ["h2"]}
-{"t": 1793284499116, "cmd": "look", "args": ["200", "0"]}
-{"t": 1793284499177, "cmd": "step", "args": ["2"]}
-{"t": 1793284499251, "cmd": "shot", "args": ["h3"]}
-{"t": 1793284502913, "cmd": "hold", "args": ["s", "1.5"]}
-{"t": 1793284517884, "cmd": "step", "args": ["2"]}
-{"t": 1793284517991, "cmd": "shot", "args": ["h4"]}
-{"t": 1793284522994, "cmd": "note", "args": ["--shot", "h4", "Lamp-lit house wall right in front of the camera turns pale yellow and washes out the white HUD text (NEXT/CHORES/MADE nearly unreadable); also the NEXT distance '6 m ahead' points through the wall to the door on the far side with no hint to go around"]}
-{"t": 1793284523094, "cmd": "hold", "args": ["d", "2.5"]}
-{"t": 1793284538155, "cmd": "step", "args": ["2"]}
-{"t": 1793284538219, "cmd": "shot", "args": ["h5"]}
-{"t": 1793284541707, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284553005, "cmd": "look", "args": ["-250", "0"]}
-{"t": 1793284553081, "cmd": "step", "args": ["2"]}
-{"t": 1793284553154, "cmd": "shot", "args": ["h6"]}
-{"t": 1793284556331, "cmd": "look", "args": ["-40", "-20"]}
-{"t": 1793284556405, "cmd": "hold", "args": ["w", "1.2"]}
-{"t": 1793284563883, "cmd": "step", "args": ["2"]}
-{"t": 1793284563962, "cmd": "shot", "args": ["h7"]}
-{"t": 1793284567238, "cmd": "key", "args": ["e"]}
-{"t": 1793284567385, "cmd": "step", "args": ["60"]}
-{"t": 1793284572485, "cmd": "shot", "args": ["m1"]}
-{"t": 1793284576002, "cmd": "wait", "args": ["3"]}
-{"t": 1793284595448, "cmd": "look", "args": ["0", "-100"]}
-{"t": 1793284595647, "cmd": "step", "args": ["2"]}
-{"t": 1793284596013, "cmd": "shot", "args": ["m2"]}
-{"t": 1793284600857, "cmd": "wait", "args": ["10"]}
-{"t": 1793284683770, "cmd": "shot", "args": ["m3"]}
-{"t": 1793284689602, "cmd": "note", "args": ["--shot", "m3", "After E at the indigo door ('E sleep until morning'): 'You sleep, and dream.' The world stays at dusk-light, the clock runs BACKWARD (7:00 pm -> 6:03 -> 5:45 -> 4:45 pm, still 21 March), and NEXT says only 'Nothing here seems strange'. No hint of what to do or how the dream ends; a player expecting morning is stuck"]}
-{"t": 1793284689688, "cmd": "key", "args": ["e"]}
-{"t": 1793284690643, "cmd": "step", "args": ["30"]}
-{"t": 1793284693838, "cmd": "shot", "args": ["m4"]}
-{"t": 1793284697148, "cmd": "key", "args": ["v"]}
-{"t": 1793284698317, "cmd": "step", "args": ["30"]}
-{"t": 1793284702628, "cmd": "shot", "args": ["m5"]}
-{"t": 1793284702747, "cmd": "key", "args": ["Tab"]}
-{"t": 1793284703113, "cmd": "step", "args": ["5"]}
-{"t": 1793284705798, "cmd": "shot", "args": ["m6"]}
-{"t": 1793284709535, "cmd": "key", "args": ["Tab"]}
-{"t": 1793284711024, "cmd": "look", "args": ["500", "0"]}
-{"t": 1793284711359, "cmd": "hold", "args": ["w", "2"]}
-{"t": 1793284729662, "cmd": "step", "args": ["2"]}
-{"t": 1793284730106, "cmd": "shot", "args": ["m7"]}
-{"t": 1793284733874, "cmd": "wait", "args": ["15"]}
-{"t": 1793284835977, "cmd": "shot", "args": ["m8"]}
-{"t": 1793284840056, "cmd": "note", "args": ["--shot", "m8", "Still in the dream ~45 game-seconds after sleeping: clock now 2:54 pm and falling, no morning, NEXT unchanged 'Nothing here seems strange'. Stopped here for time; could not reach the morning to try V there"]}
-{"t": 1793284840159, "cmd": "stop", "args": []}
-{"t": 1793284877239, "cmd": "report", "args": []}
-{"t": 1793285464135, "cmd": "stop", "args": []}
-{"t": 1793285464167, "cmd": "report", "args": []}
+{"t": 1793323214332, "cmd": "start", "args": ["--profile", "atman-strata", "--game-dir", "/root/atman-wt-pt030b", "--seed", "3"]}
+{"t": 1793323225346, "cmd": "key", "args": ["F1"]}
+{"t": 1793323226886, "cmd": "look", "args": ["-400", "0"]}
+{"t": 1793323227112, "cmd": "hold", "args": ["w", "6"]}
+{"t": 1793323266559, "cmd": "hold", "args": ["d", "1.2"]}
+{"t": 1793323276356, "cmd": "hold", "args": ["w", "16"]}
+{"t": 1793323413602, "cmd": "look", "args": ["-350", "0"]}
+{"t": 1793323413818, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793323435528, "cmd": "shot", "args": ["d1"]}
+{"t": 1793323465023, "cmd": "key", "args": ["1"]}
+{"t": 1793323465585, "cmd": "wait", "args": ["3.5"]}
+{"t": 1793323488403, "cmd": "type", "args": ["Pitcher"]}
+{"t": 1793323488557, "cmd": "key", "args": ["Return"]}
+{"t": 1793323489348, "cmd": "key", "args": ["2"]}
+{"t": 1793323490179, "cmd": "wait", "args": ["3.5"]}
+{"t": 1793323511375, "cmd": "type", "args": ["Dish"]}
+{"t": 1793323511571, "cmd": "key", "args": ["Return"]}
+{"t": 1793323512600, "cmd": "key", "args": ["4"]}
+{"t": 1793323513668, "cmd": "wait", "args": ["3.5"]}
+{"t": 1793323535344, "cmd": "type", "args": ["Light"]}
+{"t": 1793323535568, "cmd": "key", "args": ["Return"]}
+{"t": 1793323536399, "cmd": "key", "args": ["c"]}
+{"t": 1793323537283, "cmd": "look", "args": ["800", "60"]}
+{"t": 1793323537435, "cmd": "hold", "args": ["w", "2"]}
+{"t": 1793323550990, "cmd": "shot", "args": ["d2"]}
+{"t": 1793323573691, "cmd": "key", "args": ["h"]}
+{"t": 1793323574569, "cmd": "look", "args": ["330", "0"]}
+{"t": 1793323574765, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1793323580921, "cmd": "look", "args": ["20", "10"]}
+{"t": 1793323581080, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793323582932, "cmd": "shot", "args": ["d3"]}
+{"t": 1793323602378, "cmd": "look", "args": ["10", "75"]}
+{"t": 1793323602520, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793323604406, "cmd": "shot", "args": ["d4"]}
+{"t": 1793323609575, "cmd": "look", "args": ["5", "50"]}
+{"t": 1793323609704, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793323611534, "cmd": "shot", "args": ["d5"]}
+{"t": 1793323635125, "cmd": "key", "args": ["b"]}
+{"t": 1793323635555, "cmd": "wait", "args": ["0.5"]}
+{"t": 1793323637126, "cmd": "key", "args": ["h"]}
+{"t": 1793323637583, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793323638569, "cmd": "shot", "args": ["d6"]}
+{"t": 1793323671586, "cmd": "look", "args": ["-150", "-100"]}
+{"t": 1793323671687, "cmd": "hold", "args": ["w", "10"]}
+{"t": 1793323702059, "cmd": "shot", "args": ["d7"]}
+{"t": 1793323719638, "cmd": "hold", "args": ["w", "6"]}
+{"t": 1793323766469, "cmd": "shot", "args": ["d8"]}
+{"t": 1793323836583, "cmd": "wait", "args": ["46"]}
+{"t": 1793324131441, "cmd": "shot", "args": ["d9"]}
+{"t": 1793324170197, "cmd": "key", "args": ["f"]}
+{"t": 1793324170324, "cmd": "look", "args": ["400", "0"]}
+{"t": 1793324170408, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793324212937, "cmd": "shot", "args": ["d10"]}
+{"t": 1793324225244, "cmd": "look", "args": ["400", "0"]}
+{"t": 1793324225315, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793324251667, "cmd": "shot", "args": ["d11"]}
+{"t": 1793324296694, "cmd": "look", "args": ["300", "30"]}
+{"t": 1793324296786, "cmd": "key", "args": ["h"]}
+{"t": 1793324297390, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793324299737, "cmd": "shot", "args": ["d12"]}
+{"t": 1793324948175, "cmd": "look", "args": ["45", "-5"]}
+{"t": 1793324948242, "cmd": "hold", "args": ["w", "2.5"]}
+{"t": 1793324961240, "cmd": "shot", "args": ["d13"]}
+{"t": 1793324992678, "cmd": "look", "args": ["50", "25"]}
+{"t": 1793324992755, "cmd": "wait", "args": ["3"]}
+{"t": 1793325007505, "cmd": "shot", "args": ["d14"]}
+{"t": 1793325012378, "cmd": "look", "args": ["25", "5"]}
+{"t": 1793325012442, "cmd": "hold", "args": ["w", "1.5"]}
+{"t": 1793325019755, "cmd": "look", "args": ["0", "40"]}
+{"t": 1793325019821, "cmd": "wait", "args": ["3"]}
+{"t": 1793325035733, "cmd": "shot", "args": ["d15"]}
+{"t": 1793325039872, "cmd": "look", "args": ["40", "70"]}
+{"t": 1793325039920, "cmd": "wait", "args": ["3"]}
+{"t": 1793325051169, "cmd": "shot", "args": ["d16"]}
+{"t": 1793325055913, "cmd": "look", "args": ["-130", "-60"]}
+{"t": 1793325055984, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793325071452, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325073762, "cmd": "shot", "args": ["d17"]}
+{"t": 1793325077265, "cmd": "look", "args": ["-110", "90"]}
+{"t": 1793325077300, "cmd": "wait", "args": ["3"]}
+{"t": 1793325081979, "cmd": "shot", "args": ["d18"]}
+{"t": 1793325086473, "cmd": "look", "args": ["-90", "0"]}
+{"t": 1793325086535, "cmd": "wait", "args": ["3"]}
+{"t": 1793325091989, "cmd": "shot", "args": ["d19"]}
+{"t": 1793325097245, "cmd": "look", "args": ["-120", "-15"]}
+{"t": 1793325097301, "cmd": "wait", "args": ["3"]}
+{"t": 1793325107765, "cmd": "shot", "args": ["d20"]}
+{"t": 1793325112999, "cmd": "key", "args": ["h"]}
+{"t": 1793325113081, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325113206, "cmd": "shot", "args": ["d21"]}
+{"t": 1793325119022, "cmd": "look", "args": ["-650", "-60"]}
+{"t": 1793325119077, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793325135779, "cmd": "key", "args": ["h"]}
+{"t": 1793325136741, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325137852, "cmd": "shot", "args": ["d22"]}
+{"t": 1793325141999, "cmd": "key", "args": ["h"]}
+{"t": 1793325142110, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325143946, "cmd": "shot", "args": ["d23"]}
+{"t": 1793325147667, "cmd": "look", "args": ["-400", "0"]}
+{"t": 1793325147724, "cmd": "hold", "args": ["w", "4"]}
+{"t": 1793325166703, "cmd": "key", "args": ["h"]}
+{"t": 1793325168480, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325168609, "cmd": "shot", "args": ["d24"]}
+{"t": 1793325174121, "cmd": "key", "args": ["h"]}
+{"t": 1793325174222, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325176015, "cmd": "shot", "args": ["d25"]}
+{"t": 1793325181035, "cmd": "look", "args": ["-350", "40"]}
+{"t": 1793325181074, "cmd": "key", "args": ["h"]}
+{"t": 1793325181162, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325182620, "cmd": "shot", "args": ["d26"]}
+{"t": 1793325183388, "cmd": "key", "args": ["h"]}
+{"t": 1793325188120, "cmd": "look", "args": ["-200", "-10"]}
+{"t": 1793325188187, "cmd": "hold", "args": ["w", "3"]}
+{"t": 1793325203393, "cmd": "key", "args": ["h"]}
+{"t": 1793325204376, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325206491, "cmd": "shot", "args": ["d27"]}
+{"t": 1793325210199, "cmd": "look", "args": ["-170", "30"]}
+{"t": 1793325210258, "cmd": "wait", "args": ["3"]}
+{"t": 1793325221129, "cmd": "shot", "args": ["d28"]}
+{"t": 1793325226319, "cmd": "look", "args": ["-190", "-10"]}
+{"t": 1793325226382, "cmd": "wait", "args": ["3"]}
+{"t": 1793325238213, "cmd": "shot", "args": ["d29"]}
+{"t": 1793325242851, "cmd": "key", "args": ["h"]}
+{"t": 1793325242961, "cmd": "wait", "args": ["0.3"]}
+{"t": 1793325244144, "cmd": "shot", "args": ["d30"]}
+{"t": 1793325248384, "cmd": "look", "args": ["-60", "-40"]}
+{"t": 1793325248450, "cmd": "hold", "args": ["w", "14"]}
+{"t": 1793325311968, "cmd": "shot", "args": ["d31"]}
+{"t": 1793325316630, "cmd": "look", "args": ["-450", "0"]}
+{"t": 1793325316698, "cmd": "hold", "args": ["w", "10"]}
+{"t": 1793325363271, "cmd": "shot", "args": ["d32"]}
+{"t": 1793325367398, "cmd": "look", "args": ["-120", "0"]}
+{"t": 1793325367471, "cmd": "hold", "args": ["w", "7"]}
+{"t": 1793325388826, "cmd": "shot", "args": ["d33"]}
+{"t": 1793325392981, "cmd": "look", "args": ["-450", "0"]}
+{"t": 1793325393019, "cmd": "hold", "args": ["w", "5"]}
+{"t": 1793325409424, "cmd": "shot", "args": ["d34"]}
+{"t": 1793325413806, "cmd": "hold", "args": ["s", "1"]}
+{"t": 1793325417356, "cmd": "hold", "args": ["a", "2.5"]}
+{"t": 1793325429747, "cmd": "look", "args": ["300", "0"]}
+{"t": 1793325429806, "cmd": "hold", "args": ["w", "1"]}
+{"t": 1793325436172, "cmd": "shot", "args": ["d35"]}
+{"t": 1793325442191, "cmd": "key", "args": ["e"]}
+{"t": 1793325442308, "cmd": "wait", "args": ["3"]}
+{"t": 1793325456566, "cmd": "shot", "args": ["dream1"]}
+{"t": 1793325456686, "cmd": "key", "args": ["e"]}
+{"t": 1793325457505, "cmd": "key", "args": ["c"]}
+{"t": 1793325458397, "cmd": "wait", "args": ["1"]}
+{"t": 1793325464677, "cmd": "shot", "args": ["dream_keys"]}
+{"t": 1793325464784, "cmd": "wait", "args": ["40"]}
+{"t": 1793325748187, "cmd": "shot", "args": ["dream2"]}
+{"t": 1793325753814, "cmd": "wait", "args": ["33"]}
+{"t": 1793325948847, "cmd": "shot", "args": ["deep1"]}
+{"t": 1793325949199, "cmd": "wait", "args": ["15"]}
+{"t": 1793326006960, "cmd": "shot", "args": ["wake1"]}
+{"t": 1793326007025, "cmd": "key", "args": ["v"]}
+{"t": 1793326007494, "cmd": "wait", "args": ["3"]}
+{"t": 1793326017607, "cmd": "shot", "args": ["v1"]}
+{"t": 1793326024541, "cmd": "key", "args": ["v"]}
+{"t": 1793326024953, "cmd": "stop", "args": []}
+{"t": 1793326054549, "cmd": "report", "args": []}
