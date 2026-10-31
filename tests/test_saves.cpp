@@ -1,7 +1,9 @@
-// Saves: a save round-trips the World exactly; any one byte flipped, or the
-// file cut short, is refused; writing keeps the save it replaces, and a
-// damaged current save gives way to the previous one; and a playthrough
-// saved and loaded halfway ends on the same pinned fingerprint.
+// Saves: the checksum is SHA-256 as the standard gives it; a save round-trips
+// the World exactly; any one byte flipped, or the file cut short, is refused;
+// writing keeps the save it replaces, and a damaged current save gives way to
+// the previous one; and a playthrough saved and loaded halfway ends on the
+// same pinned fingerprint.
+#include <algorithm>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -10,6 +12,7 @@
 
 #include "check.h"
 #include "save/save.h"
+#include "save/sha256.h"
 #include "sim/autopilot.h"
 #include "sim/chores.h"
 #include "sim/world.h"
@@ -54,6 +57,57 @@ int main(int argc, char** argv) {
     std::error_code ec;
     fs::remove_all(dir, ec);
     const std::string slot = dir.string();
+
+    // The checksum is SHA-256 (FIPS 180-4): the standard's example messages
+    // give its digests, and a million 'a's gives the long-message digest.
+    {
+        struct Known {
+            std::string message;
+            const char* digest;
+        };
+        const Known known[] = {
+            {"", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+            {"abc", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"},
+            // 56 bytes: the length no longer fits, so the padding takes a second block.
+            {"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq",
+             "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1"},
+            {"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopq"
+             "rstu",
+             "cf5b16a778af8380036ce59e7b0492370b249b11e8f07a51afac45037afee9d1"},
+        };
+        for (const Known& k : known) CHECK(toHex(sha256(k.message.data(), k.message.size())) == k.digest);
+        const std::string million(1000000, 'a');
+        CHECK(toHex(sha256(million.data(), million.size())) ==
+              "cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0");
+    }
+
+    // Messages that end on either side of a block boundary (bytes 0, 1, 2, ...)
+    // hash the same whether fed at once, a byte at a time or in uneven pieces;
+    // and finish() leaves the hasher ready for the next message.
+    {
+        struct Boundary {
+            size_t length;
+            const char* digest;
+        };
+        const Boundary boundaries[] = {
+            {55, "463eb28e72f82e0a96c0a4cc53690c571281131f672aa229e0d45ae59b598b59"},
+            {56, "da2ae4d6b36748f2a318f23e7ab1dfdf45acdc9d049bd80e59de82a60895f562"},
+            {63, "29af2686fd53374a36b0846694cc342177e428d1647515f078784d69cdb9e488"},
+            {64, "fdeab9acf3710362bd2658cdc9a29e8f9c757fcf9811603a8c447cd1d9151108"},
+            {65, "4bfd2c8b6f1eec7a2afeb48b934ee4b2694182027e6d0fc075074f2fabb31781"},
+        };
+        Sha256 hasher;
+        for (const Boundary& b : boundaries) {
+            std::vector<uint8_t> bytes(b.length);
+            for (size_t i = 0; i < bytes.size(); ++i) bytes[i] = static_cast<uint8_t>(i);
+            CHECK(toHex(sha256(bytes.data(), bytes.size())) == b.digest);
+            for (uint8_t octet : bytes) hasher.update(&octet, 1);
+            CHECK(toHex(hasher.finish()) == b.digest);
+            for (size_t i = 0; i < bytes.size(); i += 7)
+                hasher.update(bytes.data() + i, std::min<size_t>(7, bytes.size() - i));
+            CHECK(toHex(hasher.finish()) == b.digest);
+        }
+    }
 
     // Round trips: a new game, mid-afternoon at the wheel with a pot waiting
     // for its name, at dusk among the snakes, and in the after-mode.
