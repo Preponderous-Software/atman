@@ -147,10 +147,13 @@ before the rules run on it. A save is written to a temporary file and renamed in
 save it replaces is kept as the previous save. A damaged current save is refused with a message
 and the previous one loads; saving over a damaged save never replaces a good previous one.
 
-The session (`src/play/session.*`) loads the slot on start, saves every two minutes, on F5 and on
-quit, and loads on F9. What is only on screen is not saved: the codex page, the free camera and a
-half-typed name. The desktop slot is `%APPDATA%\Atman\default` or `~/.local/share/atman/default`; the
-browser's is `/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md)).
+The session (`src/play/session.*`) loads the slot on start, saves every two minutes, on F5, on quit
+and on leaving a village for the other, and loads on F9. What is only on screen is not saved: the
+codex page, the free camera and a half-typed name. The desktop slot is `%APPDATA%\Atman\default` or
+`~/.local/share/atman/default`; the browser's is `/atman-save/default` on IndexedDB (see
+[docs/WEB.md](docs/WEB.md)). The second village (F6) has its own slot beside the first, with `-2`
+on the end of the name. The first slot's `settings.txt` holds the text size, the captions and which
+village was being played.
 
 Two kinds of run never touch the slot: `--autopilot`, and a run a test harness drives through
 Strata's drive channel (`STRATA_DRIVE`, Strata `docs/DRIVE.md`; playtester's `atman-strata`
