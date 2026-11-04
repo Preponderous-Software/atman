@@ -422,6 +422,8 @@ For each page: OK as is / OK with changes / not OK, and why.
 - The rope and the snake (Kārikā 2.17–2.18, working translation):
 - Clay and its names (Chāndogya 6.1.4, Hume):
 - The space in the pot (Kārikā 3.3–3.4, working translation):
+- The dream (Bṛhadāraṇyaka 4.3.9–4.3.10, 4.3.14, Hume):
+- The fourth (Māṇḍūkya 2 and 7, Hume):
 - Other schools (Chāndogya 6.8.7, Hume, and the three readings):
 
 ## Suggested wording
