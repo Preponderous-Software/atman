@@ -9,15 +9,17 @@
 // Controls: mouse to look, W A S D to walk, Shift to hurry, E to use what is
 // here (fill, give, dig, drink, eat, sleep), F for the lamp, 1-4 at the wheel
 // to throw a pot (then type its name and press Enter), B to break the pot in
-// view, C for the clay lens, Tab for the codex (Up and Down to choose a
-// page), V in the after-mode to step out and watch (and back in), F5 to save,
-// F9 to load the last save, F1 for help, Esc to free the mouse (Esc again
-// quits).
+// view, C for the clay lens, Tab for the codex (Up and Down, or W and S, to
+// choose a page), V in the after-mode to step out and watch (and back in), M
+// for the sound, H to hide the HUD, F1 for help, F2 for the text size, F3 for
+// captions, F6 for your other village, F5 to save, F9 to load the last save,
+// Esc to free the mouse (Esc again quits).
 //
 // The game continues from its save in DIR (by default %APPDATA%\Atman\default
-// on Windows, ~/.local/share/atman/default elsewhere), saves every two minutes
-// and on quit, and keeps the save before last; --new starts over (the old save
-// is kept as the previous one). --autopilot never saves.
+// on Windows, $XDG_DATA_HOME/atman/default or ~/.local/share/atman/default
+// elsewhere), saves every two minutes, on leaving a village and on quit, and
+// keeps the save before last; --new starts over (the old save is kept as the
+// previous one). --autopilot never saves.
 //
 // --tour walks a fixed route through the valley into the night, back up the
 // path past the snakes with the lamp, opens the codex, sleeps, and watches the

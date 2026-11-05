@@ -18,8 +18,8 @@ compiled with Emscripten.
 | Sound | miniaudio on WASAPI (Windows) or ALSA / PulseAudio (Linux); M turns it off | miniaudio on Web Audio. Browsers let a page make sound only after a tap or click on it, so the valley is silent until the first one. M or the **Sound** button turns it off, and the page remembers the choice in that browser |
 | Shadows | 4 cascades of 2048² | 3 cascades of 1024², for phones |
 | Resolution | the window's | the page's size times the device pixel ratio, capped at 2 |
-| Saves | `atman.save` in the slot directory (`%APPDATA%\Atman\default`, `~/.local/share/atman/default`, or `--slot`) | the same format and code (`src/save`), in `/atman-save/default`, which the page keeps in IndexedDB. Saves stay in that browser on that device |
-| When it saves | every two minutes, F5, and on quit | every two minutes, F5 or the Save button, and when the page is hidden or closed |
+| Saves | `atman.save` in the slot directory (`%APPDATA%\Atman\default`, `$XDG_DATA_HOME/atman/default` or `~/.local/share/atman/default`, or `--slot`) | the same format and code (`src/save`), in `/atman-save/default`, which the page keeps in IndexedDB. Saves stay in that browser on that device |
+| When it saves | every two minutes, F5, on leaving a village, and on quit | every two minutes, F5 or the Save button, on leaving a village, and when the page is hidden or closed |
 
 ### Saves
 
