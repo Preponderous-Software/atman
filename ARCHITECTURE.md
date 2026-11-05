@@ -150,8 +150,8 @@ and the previous one loads; saving over a damaged save never replaces a good pre
 The session (`src/play/session.*`) loads the slot on start, saves every two minutes, on F5, on quit
 and on leaving a village for the other, and loads on F9. What is only on screen is not saved: the
 codex page, the free camera and a half-typed name. The desktop slot is `%APPDATA%\Atman\default` or
-`~/.local/share/atman/default`; the browser's is `/atman-save/default` on IndexedDB (see
-[docs/WEB.md](docs/WEB.md)). The second village (F6) has its own slot beside the first, with `-2`
+`$XDG_DATA_HOME/atman/default` (`~/.local/share/atman/default` if that is unset); the browser's is
+`/atman-save/default` on IndexedDB (see [docs/WEB.md](docs/WEB.md)). The second village (F6) has its own slot beside the first, with `-2`
 on the end of the name. The first slot's `settings.txt` holds the text size, the captions and which
 village was being played.
 
