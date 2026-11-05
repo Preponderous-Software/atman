@@ -137,7 +137,8 @@ play the whole slice at ten times speed.
 
 The game continues from its save: `%APPDATA%\Atman\default` on Windows, `$XDG_DATA_HOME/atman/default`
 (`~/.local/share/atman/default` if that is unset) elsewhere, or `--slot DIR`. It saves every two
-minutes, on F5, on quit and on leaving a village, and keeps the save before last. A save that fails its checksum is refused with a message and the previous one loads.
+minutes, on F5, on quit and on leaving a village, and keeps the save before last. A save that
+fails its checksum is refused with a message and the previous one loads.
 `--new` starts over (the old save is kept as the previous one). `--autopilot` never saves. A
 second village (F6) is saved beside the first, in `default-2` (or `DIR-2`); the settings (text
 size, captions, which village) are in the first's `settings.txt`.
