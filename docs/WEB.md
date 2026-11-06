@@ -42,10 +42,10 @@ only frees the mouse. On a touch screen:
 
 - drag on the left half to walk (all the way out to hurry), and on the right half to look;
 - **Use** does what is here (fill, give, dig, drink, eat, sleep); **Lamp**, **Break** and **Lens**
-  do what they say;
+  do what they say (**Lens** appears after three pots);
 - at the wheel, tap a form to throw it, then type its name in the box;
 - **Codex** along the top opens the codex (the arrows choose a page), and in the after-mode
-  **Watch** steps out of the body and back in;
+  **Watch** steps out of the body (it then reads **Step back in**);
 - **Sound** along the top turns the sound off or on (it says which), and the page remembers it;
 - **?** (How to play) has the settings: the text size (normal, large, larger; F2 on a keyboard) and
   captions for the sounds that matter (F3), and which of your two villages to play (F6). The game

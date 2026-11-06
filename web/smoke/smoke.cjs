@@ -6,10 +6,13 @@
 // visit; the canvas draws the valley (not one flat colour); walking moves the
 // player (W on a desktop, the stick on the phone profile) and looking turns
 // them; the lamp lights; the codex opens on its page and closes again. On a
-// desktop the player also walks to the potter's wheel, throws a bowl and
-// types its name, which lands in the list of things made. Then a save survives
-// a reload (IndexedDB): the same place, the same time of day, the same pots,
-// and the Sound button's choice (off) remembered.
+// desktop the pointer lock is taken, the player walks to the potter's wheel,
+// throws a bowl and types its name, which lands in the list of things made,
+// and the pointer lock is given back. Then a save survives a reload
+// (IndexedDB): the same place, the same time of day, the same pots, and the
+// Sound button's choice (off) remembered. The second village starts new while
+// the first keeps its day. The loading shell finishes, and with WebGL 2 taken
+// away it says why and nothing of the engine downloads.
 // Writes PNGs to <out-dir>.
 'use strict';
 const fs = require('fs');
