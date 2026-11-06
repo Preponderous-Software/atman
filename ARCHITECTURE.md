@@ -54,7 +54,7 @@ generic features a real consumer needs. Atman may propose engine additions (list
 | `src/save/` | Save format: magic, version, SHA-256, previous save kept. Format 2 added chapter 3's fields; a format 1 save from 0.1.x still loads |
 | `src/audio/` | Sound: what the valley sounds like, worked out from the world (`cues.*`: the steady sounds of the place and hour, and a cue for each thing that happens); the synth that makes every sound from nothing (`synth.*`); and the sound card through miniaudio (`device.*`), silent when there is none. Only `device.*` touches a device. |
 | `app/main.cpp` | Desktop entry point, the headless tour and the headless playthrough |
-| `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, and its smoke test |
+| `app/web_main.cpp`, `web/` | Browser entry point, the page shell with touch controls, the loading shell vendored from Strata and its bridge (`strata-kit/`, `strata-boot.js`, `strata_page.cmake`; see [docs/WEB.md](docs/WEB.md#the-loading-shell)), and the smoke test (`smoke/`) |
 | `content/` | Codex entries (`codex/*.json`) and their plates (`plates/*.png`); later dialogue |
 | `tools/plates/` | Offline renderer and checker for verse plates, and the font (see [Text](#text)) |
 | `tools/check_docs.py`, `tools/play-atman.bat` | The docs check CI runs, and the Windows play script that installs the tools, builds and starts the game |
@@ -86,7 +86,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked. The game pins St
 | Game need | Strata feature | Since |
 |---|---|---|
 | The valley | Lit terrain tile, `strata_set_terrain` | ABI 1.3 |
-| Village, pots, the well | Meshes, textured meshes, cube shadow maps | 1.4 / 1.7 |
+| Village, pots, the well | Meshes with a colour on each vertex, under the sun's cascaded shadow maps (`setLighting` in `src/play/view.cpp`: four of 2048², or three of 1024² in the browser) | 1.4 |
 | Dusk and morning | `strata_solar_position` (NOAA) and `strata_set_sun_direction` | 1.6 |
 | The lamp | Point lights (up to 32) | 1.1 |
 | Looking closer at a snake | The sim's own line-of-sight test against each coil, so the rule stays deterministic and testable without a GPU (`strata_raycast_meshes`, ABI 1.8, is kept for picking that needs real triangles) | — |
@@ -98,7 +98,7 @@ Everything here exists in Strata 0.4.0 (ABI 1.8) unless marked. The game pins St
 | HUD and its retirement | Overlay text, the bars included; a retired element's line is no longer drawn (`hudLines` in `src/play/view.cpp`) | 1.5 |
 | Mouse look | `strata_set_relative_mouse_mode` | 1.8 |
 | Watching the avatar (after-mode) | A free camera in the play layer, and the avatar mesh moved by `strata_set_mesh_transform` | 1.7 |
-| Waking | A screen-sized black point in front of the eye, fading out | 1.5 |
+| Waking, the dream going out, deep sleep | A screen-sized black point in front of the eye, fading (`drawDarkness` in `src/play/view.cpp`); the dream's faint haze is the same point in violet | 1.5 |
 | Witness camera (after the MVP) | Free camera with picking, as in steading's fly-cam | 1.8 |
 | Dream drift (after the MVP) | `strata_set_mesh_transform` per frame | 1.7 |
 | Browser (MVP milestone M6) | Strata's WebGL 2 backend under Emscripten, built from source at the pinned commit | v0.4.0 |
