@@ -2,7 +2,8 @@
 //
 //   atman [--slot DIR] [--new] [--seed N] [--width W --height H]
 //   atman --autopilot [--speed N] [--width W --height H]
-//   atman --headless --tour --frames DIR [--width W --height H]
+//   atman --tour [--frames DIR] [--width W --height H]
+//   atman --headless --tour [--frames DIR] [--width W --height H]
 //   atman --headless --autopilot [--frames DIR] [--width W --height H]
 //   atman --version
 //
@@ -22,9 +23,11 @@
 // previous one). --autopilot never saves.
 //
 // --tour walks a fixed route through the valley into the night, back up the
-// path past the snakes with the lamp, opens the codex, sleeps, and watches the
-// avatar the next morning; headless, it writes a screenshot at each stop to
-// DIR. --autopilot lets the autopilot play the whole MVP (at N times speed in
+// path past the snakes with the lamp, opens the codex, sleeps, watches the
+// avatar the next morning, then jumps to the second day's lamp night and the
+// third morning's egrets. It plays in a window, or headless, and writes a
+// screenshot at each stop if DIR is given.
+// --autopilot lets the autopilot play the whole MVP (at N times speed in
 // a window); headless, it runs to the end of the playthrough, writes a
 // screenshot each time the autopilot turns to something new if DIR is given,
 // and fails unless it ends on the pinned fingerprint.
@@ -107,7 +110,8 @@ bool parseArgs(int argc, char** argv, Args& a) {
 void usage() {
     std::puts("usage: atman [--slot DIR] [--new] [--seed N] [--width W --height H]\n"
               "       atman --autopilot [--speed N] [--width W --height H]\n"
-              "       atman --headless --tour --frames DIR [--width W --height H]\n"
+              "       atman --tour [--frames DIR] [--width W --height H]\n"
+              "       atman --headless --tour [--frames DIR] [--width W --height H]\n"
               "       atman --headless --autopilot [--frames DIR] [--width W --height H]\n"
               "       atman --version");
 }
