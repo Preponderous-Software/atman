@@ -136,6 +136,8 @@ bool plausible(const World& w, std::string* error) {
                             w.needs.tiredness, w.fear, w.throwing.seconds};
     for (float f : floats)
         if (!std::isfinite(f)) return fail("a number in the save is not finite");
+    for (const Coil& c : w.coils)
+        if (!std::isfinite(c.gaze)) return fail("a number in the save is not finite");
     if (w.tick < 0 || w.day < 0 || w.wokeTick < -1 || w.wokeTick > w.tick) return fail("the clock is impossible");
     if (w.potsMade < 0 || w.potsMade > valley::kBoardSlots) return fail("more pots than the board holds");
     if (w.naming < -1 || w.naming >= w.potsMade) return fail("naming a pot that was never made");
@@ -155,7 +157,7 @@ bool plausible(const World& w, std::string* error) {
         return fail("the player is outside the valley");
     const int sleep = static_cast<int>(w.sleep);
     if (sleep < 0 || sleep > static_cast<int>(Sleep::Deep)) return fail("an unknown kind of sleep");
-    if ((w.sleep == Sleep::Awake) != (w.sleptTick == -1) || w.sleptTick > w.tick) return fail("the sleep's clock is impossible");
+    if ((w.sleep == Sleep::Awake) != (w.sleptTick == -1) || w.sleptTick < -1 || w.sleptTick > w.tick) return fail("the sleep's clock is impossible");
     return true;
 }
 
