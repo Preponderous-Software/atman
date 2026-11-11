@@ -102,7 +102,7 @@ atman_warnings(atman_audio)
 
 if(ATMAN_BUILD_TESTS)
   enable_testing()
-  foreach(t movement clock rope clay chores states autopilot determinism geometry codex saves audio)
+  foreach(t movement clock rope clay chores states autopilot determinism geometry codex saves save_playon audio)
     add_executable(test_${t} tests/test_${t}.cpp)
     target_link_libraries(test_${t} PRIVATE atman_sim atman_geometry atman_codex atman_save atman_audio)
     target_include_directories(test_${t} PRIVATE tests)
@@ -115,6 +115,7 @@ if(ATMAN_BUILD_TESTS)
   endforeach()
   # Saves written by earlier versions, which must still load.
   target_compile_definitions(test_saves PRIVATE ATMAN_FIXTURES="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
+  target_compile_definitions(test_save_playon PRIVATE ATMAN_FIXTURES="${CMAKE_CURRENT_SOURCE_DIR}/tests/fixtures")
 endif()
 
 # ---------------------------------------------------------------- the game on Strata

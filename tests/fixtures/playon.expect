@@ -1,0 +1,19 @@
+# Save play-on fingerprints, checked by tests/test_save_playon.cpp (Preponderous RFC 0036).
+#
+#   fixture         the frozen save in this directory (README.md says who wrote it)
+#   driver          autopilot = the game's autopilot plays on; idle = no input, time passes
+#   ticks           how many ticks it plays on for (kTickRate: 30 ticks = 1 s of play)
+#   load            fingerprint of the save as loaded. NEVER re-pin: it is what the player saved.
+#   play-on         fingerprint after the ticks. Re-pin only in a pull request that changes the
+#                   rules on purpose, and say why there; the test prints the new line.
+#
+# What each run crosses: three-pots lights the lamp, passes the snakes and falls asleep into
+# the dream; after-mode walks the after-mode chores; mid-dream sleeps on through the deep
+# sleep and wakes into the after-mode with no input; after-the-fourth lights the lamp at
+# dusk, sleeps and wakes on day 2.
+#
+# fixture                 driver     ticks  load              play-on
+v1-three-pots.save        autopilot  2400   1295f6c1664854a5  30438ee7523b1e61
+v1-after-mode.save        autopilot  2000   454d22e2f24d5a0c  bff1b565b2bf52bd
+v2-mid-dream.save         idle       1600   a7df0f9b07b2a198  b64e0b8711951b38
+v2-after-the-fourth.save  autopilot  3600   ebf51994201ebeb9  89e24b7767423eec

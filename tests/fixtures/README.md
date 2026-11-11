@@ -33,3 +33,14 @@ SHA-256 of the files as written:
 46dcb26516c157e7acb1531d9e3a225013968ad198ca70b9e25a23d937fde5c1  v2-mid-dream.save
 c0e9efed84a2dd0a756f76fbefa264f8580b156acd71d6ec73a2f6a1f913fd55  v2-after-the-fourth.save
 ```
+
+## Play-on fingerprints
+
+[`playon.expect`](playon.expect) gives, for every fixture, the fingerprint it loads as and the fingerprint
+after a fixed number of ticks under a fixed driver; `tests/test_save_playon.cpp` checks both. The load
+column is what the player saved and is never re-pinned. The play-on column is re-pinned only by a pull
+request that changes the rules on purpose (the test prints the new line). A fixture without a line fails.
+
+The format-2 load values are the fingerprints recorded above when 0.2.0 wrote the files. No fingerprint
+was recorded for the format-1 files, so their load values were measured on `main` at `464fbfd`, where
+`tests/test_saves.cpp` already checks `v1-three-pots.save` against a fresh playthrough.
