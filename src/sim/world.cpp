@@ -105,6 +105,11 @@ void rope(World& w) {
     else w.fear = clampf(w.fear - kFearFallPerSecond * dt, target, 1.0f);
 }
 
+// FNV-1a 64. The offset basis below is the standard 14695981039346656037
+// (0xcbf29ce484222325) with its last digit missing, so these fingerprints are
+// not the numbers Strata's StateHasher would give. It stays as it is: every
+// pinned fingerprint, including the load column of tests/fixtures/playon.expect,
+// depends on it (Preponderous RFC 0036 keeps each game's own hash).
 struct Fnv {
     uint64_t h = 1469598103934665603ULL;
     void bytes(const void* data, size_t n) {
