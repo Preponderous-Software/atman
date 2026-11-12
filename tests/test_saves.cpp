@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -223,6 +224,34 @@ int main(int argc, char** argv) {
         std::string why;
         CHECK(!decodeSave(encodeSave(odd), w, &why));
         CHECK(!why.empty());
+    }
+
+    // A coil's gaze must be a finite number: a NaN would leave a snake that can
+    // never be seen through, and an infinity would turn one into a rope unseen.
+    {
+        const float odd[] = {std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::infinity()};
+        for (float gaze : odd) {
+            World bad = newWorld(1);
+            bad.coils[0].gaze = gaze;
+            World w;
+            std::string why;
+            CHECK(!decodeSave(encodeSave(bad), w, &why));
+            CHECK(why == "a number in the save is not finite");
+        }
+    }
+
+    // A dream cannot have begun before the clock started. The same dream begun
+    // now is accepted, so it is the start tick alone that is refused.
+    {
+        World dream = newWorld(1);
+        dream.sleep = Sleep::Dream;
+        dream.sleptTick = dream.tick;
+        World w;
+        std::string why;
+        CHECK(decodeSave(encodeSave(dream), w, &why));
+        dream.sleptTick = -5;
+        CHECK(!decodeSave(encodeSave(dream), w, &why));
+        CHECK(why == "the sleep's clock is impossible");
     }
 
     // Writing keeps the previous save; a damaged current save gives way to it.
